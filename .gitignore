@@ -1,3 +1,8 @@
+# Custom
+src/**/*.css
+conter_interactive_viewer.sublime-workspace
+.DS_store
+
 # Logs
 logs
 *.log

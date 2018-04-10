@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"tab_size": 2,
+		"translate_tabs_to_spaces": true,
+		"color_scheme": "Packages/Oceanic Next Color Scheme/Oceanic Next.tmTheme"
+	}
+}
