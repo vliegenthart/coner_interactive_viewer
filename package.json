@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "crypto": "^1.0.1",
     "flow-bin": "^0.69.0",
+    "query-string": "^6.0.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-pdf-annotator": "0.0.6",
     "react-scripts": "1.1.4",
+    "request": "^2.85.0",
     "url-search-params": "^0.10.0"
   },
   "scripts": {
