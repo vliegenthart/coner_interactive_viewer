@@ -3,6 +3,7 @@ src/**/*.css
 coner_interactive_viewer.sublime-workspace
 .DS_store
 data/
+*/**/config.js
 
 # Logs
 logs
