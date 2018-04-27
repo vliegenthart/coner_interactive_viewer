@@ -9,8 +9,6 @@
 import React, { Component } from "react";
 
 import URLSearchParams from "url-search-params";
-import './App.css';
-
 
 import {
   PdfLoader,
@@ -18,19 +16,19 @@ import {
   AreaHighlight
 } from "react-pdf-annotator";
 
-import PdfAnnotator from "./components/PDFAnnotator.js";
+import PdfAnnotator from "./PDFAnnotator.js";
 
-import Tip from "./components/Tip.js"
-import Highlight from "./components/Highlight.js"
+import Tip from "./Tip.js"
+import Highlight from "./Highlight.js"
 
-import termHighlights from "./highlights/conf_trec_BellotCEGL02-highlights";
+import termHighlights from "../highlights/conf_trec_BellotCEGL02-highlights";
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
 
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 
-import "./style/App.css";
+import "../style/App.css";
 
 type T_ManuscriptHighlight = T_Highlight;
 
