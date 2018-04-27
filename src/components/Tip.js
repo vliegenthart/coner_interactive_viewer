@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import "./Tip.css";
+import "../style/Tip.css";
 
 type State = {
   compact: boolean,

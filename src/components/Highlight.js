@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import "./Highlight.css";
+import "../style/Highlight.css";
 
 import type { T_LTWH } from "react-pdf-annotator/lib/types.js";
 
