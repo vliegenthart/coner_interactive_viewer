@@ -5,9 +5,9 @@ import {
   withRouter, 
 } from 'react-router-dom';
 
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
-
+import * as ost from '../ost/ost-client';
 
 const SignUpPage = ({ history }) =>
   <div>
@@ -45,11 +45,24 @@ class SignUpForm extends Component {
     const {
       history,
     } = this.props;
-    
+
+    // Create user in Firebase Authentication
     auth.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        this.setState(() => ({ ...INITIAL_STATE }));
-        history.push(routes.HOME);
+
+        // Create OST user
+        ost.createUser(username, (res) => {
+          
+          // Create user in custom Firebase accessible DB
+          db.doCreateUser(authUser.uid, username, email, res['economy_users'][0]['uuid'])
+          .then(() => {
+            this.setState(() => ({ ...INITIAL_STATE }));
+            history.push(routes.HOME);
+          })
+          .catch(error => {
+            this.setState(byPropKey('error', error));
+          });
+        });    
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
