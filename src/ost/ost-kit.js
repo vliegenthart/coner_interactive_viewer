@@ -100,4 +100,5 @@ class OstKit {
     }
 }
 
-module.exports = OstKit
+export default OstKit
+
