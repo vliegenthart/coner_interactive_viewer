@@ -1,5 +1,5 @@
 {
-  "name": "test_react_pdf_annotator",
+  "name": "coner_interactive_viewer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,5 +23,12 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "flow": "flow"
+  },
+  "proxy": {
+    "/proxy": {
+      "target": "https://playgroundapi.ost.com",
+      "pathRewrite": {"^/proxy" : ""},
+      "changeOrigin": true 
+    }
   }
 }
