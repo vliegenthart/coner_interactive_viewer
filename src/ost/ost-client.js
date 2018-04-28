@@ -24,7 +24,7 @@ export function createUser(name, callback) {
 }
 
 export function rewardUser(toUuid, transactionKind) {
-  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: toUuid, transactionKind: transaction_kind}).then((res) => {
+  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: toUuid, transactionKind: transactionKind}).then((res) => {
     console.log(res)
   }).catch((e) => {
     console.log("Err", e)
