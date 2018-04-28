@@ -8,6 +8,7 @@
 
 import React, { Component } from "react";
 import URLSearchParams from "url-search-params";
+import withAuthorization from './withAuthorization';
 
 import {
   PdfLoader,
@@ -233,5 +234,6 @@ class HomePage extends Component<Props, State> {
   }
 }
 
-export default HomePage;
+const authCondition = (authUser) => !!authUser;
 
+export default withAuthorization(authCondition)(HomePage);
