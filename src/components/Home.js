@@ -28,7 +28,7 @@ import PdfAnnotator from "./PDFAnnotator";
 import Tip from "./Tip.js"
 import Highlight from "./Highlight"
 
-import termHighlights from "../highlights/conf_trec_BellotCEGL02-highlights";
+// import termHighlights from "../highlights/conf_trec_BellotCEGL02-highlights";
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
@@ -46,6 +46,9 @@ type State = {
 };
 
 const getNextId = () => String(1000000000 + Math.floor(Math.random() * 9000000000));
+
+
+const snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
 
@@ -78,7 +81,7 @@ class HomePage extends Component<Props, State> {
   state = {
     user: null,
     pid: pid,
-    highlights: termHighlights ? [...termHighlights] : []
+    highlights: []
   };
 
   state: State;
@@ -98,6 +101,17 @@ class HomePage extends Component<Props, State> {
       this.scrollViewerTo(highlight);
     }
   };
+
+  componentWillMount() {
+    db.onceGetHighlights()
+    .then((snapshot) => {
+      const highlights = snapshotToArray(snapshot.val())
+      if (highlights.length > 0) this.setState(() => ({ highlights }));
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
+  }
 
   componentDidMount() {
     window.addEventListener(
