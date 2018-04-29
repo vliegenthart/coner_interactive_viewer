@@ -3,6 +3,8 @@
 import React from "react";
 
 import type { T_Highlight } from "react-pdf-annotator/types";
+import { sortBy } from 'lodash';
+
 type T_ManuscriptHighlight = T_Highlight;
 
 type Props = {
@@ -35,7 +37,7 @@ function Sidebar({ highlights, resetHighlights }: Props) {
       </div>
 
       <ul className="sidebar__highlights">
-        {highlights.map((highlight, index) => (
+        {sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1']).map((highlight, index) => (
           <li
             key={index}
             className="sidebar__highlight"
