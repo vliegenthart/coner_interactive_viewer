@@ -11,6 +11,9 @@ export const doCreateUser = (id, username, email, ostUuid) =>
 export const onceGetUsers = () =>
   db.ref('users').once('value');
 
+export const onceGetUser = (id) =>
+  db.ref(`users/${id}`).once('value');
+
 // Highlight API
 export const doCreateHighlight = (id, highlight, timestamp, pid, uid, type='selected') => {
   highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: type }
