@@ -23,9 +23,10 @@ export function createUser(name, callback) {
   });
 }
 
-export function rewardUser(toUuid, callback, transactionKind = 'Reward') {
-  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: toUuid, transaction_kind: transactionKind}).then(callback)
-  .catch((e) => {
+export function rewardUser(user, transactionKind = 'Reward') {
+  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: user.ostUuid, transaction_kind: transactionKind}).then((res) => {   
+    console.log(`Rewarded OST user ${user.username} with type "${transactionKind}"`)
+  }).catch((e) => {
     console.log("Err", e)
   });
 }
