@@ -7,10 +7,8 @@
 // - Clean up GitHub epo (remove all highlight files)
 
 import React, { Component } from "react";
-
 import URLSearchParams from "url-search-params";
-import './App.css';
-
+import withAuthorization from './withAuthorization';
 
 import {
   PdfLoader,
@@ -18,19 +16,19 @@ import {
   AreaHighlight
 } from "react-pdf-annotator";
 
-import PdfAnnotator from "./components/PDFAnnotator.js";
+import PdfAnnotator from "./PDFAnnotator";
 
-import Tip from "./components/Tip.js"
-import Highlight from "./components/Highlight.js"
+import Tip from "./Tip.js"
+import Highlight from "./Highlight"
 
-import termHighlights from "./highlights/conf_trec_BellotCEGL02-highlights";
+import termHighlights from "../highlights/conf_trec_BellotCEGL02-highlights";
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
 
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 
-import "./style/App.css";
+import "../style/App.css";
 
 type T_ManuscriptHighlight = T_Highlight;
 
@@ -48,10 +46,10 @@ const resetHash = () => {
   window.location.hash = "";
 };
 
-const HighlightPopup = ({ comment }) =>
-  comment.text ? (
+const HighlightPopup = ({ metadata }) =>
+  metadata.text ? (
     <div className="Highlight__popup">
-      {comment.emoji} {comment.text}
+      {metadata.emoji} {metadata.text}
     </div>
   ) : null;
 
@@ -68,7 +66,7 @@ const DEFAULT_URL = `pdf/${papers[2]}`;
 const searchParams = new URLSearchParams(window.location.search);
 const url = searchParams.get("url") || DEFAULT_URL;
 
-class App extends Component<Props, State> {
+class HomePage extends Component<Props, State> {
   state = {
     highlights: termHighlights[url.split("/")[1]] ? [...termHighlights[url.split("/")[1]]] : []
   };
@@ -107,6 +105,8 @@ class App extends Component<Props, State> {
 
   addHighlight(highlight: T_NewHighlight) {
     const { highlights } = this.state;
+
+
 
     console.log("Saving highlight", highlight);
 
@@ -168,9 +168,9 @@ class App extends Component<Props, State> {
                 ) => (
                   <Tip
                     onOpen={transformSelection}
-                    onConfirm={comment => {
-                      console.log(content, position, comment)
-                      this.addHighlight({ content, position, comment });
+                    onConfirm={metadata => {
+                      console.log(content, position, metadata)
+                      this.addHighlight({ content, position, metadata });
 
                       hideTipAndSelection();
                     }}
@@ -194,7 +194,7 @@ class App extends Component<Props, State> {
                     <Highlight
                       isScrolledTo={isScrolledTo}
                       position={highlight.position}
-                      comment={highlight.comment}
+                      metadata={highlight.metadata}
                       type={highlight.type}
                       onClick={() => {
                         // setTip(highlight, highlight => "yo")
@@ -236,5 +236,6 @@ class App extends Component<Props, State> {
   }
 }
 
-export default App;
+const authCondition = (authUser) => !!authUser;
 
+export default withAuthorization(authCondition)(HomePage);

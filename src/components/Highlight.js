@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import "./Highlight.css";
+import "../style/Highlight.css";
 
 import type { T_LTWH } from "react-pdf-annotator/lib/types.js";
 
@@ -14,7 +14,7 @@ type Props = {
   onClick?: () => void,
   onMouseOver?: () => void,
   onMouseOut?: () => void,
-  comment: {
+  metadata: {
     facet: string,
     text: string
   },
@@ -29,7 +29,7 @@ class Highlight extends Component<Props> {
       onClick,
       onMouseOver,
       onMouseOut,
-      comment,
+      metadata,
       isScrolledTo,
       type
     } = this.props;
@@ -48,7 +48,7 @@ class Highlight extends Component<Props> {
               onClick={onClick}
               key={index}
               style={rect}
-              className={`Highlight__part ${type} ${ comment ? comment.facet: ''}`}
+              className={`Highlight__part ${type} ${ metadata ? metadata.facet: ''}`}
             />
           ))}
         </div>
