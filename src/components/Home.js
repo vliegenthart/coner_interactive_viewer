@@ -8,6 +8,9 @@
 
 import React, { Component } from "react";
 import URLSearchParams from "url-search-params";
+import AuthUserContext from './AuthUserContext';
+
+import { auth, db } from '../firebase';
 import withAuthorization from './withAuthorization';
 
 import {
@@ -38,7 +41,7 @@ type State = {
   highlights: Array<T_ManuscriptHighlight>
 };
 
-const getNextId = () => String(Math.random()).slice(2);
+const getNextId = () => String(1000000000 + Math.floor(Math.random() * 9000000000));
 
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
 
@@ -65,10 +68,12 @@ const DEFAULT_URL = `pdf/${papers[2]}`;
 
 const searchParams = new URLSearchParams(window.location.search);
 const url = searchParams.get("url") || DEFAULT_URL;
+const pid = url.split("/")[1]
 
 class HomePage extends Component<Props, State> {
   state = {
-    highlights: termHighlights[url.split("/")[1]] ? [...termHighlights[url.split("/")[1]]] : []
+    pid: pid,
+    highlights: termHighlights[pid] ? [...termHighlights[pid]] : []
   };
 
   state: State;
@@ -103,16 +108,22 @@ class HomePage extends Component<Props, State> {
     return highlights.find(highlight => highlight.id === id);
   }
 
-  addHighlight(highlight: T_NewHighlight) {
-    const { highlights } = this.state;
-
-
-
+  addHighlight(highlight: T_NewHighlight, uid: String) {
     console.log("Saving highlight", highlight);
-
-    this.setState({
-      highlights: [{ ...highlight, id: getNextId() }, ...highlights]
-    });
+    const { pid, highlights } = this.state;
+    const id = getNextId()
+    const timestamp = Math.round((new Date()).getTime() / 1000)
+    console.log(highlight, uid)
+    // Create highlight in Firebase database
+    db.doCreateHighlight(id, highlight, timestamp, pid, uid)
+      .then(data => {
+        this.setState({
+          highlights: [{ ...highlight, id: getNextId() }, ...highlights]
+        });
+      })
+      .catch(error => {
+        console.log('Error', error);
+      });
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
@@ -150,84 +161,88 @@ class HomePage extends Component<Props, State> {
         >
           <PdfLoader url={url} beforeLoad={<Spinner />}>
             {pdfDocument => (
-              <PdfAnnotator
-                pdfDocument={pdfDocument}
-                enableAreaSelection={event => event.altKey}
-                onScrollChange={resetHash}
-                scrollRef={scrollTo => {
-                  this.scrollViewerTo = scrollTo;
+              <AuthUserContext.Consumer>
+                {authUser =>
+                  <PdfAnnotator
+                    pdfDocument={pdfDocument}
+                    enableAreaSelection={event => event.altKey}
+                    onScrollChange={resetHash}
+                    scrollRef={scrollTo => {
+                      this.scrollViewerTo = scrollTo;
 
-                  this.scrollToHighlightFromHash();
-                }}
-                url={url}
-                onSelectionFinished={(
-                  position,
-                  content,
-                  hideTipAndSelection,
-                  transformSelection
-                ) => (
-                  <Tip
-                    onOpen={transformSelection}
-                    onConfirm={metadata => {
-                      console.log(content, position, metadata)
-                      this.addHighlight({ content, position, metadata });
-
-                      hideTipAndSelection();
+                      this.scrollToHighlightFromHash();
                     }}
+                    url={url}
+                    onSelectionFinished={(
+                      position,
+                      content,
+                      hideTipAndSelection,
+                      transformSelection
+                    ) => (
+                      <Tip
+                        onOpen={transformSelection}
+                        onConfirm={metadata => {
+                          console.log(content, position, metadata, authUser.uid)
+                          this.addHighlight({ content, position, metadata }, authUser.uid);
+
+                          hideTipAndSelection();
+                        }}
+                      />
+                    )}
+                    highlightTransform={(
+                      highlight,
+                      index,
+                      setTip,
+                      hideTip,
+                      viewportToScaled,
+                      screenshot,
+                      isScrolledTo,
+                      renderTipAtPosition
+                    ) => {
+                      const isTextHighlight = !Boolean(
+                        highlight.content && highlight.content.image
+                      );
+
+                      const component = isTextHighlight ? (
+                        <Highlight
+                          isScrolledTo={isScrolledTo}
+                          position={highlight.position}
+                          metadata={highlight.metadata}
+                          type={highlight.type}
+                          onClick={() => {
+                            // setTip(highlight, highlight => "yo")
+                            }
+                          }
+                        />
+                      ) : (
+                        <AreaHighlight
+                          highlight={highlight}
+                          onChange={boundingRect => {
+                            this.updateHighlight(
+                              highlight.id,
+                              { boundingRect: viewportToScaled(boundingRect) },
+                              { image: screenshot(boundingRect) }
+                            );
+                          }}
+                        />
+                      );
+
+                      return (
+                        <Popup
+                          popupContent={<HighlightPopup {...highlight} />}
+                          onMouseOver={popupContent =>
+                            setTip(highlight, highlight => popupContent)
+                          }
+                          onMouseOut={hideTip}
+                          key={index}
+                          children={component}
+                        />
+                      );
+                    }}
+                    highlights={highlights}
                   />
-                )}
-                highlightTransform={(
-                  highlight,
-                  index,
-                  setTip,
-                  hideTip,
-                  viewportToScaled,
-                  screenshot,
-                  isScrolledTo,
-                  renderTipAtPosition
-                ) => {
-                  const isTextHighlight = !Boolean(
-                    highlight.content && highlight.content.image
-                  );
-
-                  const component = isTextHighlight ? (
-                    <Highlight
-                      isScrolledTo={isScrolledTo}
-                      position={highlight.position}
-                      metadata={highlight.metadata}
-                      type={highlight.type}
-                      onClick={() => {
-                        // setTip(highlight, highlight => "yo")
-                        }
-                      }
-                    />
-                  ) : (
-                    <AreaHighlight
-                      highlight={highlight}
-                      onChange={boundingRect => {
-                        this.updateHighlight(
-                          highlight.id,
-                          { boundingRect: viewportToScaled(boundingRect) },
-                          { image: screenshot(boundingRect) }
-                        );
-                      }}
-                    />
-                  );
-
-                  return (
-                    <Popup
-                      popupContent={<HighlightPopup {...highlight} />}
-                      onMouseOver={popupContent =>
-                        setTip(highlight, highlight => popupContent)
-                      }
-                      onMouseOut={hideTip}
-                      key={index}
-                      children={component}
-                    />
-                  );
-                }}
-                highlights={highlights}
-              />
+                }
+              </AuthUserContext.Consumer>
             )}
           </PdfLoader>
         </div>
