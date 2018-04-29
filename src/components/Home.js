@@ -4,6 +4,8 @@
 
 
 // TODO
+// - Add highlights to FB if necessary
+// - Load highlights from firebase!
 // - Clean up GitHub epo (remove all highlight files)
 
 import React, { Component } from "react";
@@ -12,6 +14,7 @@ import AuthUserContext from './AuthUserContext';
 
 import { auth, db } from '../firebase';
 import withAuthorization from './withAuthorization';
+import * as ost from '../ost/ost-client';
 
 import {
   PdfLoader,
@@ -73,7 +76,7 @@ const pid = url.split("/")[1]
 class HomePage extends Component<Props, State> {
   state = {
     pid: pid,
-    highlights: termHighlights[pid] ? [...termHighlights[pid]] : []
+    highlights: termHighlights ? [...termHighlights] : []
   };
 
   state: State;
@@ -109,16 +112,24 @@ class HomePage extends Component<Props, State> {
   }
 
   addHighlight(highlight: T_NewHighlight, uid: String) {
-    console.log("Saving highlight", highlight);
     const { pid, highlights } = this.state;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
-    console.log(highlight, uid)
+
+
+    // Reward OST user for adding highlight
+    db.onceGetUser(uid).then(snapshot =>
+      ost.rewardUser(snapshot.val().ostUuid, (res) => {
+        console.log(`Rewarded OST user ${snapshot.val().username}: Add highlight`)
+      })
+    );
+
     // Create highlight in Firebase database
     db.doCreateHighlight(id, highlight, timestamp, pid, uid)
       .then(data => {
+        console.log(`Added highlight (${id}) to db`)
         this.setState({
-          highlights: [{ ...highlight, id: getNextId() }, ...highlights]
+          highlights: [{ ...highlight, id: id }, ...highlights]
         });
       })
       .catch(error => {
@@ -182,7 +193,6 @@ class HomePage extends Component<Props, State> {
                       <Tip
                         onOpen={transformSelection}
                         onConfirm={metadata => {
-                          console.log(content, position, metadata, authUser.uid)
                           this.addHighlight({ content, position, metadata }, authUser.uid);
 
                           hideTipAndSelection();

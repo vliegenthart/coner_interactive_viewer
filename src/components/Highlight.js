@@ -16,10 +16,10 @@ type Props = {
   onMouseOut?: () => void,
   metadata: {
     facet: string,
-    text: string
+    text: string,
+    type: string
   },
   isScrolledTo: boolean,
-  type: string
 };
 
 class Highlight extends Component<Props> {
@@ -31,7 +31,6 @@ class Highlight extends Component<Props> {
       onMouseOut,
       metadata,
       isScrolledTo,
-      type
     } = this.props;
 
     const { rects, boundingRect } = position;
@@ -48,7 +47,7 @@ class Highlight extends Component<Props> {
               onClick={onClick}
               key={index}
               style={rect}
-              className={`Highlight__part ${type} ${ metadata ? metadata.facet: ''}`}
+              className={`Highlight__part ${metadata ? metadata.type: ''} ${ metadata ? metadata.facet: ''}`}
             />
           ))}
         </div>

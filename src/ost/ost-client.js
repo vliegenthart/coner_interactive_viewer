@@ -23,10 +23,9 @@ export function createUser(name, callback) {
   });
 }
 
-export function rewardUser(toUuid, transactionKind) {
-  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: toUuid, transactionKind: transactionKind}).then((res) => {
-    console.log(res)
-  }).catch((e) => {
+export function rewardUser(toUuid, callback, transactionKind = 'Reward') {
+  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: toUuid, transaction_kind: transactionKind}).then(callback)
+  .catch((e) => {
     console.log("Err", e)
   });
 }
