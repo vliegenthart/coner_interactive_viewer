@@ -7,6 +7,7 @@
 // - Add highlights to FB if necessary
 // - Load highlights from firebase!
 // - Clean up GitHub epo (remove all highlight files)
+// - Update styling
 
 import React, { Component } from "react";
 import URLSearchParams from "url-search-params";
@@ -75,6 +76,7 @@ const pid = url.split("/")[1]
 
 class HomePage extends Component<Props, State> {
   state = {
+    user: null,
     pid: pid,
     highlights: termHighlights ? [...termHighlights] : []
   };
@@ -112,17 +114,26 @@ class HomePage extends Component<Props, State> {
   }
 
   addHighlight(highlight: T_NewHighlight, uid: String) {
-    const { pid, highlights } = this.state;
+
+    const { user, pid, highlights } = this.state;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
 
-
     // Reward OST user for adding highlight
-    db.onceGetUser(uid).then(snapshot =>
-      ost.rewardUser(snapshot.val().ostUuid, (res) => {
-        console.log(`Rewarded OST user ${snapshot.val().username}: Add highlight`)
-      })
-    );
+    if (user) {
+      ost.rewardUser(user)
+    }
+    else {
+      db.onceGetUser(uid).then(snapshot => {
+          this.setState({ user: snapshot.val() })
+          
+          ost.rewardUser(snapshot.val())
+        }
+      );
+    }
+
+
+    
 
     // Create highlight in Firebase database
     db.doCreateHighlight(id, highlight, timestamp, pid, uid)
