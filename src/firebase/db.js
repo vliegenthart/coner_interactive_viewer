@@ -28,4 +28,7 @@ export const doCreateHighlight = (id, highlight, timestamp, pid, uid, type='sele
 export const onceGetHighlights = () =>
   db.ref('highlights').once('value');
 
+export const onceGetHighlight = (id) =>
+  db.ref(`highlights/${id}`).once('value');
+
 // Feedback API
