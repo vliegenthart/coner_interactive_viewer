@@ -4,8 +4,8 @@
 
 
 // TODO
-// - Add highlights to FB if necessary
 // - Load highlights from firebase!
+// - Secure admin page for only admin (ADMIN role on normal user DB)
 // - Clean up GitHub epo (remove all highlight files)
 // - Update styling
 
@@ -28,8 +28,6 @@ import PdfAnnotator from "./PDFAnnotator";
 import Tip from "./Tip.js"
 import Highlight from "./Highlight"
 
-// import termHighlights from "../highlights/conf_trec_BellotCEGL02-highlights";
-
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
 
@@ -46,7 +44,6 @@ type State = {
 };
 
 const getNextId = () => String(1000000000 + Math.floor(Math.random() * 9000000000));
-
 
 const snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
@@ -103,6 +100,8 @@ class HomePage extends Component<Props, State> {
   };
 
   componentWillMount() {
+
+    // Load highlights from firebase database
     db.onceGetHighlights()
     .then((snapshot) => {
       const highlights = snapshotToArray(snapshot.val())
@@ -139,24 +138,28 @@ class HomePage extends Component<Props, State> {
     }
     else {
       db.onceGetUser(uid).then(snapshot => {
-          this.setState({ user: { ...snapshot.val(), uid } })
-          
-          ost.rewardUser(snapshot.val())
+        this.setState({ user: { ...snapshot.val(), uid } })
+        
+        ost.rewardUser(snapshot.val())
         }
       );
     }
 
     // Create highlight in Firebase database
-    db.doCreateHighlight(id, highlight, timestamp, pid, uid)
-      .then(data => {
-        console.log(`Added highlight (${id}) to db`)
-        this.setState({
-          highlights: [{ ...highlight, id: id }, ...highlights]
-        });
-      })
-      .catch(error => {
-        console.log('Error', error);
+
+    highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
+    highlight = { ...highlight, pid: pid, uid: uid};
+
+    db.doCreateHighlight(id, highlight)
+    .then(data => {
+      console.log(`Added highlight (${id}) to db`)
+      this.setState({
+        highlights: [{ ...highlight, id: id }, ...highlights]
       });
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
