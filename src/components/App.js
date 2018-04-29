@@ -4,6 +4,7 @@
 
 
 // TODO
+// - Write Highlight import script!
 // - Clean up GitHub epo (remove all highlight files)
 
 import React from 'react';

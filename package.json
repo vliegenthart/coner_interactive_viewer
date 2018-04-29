@@ -7,6 +7,8 @@
     "crypto": "^1.0.1",
     "firebase": "^4.13.1",
     "flow-bin": "^0.69.0",
+    "hoek": "^5.0.3",
+    "lodash": "^4.17.10",
     "query-string": "^6.0.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
@@ -14,8 +16,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "request": "^2.85.0",
-    "url-search-params": "^0.10.0",
-    "hoek": "^5.0.3"
+    "url-search-params": "^0.10.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,8 +28,10 @@
   "proxy": {
     "/proxy": {
       "target": "https://playgroundapi.ost.com",
-      "pathRewrite": {"^/proxy" : ""},
-      "changeOrigin": true 
+      "pathRewrite": {
+        "^/proxy": ""
+      },
+      "changeOrigin": true
     }
   }
 }
