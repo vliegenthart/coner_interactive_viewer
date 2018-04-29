@@ -26,7 +26,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       ],
       pageNumber: 1
     },
-    comment: {
+    metadata: {
       text: "Flow or TypeScript?",
       emoji: "🔥"
     },
@@ -57,7 +57,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       ],
       pageNumber: 1
     },
-    comment: {
+    metadata: {
       text: "impressive",
       emoji: ""
     },
@@ -97,7 +97,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       ],
       pageNumber: 1
     },
-    comment: {
+    metadata: {
       text: "immersive coding experience!",
       emoji: ""
     },
@@ -120,7 +120,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       rects: [],
       pageNumber: 3
     },
-    comment: {
+    metadata: {
       text: "lisp!",
       emoji: "😱"
     },
@@ -160,7 +160,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       ],
       pageNumber: 4
     },
-    comment: {
+    metadata: {
       text: "",
       emoji: ""
     },
@@ -183,7 +183,7 @@ const testHighlights = { 'https://arxiv.org/pdf/1708.08021.pdf': [
       rects: [],
       pageNumber: 24
     },
-    comment: {
+    metadata: {
       text: "",
       emoji: ""
     },

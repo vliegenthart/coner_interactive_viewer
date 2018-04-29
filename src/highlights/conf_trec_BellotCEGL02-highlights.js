@@ -27,7 +27,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -59,7 +59,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -91,7 +91,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -123,7 +123,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -155,7 +155,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -187,7 +187,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -219,7 +219,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -251,7 +251,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -283,7 +283,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -315,7 +315,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -347,7 +347,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -379,7 +379,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -411,7 +411,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -443,7 +443,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -475,7 +475,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -507,7 +507,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -539,7 +539,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -571,7 +571,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -603,7 +603,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -635,7 +635,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -667,7 +667,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -699,7 +699,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -731,7 +731,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -763,7 +763,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -795,7 +795,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -827,7 +827,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -859,7 +859,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -891,7 +891,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -923,7 +923,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -955,7 +955,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -987,7 +987,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1019,7 +1019,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1051,7 +1051,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1083,7 +1083,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1115,7 +1115,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1147,7 +1147,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1179,7 +1179,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1211,7 +1211,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1243,7 +1243,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1275,7 +1275,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1307,7 +1307,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1339,7 +1339,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1371,7 +1371,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1403,7 +1403,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1435,7 +1435,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1467,7 +1467,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1499,7 +1499,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1531,7 +1531,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1563,7 +1563,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1595,7 +1595,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1627,7 +1627,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1659,7 +1659,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1691,7 +1691,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1723,7 +1723,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1755,7 +1755,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1787,7 +1787,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1819,7 +1819,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1851,7 +1851,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1883,7 +1883,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1915,7 +1915,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1947,7 +1947,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -1979,7 +1979,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2011,7 +2011,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2043,7 +2043,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2075,7 +2075,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2107,7 +2107,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2139,7 +2139,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2171,7 +2171,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2203,7 +2203,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2235,7 +2235,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2267,7 +2267,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2299,7 +2299,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2331,7 +2331,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2363,7 +2363,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "dataset"
       },
@@ -2395,7 +2395,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2427,7 +2427,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2459,7 +2459,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2491,7 +2491,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2523,7 +2523,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2555,7 +2555,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2587,7 +2587,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2619,7 +2619,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2659,7 +2659,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2691,7 +2691,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2723,7 +2723,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2755,7 +2755,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2787,7 +2787,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2819,7 +2819,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2851,7 +2851,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2883,7 +2883,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2915,7 +2915,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2947,7 +2947,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -2979,7 +2979,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3011,7 +3011,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3043,7 +3043,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3075,7 +3075,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3107,7 +3107,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3139,7 +3139,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3171,7 +3171,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3203,7 +3203,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3235,7 +3235,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3267,7 +3267,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3299,7 +3299,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3331,7 +3331,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3363,7 +3363,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3395,7 +3395,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3427,7 +3427,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3459,7 +3459,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3491,7 +3491,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3523,7 +3523,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3555,7 +3555,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3587,7 +3587,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3619,7 +3619,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3651,7 +3651,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3683,7 +3683,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3715,7 +3715,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3747,7 +3747,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3779,7 +3779,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3811,7 +3811,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3843,7 +3843,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3875,7 +3875,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3907,7 +3907,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3939,7 +3939,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -3971,7 +3971,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4003,7 +4003,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4035,7 +4035,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4067,7 +4067,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4099,7 +4099,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4131,7 +4131,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4163,7 +4163,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4195,7 +4195,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4227,7 +4227,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4259,7 +4259,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4291,7 +4291,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4323,7 +4323,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4355,7 +4355,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4387,7 +4387,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4419,7 +4419,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4451,7 +4451,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4483,7 +4483,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4515,7 +4515,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4547,7 +4547,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4579,7 +4579,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4611,7 +4611,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4643,7 +4643,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4675,7 +4675,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4707,7 +4707,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4739,7 +4739,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4771,7 +4771,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4803,7 +4803,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4835,7 +4835,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4867,7 +4867,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },
@@ -4899,7 +4899,7 @@ const termHighlights = {
           }
         ]
       },
-      "comment": {
+      "metadata": {
         "text": "",
         "facet": "method"
       },

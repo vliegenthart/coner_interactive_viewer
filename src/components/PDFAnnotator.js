@@ -389,7 +389,7 @@ class PdfAnnotator<T_HT: T_Highlight> extends Component<
         ...pageViewport.convertToPdfPoint(
           0,
           scaledToViewport(boundingRect, pageViewport, usePdfCoordinates).top -
-            scrollMargin
+            scrollMargin - pageViewport.height/2
         ),
         0
       ]
