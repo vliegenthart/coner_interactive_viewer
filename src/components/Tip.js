@@ -11,7 +11,7 @@ type State = {
 };
 
 type Props = {
-  onConfirm: (comment: { text: string, facet: string }) => void,
+  onConfirm: (metadata: { text: string, facet: string }) => void,
   onOpen: () => void,
   onUpdate?: () => void
 };
