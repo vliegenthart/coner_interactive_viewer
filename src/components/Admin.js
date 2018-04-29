@@ -1,17 +1,48 @@
-import React from 'react';
 
-import AuthUserContext from './AuthUserContext';
+import React, { Component } from 'react';
 
-const AdminPage = () =>
-  <AuthUserContext.Consumer>
-    {authUser =>
+import withAuthorization from './withAuthorization';
+import { db } from '../firebase';
+
+class AdminPage extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      users: null,
+    };
+  }
+
+  componentDidMount() {
+    db.onceGetUsers().then(snapshot =>
+      this.setState(() => ({ users: snapshot.val() }))
+    );
+  }
+
+  render() {
+    const { users } = this.state;
+
+    return (
       <div>
-        <h1>Admin</h1>
-        <p>Restricted area! Only users with the admin rule are authorized.</p>
-      </div>
-    }
-  </AuthUserContext.Consumer>
+        <h1>Admin Page</h1>
+        <p>The Home Page is accessible by every signed in user.</p>
+        { !!users && <UserList users={users} /> }
 
-const authCondition = (authUser) => !!authUser && authUser.role === 'ADMIN';
+      </div>
+    );
+  }
+}
+
+const UserList = ({ users }) =>
+  <div>
+    <h2>List of Usernames of Users</h2>
+    <p>(Saved on Sign Up in Firebase Database)</p>
+
+    {Object.keys(users).map(key =>
+      <div key={key}>{users[key].username}</div>
+    )}
+  </div>
+
+const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(AdminPage);
