@@ -46,10 +46,10 @@ const resetHash = () => {
   window.location.hash = "";
 };
 
-const HighlightPopup = ({ comment }) =>
-  comment.text ? (
+const HighlightPopup = ({ metadata }) =>
+  metadata.text ? (
     <div className="Highlight__popup">
-      {comment.emoji} {comment.text}
+      {metadata.emoji} {metadata.text}
     </div>
   ) : null;
 
@@ -105,6 +105,8 @@ class HomePage extends Component<Props, State> {
 
   addHighlight(highlight: T_NewHighlight) {
     const { highlights } = this.state;
+
+
 
     console.log("Saving highlight", highlight);
 
@@ -166,9 +168,9 @@ class HomePage extends Component<Props, State> {
                 ) => (
                   <Tip
                     onOpen={transformSelection}
-                    onConfirm={comment => {
-                      console.log(content, position, comment)
-                      this.addHighlight({ content, position, comment });
+                    onConfirm={metadata => {
+                      console.log(content, position, metadata)
+                      this.addHighlight({ content, position, metadata });
 
                       hideTipAndSelection();
                     }}
@@ -192,7 +194,7 @@ class HomePage extends Component<Props, State> {
                     <Highlight
                       isScrolledTo={isScrolledTo}
                       position={highlight.position}
-                      comment={highlight.comment}
+                      metadata={highlight.metadata}
                       type={highlight.type}
                       onClick={() => {
                         // setTip(highlight, highlight => "yo")
