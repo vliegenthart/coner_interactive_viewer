@@ -78,7 +78,8 @@ class HomePage extends Component<Props, State> {
   state = {
     user: null,
     pid: pid,
-    highlights: []
+    highlights: [],
+    allHighlights: []
   };
 
   state: State;
@@ -105,7 +106,10 @@ class HomePage extends Component<Props, State> {
     db.onceGetHighlights()
     .then((snapshot) => {
       const highlights = snapshotToArray(snapshot.val())
-      if (highlights.length > 0) this.setState(() => ({ highlights }));
+      if (highlights.length > 0) {
+
+        this.setState(() => ({ allHighlights: highlights, highlights: highlights.filter(highlight => highlight.pid === pid) }));
+      }
     })
     .catch(error => {
       console.log('Error', error);
@@ -146,7 +150,6 @@ class HomePage extends Component<Props, State> {
     }
 
     // Create highlight in Firebase database
-
     highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
     highlight = { ...highlight, pid: pid, uid: uid};
 
