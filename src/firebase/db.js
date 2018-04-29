@@ -1,11 +1,12 @@
 import { db } from './firebase';
 
 // User API
-export const doCreateUser = (id, username, email, ostUuid) =>
+export const doCreateUser = (id, username, email, ostUuid, role="USER") =>
   db.ref(`users/${id}`).set({
     username,
     email,
     ostUuid,
+    role,
   });
 
 export const onceGetUsers = () =>
@@ -15,13 +16,9 @@ export const onceGetUser = (id) =>
   db.ref(`users/${id}`).once('value');
 
 // Highlight API
-export const doCreateHighlight = (id, highlight, timestamp, pid, uid, type='selected') => {
-  highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: type }
-
+export const doCreateHighlight = (id, highlight) => {
   return db.ref(`highlights/${id}`).set({
-    ...highlight,
-    pid,
-    uid,
+    ...highlight
   });
 }
 
