@@ -46,7 +46,7 @@ function Sidebar({ highlights, resetHighlights }: Props) {
             }}
           >
             <div>
-              <strong>{highlight.comment.facet}</strong>
+              <strong>{highlight.metadata.facet}</strong>
               {highlight.content.text ? (
                 <blockquote style={{ marginTop: "0.5rem" }}>
                   {`${highlight.content.text}`}
