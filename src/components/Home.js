@@ -120,20 +120,17 @@ class HomePage extends Component<Props, State> {
     const timestamp = Math.round((new Date()).getTime() / 1000)
 
     // Reward OST user for adding highlight
-    if (user) {
+    if (user && uid === user.uid) {
       ost.rewardUser(user)
     }
     else {
       db.onceGetUser(uid).then(snapshot => {
-          this.setState({ user: snapshot.val() })
+          this.setState({ user: { ...snapshot.val(), uid } })
           
           ost.rewardUser(snapshot.val())
         }
       );
     }
-
-
-    
 
     // Create highlight in Firebase database
     db.doCreateHighlight(id, highlight, timestamp, pid, uid)
