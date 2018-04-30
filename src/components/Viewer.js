@@ -2,16 +2,6 @@
 
 // Local development react-pdf-annotator: npm link ../../coner_v2/custom_npm_packages/react-pdf-annotator
 
-
-// TODO
-// - Load highlights from firebase!
-// - Secure admin page for only admin (ADMIN role on normal user DB)
-// - READ OST RULES/signup
-// - Create REAL token economy
-// - Simpler feedback mode: click on highlight and scroll to sidebar to give feedback
-// - Clean up GitHub epo (remove all highlight files)
-// - Update styling
-
 import React, { Component } from "react";
 import URLSearchParams from "url-search-params";
 import AuthUserContext from './AuthUserContext';

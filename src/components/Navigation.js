@@ -32,7 +32,7 @@ const styles = {
     display: 'none',
   },
   appbar: {
-    backgroundColor: '#A9DFE2',
+    backgroundColor: colors.primary,
   },
   logo: {
     height: '50px',
