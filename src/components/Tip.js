@@ -62,19 +62,7 @@ class Tip extends Component<Props, State> {
             }}
           >
             <div>
-              <textarea
-                width="100%"
-                placeholder="Your comment"
-                autoFocus
-                value={text}
-                onChange={event => this.setState({ text: event.target.value })}
-                ref={node => {
-                  if (node) {
-                    node.focus();
-                  }
-                }}
-              />
-              <div className="label-header">Category: </div>
+              <div className="label-header">Add as category: </div>
               <div>
                 {facets.map(_facet => (
                   <label key={_facet}>

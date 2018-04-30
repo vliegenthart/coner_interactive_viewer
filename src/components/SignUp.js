@@ -52,7 +52,8 @@ class SignUpForm extends Component {
 
         // Create OST user
         ost.createUser(username, (res) => {
-          
+          console.log(`Created OST user: ${username}`)
+
           // Create user in custom Firebase accessible DB
           db.doCreateUser(authUser.uid, username, email, res['economy_users'][0]['uuid'])
           .then(() => {

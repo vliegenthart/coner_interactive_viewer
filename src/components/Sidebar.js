@@ -20,21 +20,15 @@ function Sidebar({ highlights, resetHighlights }: Props) {
   return (
     <div className="sidebar" style={{ width: "25vw" }}>
       <div className="description" style={{ padding: "1rem" }}>
-        <h2 style={{ marginBottom: "1rem" }}>Coner PDF Viewer</h2>
-
-        <p style={{ fontSize: "0.7rem" }}>
-          <a href="https://github.com/vliegenthart/coner_interactive_viewer">
-            Open in GitHub
-          </a>
-        </p>
-
-        <p>
-          <small>
-            To create area highlight hold ⌥ Option key (Alt), then click and
-            drag.
-          </small>
-        </p>
+        <h3>Categories</h3>
+        <ul>
+          <li>Dataset: Blue</li>
+          <li>Method: Pink</li>
+          <li>Both: Purple</li>
+        </ul>
       </div>
+
+      <hr />
 
       <ul className="sidebar__highlights">
         {sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1']).map((highlight, index) => (

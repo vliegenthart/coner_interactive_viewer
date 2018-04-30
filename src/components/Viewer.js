@@ -20,16 +20,13 @@ import { auth, db } from '../firebase';
 import withAuthorization from './withAuthorization';
 import * as ost from '../ost/ost-client';
 
-import {
-  PdfLoader,
-  Popup,
-  AreaHighlight
-} from "react-pdf-annotator";
+import { PdfLoader } from "react-pdf-annotator";
 
 import PdfAnnotator from "./PDFAnnotator";
 
-import Tip from "./Tip.js"
+import Tip from "./Tip"
 import Highlight from "./Highlight"
+import Popup from "./Popup"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
@@ -57,9 +54,9 @@ const resetHash = () => {
 };
 
 const HighlightPopup = ({ metadata }) =>
-  metadata.text ? (
+  metadata.facet ? (
     <div className="Highlight__popup">
-      {metadata.emoji} {metadata.text}
+      {metadata.facet}
     </div>
   ) : null;
 
@@ -240,38 +237,19 @@ class PdfViewer extends Component<Props, State> {
                       isScrolledTo,
                       renderTipAtPosition
                     ) => {
-                      const isTextHighlight = !Boolean(
-                        highlight.content && highlight.content.image
-                      );
-
-                      const component = isTextHighlight ? (
+  
+                      const component =
                         <Highlight
                           isScrolledTo={isScrolledTo}
                           position={highlight.position}
                           metadata={highlight.metadata}
                           type={highlight.type}
-                          onClick={() => {
-                            // setTip(highlight, highlight => "yo")
-                            }
-                          }
                         />
-                      ) : (
-                        <AreaHighlight
-                          highlight={highlight}
-                          onChange={boundingRect => {
-                            this.updateHighlight(
-                              highlight.id,
-                              { boundingRect: viewportToScaled(boundingRect) },
-                              { image: screenshot(boundingRect) }
-                            );
-                          }}
-                        />
-                      );
 
                       return (
                         <Popup
                           popupContent={<HighlightPopup {...highlight} />}
-                          onMouseOver={popupContent =>
+                          onClick={popupContent => 
                             setTip(highlight, highlight => popupContent)
                           }
                           onMouseOut={hideTip}
