@@ -6,6 +6,9 @@
 // TODO
 // - Load highlights from firebase!
 // - Secure admin page for only admin (ADMIN role on normal user DB)
+// - READ OST RULES/signup
+// - Create REAL token economy
+// - Simpler feedback mode: click on highlight and scroll to sidebar to give feedback
 // - Clean up GitHub epo (remove all highlight files)
 // - Update styling
 
@@ -74,7 +77,7 @@ const searchParams = new URLSearchParams(window.location.search);
 const url = searchParams.get("url") || DEFAULT_URL;
 const pid = url.split("/")[1]
 
-class HomePage extends Component<Props, State> {
+class PdfViewer extends Component<Props, State> {
   state = {
     user: null,
     pid: pid,
@@ -291,4 +294,4 @@ class HomePage extends Component<Props, State> {
 
 const authCondition = (authUser) => !!authUser;
 
-export default withAuthorization(authCondition)(HomePage);
+export default withAuthorization(authCondition)(PdfViewer);
