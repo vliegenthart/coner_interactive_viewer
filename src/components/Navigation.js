@@ -33,6 +33,7 @@ const styles = {
   },
   appbar: {
     backgroundColor: colors.primary,
+    boxShadow: 'none',
   },
   logo: {
     height: '50px',

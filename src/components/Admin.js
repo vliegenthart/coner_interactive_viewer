@@ -29,7 +29,7 @@ class AdminPage extends Component {
     console.log("Syncing highlights...")
     
     for (const highlight of termHighlights) {
-      db.onceGetHighlight(highlight.id).then((snapshot) => {
+      db.onceGetHighlight(highlight.pid, highlight.id).then((snapshot) => {
         const dbHighlight = snapshot.val()
 
         // If highlight hasn't been imported

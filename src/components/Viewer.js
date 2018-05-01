@@ -53,23 +53,23 @@ const HighlightPopup = ({ metadata }) =>
 // const DEFAULT_URL = 'https://arxiv.org/pdf/1203.0057.pdf'; 
 
 const papers = [
-    "coner.pdf",
-    "conf_icwsm_BandariAH12.pdf",
-    "conf_trec_BellotCEGL02.pdf",
+    "coner",
+    "conf_icwsm_BandariAH12",
+    "conf_trec_BellotCEGL02",
   ]
 
-const DEFAULT_URL = `pdf/${papers[2]}`;
+const defaultPaper = papers[2]
+const DEFAULT_URL = `pdf/${defaultPaper}.pdf`;
 
 const searchParams = new URLSearchParams(window.location.search);
 const url = searchParams.get("url") || DEFAULT_URL;
-const pid = url.split("/")[1]
+const pid = defaultPaper
 
 class PdfViewer extends Component<Props, State> {
   state = {
     user: null,
     pid: pid,
-    highlights: [],
-    allHighlights: []
+    highlights: []
   };
 
   state: State;
@@ -93,12 +93,12 @@ class PdfViewer extends Component<Props, State> {
   componentWillMount() {
 
     // Load highlights from firebase database
-    db.onceGetHighlights()
+    db.onceGetHighlights(pid)
     .then((snapshot) => {
       const highlights = snapshotToArray(snapshot.val())
       if (highlights.length > 0) {
 
-        this.setState(() => ({ allHighlights: highlights, highlights: highlights.filter(highlight => highlight.pid === pid) }));
+        this.setState(() => ({ highlights: highlights }));
       }
     })
     .catch(error => {
@@ -145,7 +145,7 @@ class PdfViewer extends Component<Props, State> {
 
     db.doCreateHighlight(id, highlight)
     .then(data => {
-      console.log(`Added highlight (${id}) to db`)
+      console.log(`Added highlight (id: ${id}) to Firebase database`)
       this.setState({
         highlights: [{ ...highlight, id: id }, ...highlights]
       });

@@ -1,5 +1,4 @@
 import OstKit from './ost-kit'
-
 import config from "./config"
 
 var ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
@@ -23,9 +22,10 @@ export function createUser(name, callback) {
   });
 }
 
-export function rewardUser(user, transactionKind = 'Reward') {
-  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: user.ostUuid, transaction_kind: transactionKind}).then((res) => {   
-    console.log(`Rewarded OST user ${user.username} with type "${transactionKind}"`)
+export function rewardUser(user, transactionKind = 'RewardHighlight') {
+  ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: user.ostUuid, transaction_kind: transactionKind}).then((res) => {  
+    console.log(`Rewarded OST user ${user.username} with transaction type "${transactionKind}"`)
+    console.log(res) 
   }).catch((e) => {
     console.log("Err", e)
   });
