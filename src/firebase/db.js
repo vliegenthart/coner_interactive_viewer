@@ -17,15 +17,18 @@ export const onceGetUser = (id) =>
 
 // Highlight API
 export const doCreateHighlight = (id, highlight) => {
-  return db.ref(`highlights/${id}`).set({
+  return db.ref(`highlights/${highlight.pid}/${id}`).set({
     ...highlight
   });
 }
 
-export const onceGetHighlights = () =>
-  db.ref('highlights').once('value');
+export const onceGetHighlights = (pid) =>
+  db.ref(`highlights/${pid}`).once('value');
 
-export const onceGetHighlight = (id) =>
-  db.ref(`highlights/${id}`).once('value');
+export const onceGetHighlightsForUser = (pid, uid) =>
+  db.ref(`highlights/${pid}`).once('value');
+
+export const onceGetHighlight = (pid, id) =>
+  db.ref(`highlights/${pid}/${id}`).once('value');
 
 // Feedback API

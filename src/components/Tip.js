@@ -88,7 +88,7 @@ class Tip extends Component<Props, State> {
               this.setState({ compact: false });
             }}
           >
-            Add entity
+            Add keyword
           </div>
         ) : (
           <form
@@ -109,13 +109,13 @@ class Tip extends Component<Props, State> {
                   onChange={this.handleChange}
                 > 
                   {config.facets.map(_facet =>
-                    <FormControlLabel value={_facet} control={<Radio />} label={capitalize(_facet)} />
+                    <FormControlLabel key={_facet} value={_facet} control={<Radio />} label={capitalize(_facet)} />
                   )}
                 </RadioGroup>
               </FormControl>
             </div>
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              Add entity
+              Add keyword
             </Button>
           </form>
         )}
