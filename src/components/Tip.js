@@ -49,10 +49,10 @@ type Props = {
   onUpdate?: () => void
 };
 
-
 class Tip extends Component<Props, State> {
   state = {
-    compact: true,
+    compact: this.props.compact,
+    rating: this.props.rating,
     text: "",
     facet: config.facets[0],
   };
@@ -69,14 +69,13 @@ class Tip extends Component<Props, State> {
     }
   }
 
-   handleChange = event => {
+  handleChange = event => {
     this.setState({ facet: event.target.value });
   };
 
   render() {
     const { onConfirm, onOpen, classes } = this.props;
-    const { compact, text, facet } = this.state;
-    const facets: Array<string> = ["dataset", "method"];
+    const { rating, compact, text, facet } = this.state;    
 
     return (
       <div className="Tip">
@@ -114,8 +113,9 @@ class Tip extends Component<Props, State> {
                 </RadioGroup>
               </FormControl>
             </div>
+            
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              Add keyword
+              { rating ? "Rate" : "Add keyword" }
             </Button>
           </form>
         )}
