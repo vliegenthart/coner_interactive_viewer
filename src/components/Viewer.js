@@ -69,7 +69,8 @@ class PdfViewer extends Component<Props, State> {
   state = {
     user: null,
     pid: pid,
-    highlights: []
+    highlights: [],
+    ratings: []
   };
 
   state: State;
@@ -120,26 +121,15 @@ class PdfViewer extends Component<Props, State> {
     return highlights.find(highlight => highlight.id === id);
   }
 
+  // Create highlight in Firebase database + reward OST user
   addHighlight(highlight: T_NewHighlight, uid: String) {
 
-    const { user, pid, highlights } = this.state;
+    const { user, pid, highlights, ratings } = this.state;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
 
-    // Reward OST user for adding highlight
-    if (user && uid === user.uid) {
-      ost.rewardUser(user)
-    }
-    else {
-      db.onceGetUser(uid).then(snapshot => {
-        this.setState({ user: { ...snapshot.val(), uid } })
-        
-        ost.rewardUser(snapshot.val())
-        }
-      );
-    }
+    this.rewardUser(user, uid, "RewardHighlight")
 
-    // Create highlight in Firebase database
     highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
     highlight = { ...highlight, pid: pid, uid: uid};
 
@@ -153,6 +143,43 @@ class PdfViewer extends Component<Props, State> {
     .catch(error => {
       console.log('Error', error);
     });
+
+    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
+    this.addRating(highlight, rating, uid)
+  }
+
+  // Create rating in Firebase database + reward OST user
+  addRating(highlight, rating, uid) {
+    const { user, pid, highlights, ratings } = this.state;
+    const id = getNextId()
+    const timestamp = Math.round((new Date()).getTime() / 1000)
+
+    this.rewardUser(user, uid, "RewardRating")
+    db.doCreateRating(id, rating)
+    .then(data => {
+      console.log(`Added rating (id: ${id}) to Firebase database`)
+      this.setState({
+        ratings: [{ ...rating, id: id }, ...ratings]
+      });
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
+  }
+
+  rewardUser(user, uid, type) {
+    if (user && uid === user.uid) {
+      ost.rewardUser(user, type)
+    }
+    else {
+      db.onceGetUser(uid).then(snapshot => {
+        this.setState({ user: { ...snapshot.val(), uid } })
+        
+        ost.rewardUser(snapshot.val(), type)
+        }
+      );
+    }
+
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
