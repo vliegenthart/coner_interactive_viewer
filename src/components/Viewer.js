@@ -17,6 +17,7 @@ import PdfAnnotator from "./PDFAnnotator";
 import Tip from "./Tip"
 import Highlight from "./Highlight"
 import Popup from "./Popup"
+import Feedback from "./Feedback"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
@@ -42,13 +43,6 @@ const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
 const resetHash = () => {
   window.location.hash = "";
 };
-
-const HighlightPopup = ({ metadata }) =>
-  metadata.facet ? (
-    <div className="Highlight__popup">
-      {metadata.facet}
-    </div>
-  ) : null;
 
 // const DEFAULT_URL = 'https://arxiv.org/pdf/1203.0057.pdf'; 
 
@@ -145,14 +139,17 @@ class PdfViewer extends Component<Props, State> {
     });
 
     const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
-    this.addRating(highlight, rating, uid)
+    this.addRating(highlight, rating)
   }
 
   // Create rating in Firebase database + reward OST user
-  addRating(highlight, rating, uid) {
+  addRating(highlight, rating) {
     const { user, pid, highlights, ratings } = this.state;
-    const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
+    const id = getNextId()
+    const uid = rating.uid
+
+    rating.timestamp = timestamp
 
     this.rewardUser(user, uid, "RewardRating")
     db.doCreateRating(id, rating)
@@ -199,7 +196,7 @@ class PdfViewer extends Component<Props, State> {
   }
 
   render() {
-    const { highlights } = this.state;
+    const { pid, highlights } = this.state;
 
     return (
       <div className="App" style={{ display: "flex", height: "100vh" }}>
@@ -237,6 +234,8 @@ class PdfViewer extends Component<Props, State> {
                     ) => (
                       <Tip
                         onOpen={transformSelection}
+                        compact={true}
+                        rating={false}
                         onConfirm={metadata => {
                           this.addHighlight({ content, position, metadata }, authUser.uid);
 
@@ -251,8 +250,7 @@ class PdfViewer extends Component<Props, State> {
                       hideTip,
                       viewportToScaled,
                       screenshot,
-                      isScrolledTo,
-                      renderTipAtPosition
+                      isScrolledTo
                     ) => {
   
                       const component =
@@ -265,7 +263,24 @@ class PdfViewer extends Component<Props, State> {
 
                       return (
                         <Popup
-                          popupContent={<HighlightPopup {...highlight} />}
+                          popupContent={
+                            // <Feedback {...highlight} />
+                            <Tip
+                              onopen={null}
+                              onConfirm={metadata => {
+
+                                // RELEVANCE IS PLACEHOLDER
+                                const id = getNextId()
+                                const rating = { type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: authUser.uid}
+
+                                this.addRating(highlight, rating);
+
+                                hideTip();
+                              }}
+                              compact={false}
+                              rating={true}
+                            />
+                          }
                           onClick={popupContent => 
                             setTip(highlight, highlight => popupContent)
                           }

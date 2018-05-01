@@ -74,8 +74,7 @@ type Props<T_HT> = {
     hideTip: () => void,
     viewportToScaled: (rect: T_LTWH) => T_Scaled,
     screenshot: (position: T_LTWH) => string,
-    isScrolledTo: boolean,
-    renderTipAtPosition: (position: T_Position, inner: ?React$Element<*>) => void
+    isScrolledTo: boolean
   ) => React$Element<*>,
   highlights: Array<T_HT>,
   onScrollChange: () => void,
@@ -308,12 +307,7 @@ class PdfAnnotator<T_HT: T_Highlight> extends Component<
                     return viewportToScaled(rect, viewport);
                   },
                   boundingRect => this.screenshot(boundingRect, pageNumber),
-                  isScrolledTo,
-                  highlight => {
-                    this.showTip(highlight, <div className="test-tip">Test Tip</div>)
-                    
-                  }
-
+                  isScrolledTo
                 );
               }
             )}
