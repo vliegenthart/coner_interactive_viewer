@@ -7,7 +7,7 @@
 // - Write Highlight import script!
 // - Clean up GitHub epo (remove all highlight files)
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -25,19 +25,41 @@ import AdminPage from './Admin';
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 
-const App = () =>
-  <Router>
-    <div>
-      <Navigation />
+const papers = [
+  "coner",
+  "conf_icwsm_BandariAH12",
+  "conf_trec_BellotCEGL02",
+]
 
-      <Route exact path={routes.LANDING} component={() => <LandingPage />} />
-      <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
-      <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
-      <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
-      <Route exact path={routes.VIEWER} component={() => <PdfViewer />} />
-      <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-      <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
-    </div>
-  </Router>
+const defaultPaper = papers[2];
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pid: defaultPaper
+    }
+  }
+
+  render() {
+    const { pid } = this.state;
+    
+    return(
+      <Router>
+        <div>
+          <Navigation />
+          <Route exact path={routes.LANDING} component={() => <LandingPage />} />
+          <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
+          <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
+          <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
+          <Route exact path={routes.VIEWER} render={(props) => (<PdfViewer {...props} pid={pid} />)} />
+          <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
+          <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
+        </div>
+      </Router>
+    )
+  }
+}
+  
 
 export default withAuthentication(App);
