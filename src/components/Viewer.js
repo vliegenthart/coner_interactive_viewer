@@ -14,7 +14,9 @@ import { PdfLoader } from "react-pdf-annotator";
 
 import PdfAnnotator from "./PDFAnnotator";
 
-import Tip from "./Tip"
+import HighlightTip from "./HighlightTip"
+import RatingTip from "./RatingTip"
+
 import Highlight from "./Highlight"
 import Popup from "./Popup"
 import Feedback from "./Feedback"
@@ -232,7 +234,7 @@ class PdfViewer extends Component<Props, State> {
                       hideTipAndSelection,
                       transformSelection
                     ) => (
-                      <Tip
+                      <HighlightTip
                         onOpen={transformSelection}
                         compact={true}
                         rating={false}
@@ -265,7 +267,7 @@ class PdfViewer extends Component<Props, State> {
                         <Popup
                           popupContent={
                             // <Feedback {...highlight} />
-                            <Tip
+                            <RatingTip
                               onopen={null}
                               onConfirm={metadata => {
 

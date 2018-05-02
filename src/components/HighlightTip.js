@@ -49,7 +49,7 @@ type Props = {
   onUpdate?: () => void
 };
 
-class Tip extends Component<Props, State> {
+class HighlightTip extends Component<Props, State> {
   state = {
     compact: this.props.compact,
     rating: this.props.rating,
@@ -124,11 +124,11 @@ class Tip extends Component<Props, State> {
   }
 }
 
-Tip.propTypes = {
+HighlightTip.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Tip);
+export default withStyles(styles)(HighlightTip);
 
 
 
