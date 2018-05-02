@@ -3,16 +3,20 @@
 import React, { Component } from "react";
 
 import config from './config'
-import colors from '../style/colors'
+import colors from '../style/Colors'
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
-
+import classNames from 'classnames';
+import Check from '@material-ui/icons/Check';
+import Close from '@material-ui/icons/Close';
+import Icon from 'material-ui/Icon';
 
 import "../style/Tip.css";
+import "../style/RatingTip.css";
 
 const capitalize = word =>
   word.charAt(0).toUpperCase() + word.slice(1)
@@ -25,15 +29,40 @@ const styles = theme => ({
     margin: `5px 0`,
   },
   button: {
-    width: '100%',
+    margin: theme.spacing.unit,
     backgroundColor: colors.primary,
     color: colors.logoText,
     '&:hover': {
       backgroundColor: colors.primaryDarken,
     }
   },
+  buttonDataset: {
+    backgroundColor: colors.facetDataset
+  },
+  buttonMethod: {
+    backgroundColor: colors.facetMethod
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
   legend: {
     color: 'rgba(0, 0, 0, 0.54) !important',
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
+  header: {
+    backgroundColor: colors.primary,
+    margin: '-15px -15px 10px -15px',
+    padding: '15px'
+  },
+  label: {
+    marginRight: '10px',
+    color: 'rgba(0, 0, 0, 0.87)',
+    display: 'inline-block'
   }
 });
 
@@ -79,17 +108,27 @@ class RatingTip extends Component<Props, State> {
 
     return (
       <div className="Tip">
-        {compact ? (
-          <div
-            className="Tip__compact"
-            onClick={() => {
-              onOpen();
-              this.setState({ compact: false });
-            }}
-          >
-            Add keyword
+        <div className="Tip__card RatingTip__card">
+          <div className={`${classes.header} Rating__header`}>
+            Keyword relevant for:
           </div>
-        ) : (
+          {config.facets.map(_facet =>
+            <div key={_facet} className="Button__Group">
+              <span className={classes.label}>{capitalize(_facet)}</span>
+              <Button className={`${classes.button} Button__Facet Button__${_facet}`} variant="raised">
+                <Check className={classNames(classes.leftIcon, classes.iconSmall)} />
+                Yes
+              </Button>
+
+              <Button className={`${classes.button} Button__Facet Button__${_facet}`} variant="raised">
+                <Close className={classNames(classes.leftIcon, classes.iconSmall)} />
+                No
+              </Button>
+            </div>
+          )}
+        </div>
+
+        { compact && (
           <form
             className="Tip__card"
             onSubmit={event => {
