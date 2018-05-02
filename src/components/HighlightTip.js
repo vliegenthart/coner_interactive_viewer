@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 
 import config from './config'
-import colors from '../style/colors'
+import colors from '../style/Colors'
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
@@ -11,8 +11,8 @@ import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 
-
 import "../style/Tip.css";
+import "../style/HighlightTip.css";
 
 const capitalize = word =>
   word.charAt(0).toUpperCase() + word.slice(1)
