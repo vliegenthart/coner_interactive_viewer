@@ -19,7 +19,7 @@ const capitalize = word =>
 
 const styles = theme => ({
   formControl: {
-    margin: theme.spacing.unit * 1,
+    margin: '10px',
   },
   group: {
     margin: `5px 0`,
@@ -97,7 +97,7 @@ class HighlightTip extends Component<Props, State> {
             }}
           >
             <div>
-              <FormControl component="fieldset" required className={classes.formControl}>
+              <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend" className={classes.legend}>Category:</FormLabel>
                 <RadioGroup
                   aria-label="facet"
@@ -107,7 +107,7 @@ class HighlightTip extends Component<Props, State> {
                   onChange={this.handleChange}
                 > 
                   {config.facets.map(_facet =>
-                    <FormControlLabel key={_facet} value={_facet} control={<Radio />} label={capitalize(_facet)} />
+                    <FormControlLabel key={_facet} value={_facet} control={<Radio style={{color: colors[`facet${capitalize(_facet)}`]}} />} label={capitalize(_facet)} />
                   )}
                 </RadioGroup>
               </FormControl>
