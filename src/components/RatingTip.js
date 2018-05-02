@@ -56,7 +56,7 @@ const styles = theme => ({
   },
   header: {
     backgroundColor: colors.primary,
-    margin: '-15px -15px 10px -15px',
+    margin: '-15px -15px 15px -15px',
     padding: '15px'
   },
   label: {
@@ -80,8 +80,7 @@ type Props = {
 
 class RatingTip extends Component<Props, State> {
   state = {
-    compact: this.props.compact,
-    rating: this.props.rating,
+    compact: false,
     text: "",
     facet: config.facets[0],
   };
@@ -104,7 +103,7 @@ class RatingTip extends Component<Props, State> {
 
   render() {
     const { onConfirm, onOpen, classes } = this.props;
-    const { rating, compact, text, facet } = this.state;    
+    const { compact, text, facet } = this.state;    
 
     return (
       <div className="Tip">
@@ -127,37 +126,6 @@ class RatingTip extends Component<Props, State> {
             </div>
           )}
         </div>
-
-        { compact && (
-          <form
-            className="Tip__card"
-            onSubmit={event => {
-              event.preventDefault();
-              onConfirm({ text, facet });
-            }}
-          >
-            <div>
-              <FormControl component="fieldset" required className={classes.formControl}>
-                <FormLabel component="legend" className={classes.legend}>Category:</FormLabel>
-                <RadioGroup
-                  aria-label="facet"
-                  name="facet1"
-                  className={classes.group}
-                  value={facet}
-                  onChange={this.handleChange}
-                > 
-                  {config.facets.map(_facet =>
-                    <FormControlLabel key={_facet} value={_facet} control={<Radio />} label={capitalize(_facet)} />
-                  )}
-                </RadioGroup>
-              </FormControl>
-            </div>
-            
-            <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              { rating ? "Rate" : "Add keyword" }
-            </Button>
-          </form>
-        )}
       </div>
     );
   }

@@ -236,8 +236,6 @@ class PdfViewer extends Component<Props, State> {
                     ) => (
                       <HighlightTip
                         onOpen={transformSelection}
-                        compact={true}
-                        rating={false}
                         onConfirm={metadata => {
                           this.addHighlight({ content, position, metadata }, authUser.uid);
 
@@ -279,8 +277,6 @@ class PdfViewer extends Component<Props, State> {
 
                                 hideTip();
                               }}
-                              compact={false}
-                              rating={true}
                             />
                           }
                           onClick={popupContent => 
