@@ -18,6 +18,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Switch from 'material-ui/Switch';
 import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Menu, { MenuItem } from 'material-ui/Menu';
+import Select from 'material-ui/Select';
 
 const styles = {
   root: {
@@ -43,14 +44,24 @@ const styles = {
   linkInButton: {
     color: colors.logoText,
     textDecoration: 'none',
+  },
+  select: {
 
   }
 };
 
 class Navigation extends Component {
-  state = {
-    anchorEl: null,
-  };
+  constructor(props) {
+    super(props);
+    this.handleMenu = this.handleMenu.bind(this);
+    this.handleClose = this.handleClose.bind(this); 
+    this.handlePaperchange = this.handlePaperChange.bind(this);
+    
+    this.state = {
+      anchorEl: null,
+    };
+  }
+  
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -60,8 +71,13 @@ class Navigation extends Component {
     this.setState({ anchorEl: null });
   };
 
+  handlePaperChange = event => {
+    this.props.switchPaper(event.target.name, event.target.value)
+  }
+    
+  
   render() {
-    const { classes } = this.props;
+    const { classes, papers, pid} = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -82,8 +98,23 @@ class Navigation extends Component {
                 {authUser
                   ? (
                     <div>
+                      <Select
+                        className={classes.select}
+                        value={pid}
+                        onChange={this.handlePaperChange}
+                        inputProps={{
+                          name: 'pid',
+                          id: 'select-paper',
+                        }}
+                      >
+                        {papers.map(_pid => 
+                          <MenuItem key={_pid} value={_pid}>{_pid}</MenuItem>
+                        )}
+                      </Select>
+
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.LANDING}>Home</Link></Button>
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.VIEWER}>Viewer</Link></Button>
+
 
                       <IconButton
                         aria-owns={open ? 'menu-appbar' : null}
