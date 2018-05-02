@@ -61,14 +61,13 @@ class PdfViewer extends Component<Props, State> {
 
     this.state = {
       user: null,
-      pid: this.props.pid,
       highlights: [],
       ratings: []
     };
   }
 
   generateURL = () => {
-    const { pid } = this.state
+    const { pid } = this.props
     const DEFAULT_URL = `pdf/${pid}.pdf`;
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get("url") || DEFAULT_URL;
@@ -98,7 +97,7 @@ class PdfViewer extends Component<Props, State> {
   // }
 
   componentDidMount() {
-    const { pid } = this.state
+    const { pid } = this.props
 
     // Load highlights from firebase database
     db.onceGetHighlights(pid)
@@ -130,7 +129,8 @@ class PdfViewer extends Component<Props, State> {
   // Create highlight in Firebase database + reward OST user
   addHighlight(highlight: T_NewHighlight, uid: String) {
 
-    const { user, pid, highlights, ratings } = this.state;
+    const { user, highlights, ratings } = this.state;
+    const { pid } = this.props;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
 
@@ -207,7 +207,8 @@ class PdfViewer extends Component<Props, State> {
   }
 
   render() {
-    const { pid, highlights } = this.state;
+    const { highlights } = this.state;
+    const { pid } = this.props;
     const url = this.generateURL()
 
     return (
