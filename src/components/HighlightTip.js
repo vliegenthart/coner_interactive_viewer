@@ -51,8 +51,7 @@ type Props = {
 
 class HighlightTip extends Component<Props, State> {
   state = {
-    compact: this.props.compact,
-    rating: this.props.rating,
+    compact: true,
     text: "",
     facet: config.facets[0],
   };
@@ -75,7 +74,7 @@ class HighlightTip extends Component<Props, State> {
 
   render() {
     const { onConfirm, onOpen, classes } = this.props;
-    const { rating, compact, text, facet } = this.state;    
+    const { compact, text, facet } = this.state;    
 
     return (
       <div className="Tip">
@@ -115,7 +114,7 @@ class HighlightTip extends Component<Props, State> {
             </div>
             
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              { rating ? "Rate" : "Add keyword" }
+              Add keyword
             </Button>
           </form>
         )}
