@@ -10,7 +10,7 @@ import { auth, db } from '../firebase';
 import withAuthorization from './withAuthorization';
 import * as ost from '../ost/ost-client';
 
-import { PdfLoader } from "react-pdf-annotator";
+import PdfLoader from "./PdfLoader";
 
 import PdfAnnotator from "./PDFAnnotator";
 
@@ -68,9 +68,9 @@ class PdfViewer extends Component<Props, State> {
 
   generateURL = () => {
     const { pid } = this.props
-    const DEFAULT_URL = `pdf/${pid}.pdf`;
-    const searchParams = new URLSearchParams(window.location.search);
-    const url = searchParams.get("url") || DEFAULT_URL;
+    const url = `pdf/${pid}.pdf`;
+    // const searchParams = new URLSearchParams(window.location.search);
+    // const url = searchParams.get("url") || DEFAULT_URL;
 
     return url
   };
@@ -208,11 +208,11 @@ class PdfViewer extends Component<Props, State> {
 
   render() {
     const { highlights } = this.state;
-    const { pid } = this.props;
+    const { pid, paperSwitched } = this.props;
     const url = this.generateURL()
 
     return (
-      <div className="App" style={{ display: "flex", height: "100vh" }}>
+      <div className="Viewer" style={{ display: "flex", height: "100vh" }}>
         <Sidebar
           highlights={highlights}
           resetHighlights={this.resetHighlights}
@@ -225,7 +225,7 @@ class PdfViewer extends Component<Props, State> {
             position: "relative"
           }}
         >
-          <PdfLoader url={url} beforeLoad={<Spinner />}>
+          <PdfLoader url={url} beforeLoad={<Spinner />} paperSwitched={paperSwitched}>
             {pdfDocument => (
               <AuthUserContext.Consumer>
                 {authUser =>

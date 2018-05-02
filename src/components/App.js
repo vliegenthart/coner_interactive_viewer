@@ -25,36 +25,47 @@ import AdminPage from './Admin';
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 
-const papers = [
+const paperList = [
   "coner",
   "conf_icwsm_BandariAH12",
   "conf_trec_BellotCEGL02",
 ]
 
-const defaultPaper = papers[2];
-
 class App extends Component {
   constructor(props) {
     super(props);
+    this.setCurrentPaper = this.setCurrentPaper.bind(this);
+
     this.state = {
-      pid: defaultPaper
+      pid: paperList[2],
+      papers: paperList,
+      paperSwitched: false
     }
   }
 
+  setCurrentPaper = (pid, paper) => {
+    this.setState({ [pid]: paper, paperSwitched: true});
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.paperSwitched) this.setState( { paperSwitched: false })
+  }
+
   render() {
-    const { pid } = this.state;
-    
+    const { pid, papers, paperSwitched } = this.state;
+
     return(
       <Router>
         <div>
-          <Navigation />
-          <Route exact path={routes.LANDING} component={() => <LandingPage />} />
-          <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
-          <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
-          <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
-          <Route exact path={routes.VIEWER} render={(props) => (<PdfViewer {...props} pid={pid} />)} />
-          <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-          <Route exact path={routes.ADMIN} component={() => <AdminPage />} />
+          <Navigation pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
+
+          <Route exact path={routes.LANDING} render={() => <LandingPage />} />
+          <Route exact path={routes.SIGN_UP} render={() => <SignUpPage />} />
+          <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
+          <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
+          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} paperSwitched={paperSwitched} />} />
+          <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
+          <Route exact path={routes.ADMIN} render={() => <AdminPage />} />
         </div>
       </Router>
     )
