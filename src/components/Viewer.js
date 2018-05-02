@@ -46,31 +46,37 @@ const resetHash = () => {
   window.location.hash = "";
 };
 
-// const DEFAULT_URL = 'https://arxiv.org/pdf/1203.0057.pdf'; 
-
-const papers = [
-    "coner",
-    "conf_icwsm_BandariAH12",
-    "conf_trec_BellotCEGL02",
-  ]
-
-const defaultPaper = papers[2]
-const DEFAULT_URL = `pdf/${defaultPaper}.pdf`;
-
-const searchParams = new URLSearchParams(window.location.search);
-const url = searchParams.get("url") || DEFAULT_URL;
-const pid = defaultPaper
-
 class PdfViewer extends Component<Props, State> {
-  state = {
-    user: null,
-    pid: pid,
-    highlights: [],
-    ratings: []
+  constructor(props) {
+    super(props);
+    this.generateURL = this.generateURL.bind(this);
+    this.resetHighlights = this.resetHighlights.bind(this);
+    this.scrollViewerTo = this.scrollViewerTo.bind(this);
+    this.scrollToHighlightFromHash = this.scrollToHighlightFromHash.bind(this);
+    this.getHighlightById = this.getHighlightById.bind(this);
+    this.addHighlight = this.addHighlight.bind(this);
+    this.updateHighlight = this.updateHighlight.bind(this);
+    this.addRating = this.addRating.bind(this);
+    this.rewardUser = this.rewardUser.bind(this);
+
+    this.state = {
+      user: null,
+      pid: this.props.pid,
+      highlights: [],
+      ratings: []
+    };
+  }
+
+  generateURL = () => {
+    const { pid } = this.state
+    const DEFAULT_URL = `pdf/${pid}.pdf`;
+    const searchParams = new URLSearchParams(window.location.search);
+    const url = searchParams.get("url") || DEFAULT_URL;
+
+    return url
   };
 
-  state: State;
-
+ 
   resetHighlights = () => {
     this.setState({
       highlights: []
@@ -87,7 +93,12 @@ class PdfViewer extends Component<Props, State> {
     }
   };
 
-  componentWillMount() {
+  // componentWillMount() {
+    
+  // }
+
+  componentDidMount() {
+    const { pid } = this.state
 
     // Load highlights from firebase database
     db.onceGetHighlights(pid)
@@ -101,14 +112,13 @@ class PdfViewer extends Component<Props, State> {
     .catch(error => {
       console.log('Error', error);
     });
-  }
 
-  componentDidMount() {
     window.addEventListener(
       "hashchange",
       this.scrollToHighlightFromHash,
       false
     );
+
   }
 
   getHighlightById(id: string) {
@@ -142,6 +152,22 @@ class PdfViewer extends Component<Props, State> {
 
     const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
     this.addRating(highlight, rating)
+  }
+
+  updateHighlight(highlightId: string, position: Object, content: Object) {
+    console.log("Updating highlight", highlightId, position, content);
+
+    this.setState({
+      highlights: this.state.highlights.map(h => {
+        return h.id === highlightId
+          ? {
+              ...h,
+              position: { ...h.position, ...position },
+              content: { ...h.content, ...content }
+            }
+          : h;
+      })
+    });
   }
 
   // Create rating in Firebase database + reward OST user
@@ -178,27 +204,11 @@ class PdfViewer extends Component<Props, State> {
         }
       );
     }
-
-  }
-
-  updateHighlight(highlightId: string, position: Object, content: Object) {
-    console.log("Updating highlight", highlightId, position, content);
-
-    this.setState({
-      highlights: this.state.highlights.map(h => {
-        return h.id === highlightId
-          ? {
-              ...h,
-              position: { ...h.position, ...position },
-              content: { ...h.content, ...content }
-            }
-          : h;
-      })
-    });
   }
 
   render() {
     const { pid, highlights } = this.state;
+    const url = this.generateURL()
 
     return (
       <div className="App" style={{ display: "flex", height: "100vh" }}>
