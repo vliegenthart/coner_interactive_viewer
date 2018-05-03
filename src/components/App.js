@@ -13,6 +13,9 @@ import {
   Route,
 } from 'react-router-dom';
 
+import { auth, db } from '../firebase';
+import config from './config'
+
 import Navigation from './Navigation';
 import LandingPage from './Landing';
 import SignUpPage from './SignUp';
@@ -24,35 +27,43 @@ import AdminPage from './Admin';
 
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
-
-const paperList = [
-  "coner",
-  "conf_icwsm_BandariAH12",
-  "conf_trec_BellotCEGL02",
-]
+import * as ost from '../ost/ost-client';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.setCurrentPaper = this.setCurrentPaper.bind(this);
+    this.rewardUser = this.rewardUser.bind(this);
 
     this.state = {
-      pid: paperList[2],
-      papers: paperList,
-      paperSwitched: false
+      pid: config.papers[2],
+      papers: config.papers,
+      user: null    
     }
   }
 
-  setCurrentPaper = (pid, paper) => {
-    this.setState({ [pid]: paper, paperSwitched: true});
+  setCurrentPaper = (pid, paper, uid) => {
+    const { user } = this.state;
+
+    this.setState({ [pid]: paper });
+    this.rewardUser(user, uid, "RewardSwitchPaper")
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.paperSwitched) this.setState( { paperSwitched: false })
+  rewardUser = (user, uid, type) => {
+    if (user && uid === user.uid) {
+      ost.rewardUser(user, type)
+    }
+    else {
+      db.onceGetUser(uid).then(snapshot => {
+        this.setState({ user: { ...snapshot.val(), uid } })
+        ost.rewardUser(snapshot.val(), type)
+        }
+      );
+    }
   }
 
   render() {
-    const { pid, papers, paperSwitched } = this.state;
+    const { pid, papers, user } = this.state;
 
     return(
       <Router>
@@ -63,7 +74,7 @@ class App extends Component {
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage />} />
           <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
-          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} paperSwitched={paperSwitched} />} />
+          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} rewardUser={this.rewardUser}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
           <Route exact path={routes.ADMIN} render={() => <AdminPage />} />
         </div>

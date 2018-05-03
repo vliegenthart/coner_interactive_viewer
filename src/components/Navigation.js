@@ -10,13 +10,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import Button from 'material-ui/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from 'material-ui/Switch';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
 
@@ -71,11 +68,10 @@ class Navigation extends Component {
     this.setState({ anchorEl: null });
   };
 
-  handlePaperChange = event => {
-    this.props.switchPaper(event.target.name, event.target.value)
+  handlePaperChange = (event, uid) => {
+    this.props.switchPaper(event.target.name, event.target.value, uid)
   }
     
-  
   render() {
     const { classes, papers, pid} = this.props;
     const { anchorEl } = this.state;
@@ -101,7 +97,7 @@ class Navigation extends Component {
                       <Select
                         className={classes.select}
                         value={pid}
-                        onChange={this.handlePaperChange}
+                        onChange={event => this.handlePaperChange(event, authUser.uid)}
                         inputProps={{
                           name: 'pid',
                           id: 'select-paper',
