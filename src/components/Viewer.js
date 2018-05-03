@@ -65,7 +65,7 @@ class PdfViewer extends Component<Props, State> {
 
   generateURL = () => {
     const { pid } = this.props
-    const url = `pdf/${pid}.pdf`;
+    const url = `/pdf/${pid}.pdf`;
     // const searchParams = new URLSearchParams(window.location.search);
     // const url = searchParams.get("url") || DEFAULT_URL;
 
