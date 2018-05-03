@@ -36,7 +36,7 @@ class App extends Component {
     this.rewardUser = this.rewardUser.bind(this);
 
     this.state = {
-      pid: config.papers[2],
+      pid: config.defaultPaper,
       papers: config.papers,
       user: null    
     }

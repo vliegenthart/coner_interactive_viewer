@@ -1,7 +1,12 @@
 {
   "name": "coner_interactive_viewer",
   "version": "0.1.0",
-  "private": true,
+  "author": {
+    "name": "Daniel Vliegenthart",
+    "email": "daniel.vliegenthart@gmail.com"
+  },
+  "homepage": "https://github.com/vliegenthart/coner_interactive_viewer#readme",
+  "license": "MIT",
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
     "axios": "^0.18.0",
