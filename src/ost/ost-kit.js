@@ -1,7 +1,7 @@
 // @author https://github.com/BlackMac/ostkit.js
 
 const axios = require('axios');
-const queryString = require('query-string');
+const queryString = require('../lib/query-string');
 const crypto = require('crypto');
 
 /*

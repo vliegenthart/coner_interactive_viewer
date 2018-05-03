@@ -6,6 +6,7 @@ data/
 */**/config.js
 src/**/*.css
 src/highlights/term-highlights.js
+build/
 
 # Logs
 logs
