@@ -4,7 +4,8 @@ coner_interactive_viewer.sublime-workspace
 .DS_store
 data/
 */**/config.js
-src/**/*.cs
+src/**/*.css
+src/highlights/term-highlights.js
 
 # Logs
 logs
