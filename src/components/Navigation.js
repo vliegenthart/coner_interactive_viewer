@@ -94,19 +94,21 @@ class Navigation extends Component {
                 {authUser
                   ? (
                     <div>
-                      <Select
-                        className={classes.select}
-                        value={pid}
-                        onChange={event => this.handlePaperChange(event, authUser.uid)}
-                        inputProps={{
-                          name: 'pid',
-                          id: 'select-paper',
-                        }}
-                      >
-                        {papers.map(_pid => 
-                          <MenuItem key={_pid} value={_pid}>{_pid}</MenuItem>
-                        )}
-                      </Select>
+                      {window.location.pathname === routes.VIEWER &&
+                        <Select
+                          className={classes.select}
+                          value={pid}
+                          onChange={event => this.handlePaperChange(event, authUser.uid)}
+                          inputProps={{
+                            name: 'pid',
+                            id: 'select-paper',
+                          }}
+                        >
+                          {papers.map(_pid => 
+                            <MenuItem key={_pid} value={_pid}>{_pid}</MenuItem>
+                          )}
+                        </Select>
+                      }
 
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.LANDING}>Home</Link></Button>
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.VIEWER}>Viewer</Link></Button>
