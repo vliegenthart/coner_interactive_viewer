@@ -23,7 +23,7 @@ class Popup extends Component<Props, State> {
   props: Props;
 
   render() {
-    const { onClick, popupContent, onMouseOut } = this.props;
+    const { onClick, popupContent } = this.props;
 
     return (
       <div>
@@ -38,7 +38,6 @@ class Popup extends Component<Props, State> {
                     return;
                   }
 
-                  // onMouseOut();
                 }}
                 paddingX={60}
                 paddingY={30}

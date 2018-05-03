@@ -7,13 +7,10 @@ import colors from '../style/Colors'
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import { FormLabel, FormControl, FormControlLabel, FormHelperText } from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import classNames from 'classnames';
 import Check from '@material-ui/icons/Check';
 import Close from '@material-ui/icons/Close';
-import Icon from 'material-ui/Icon';
 
 import "../style/Tip.css";
 import "../style/RatingTip.css";
@@ -102,8 +99,7 @@ class RatingTip extends Component<Props, State> {
   };
 
   render() {
-    const { onConfirm, onOpen, classes } = this.props;
-    const { compact, text, facet } = this.state;    
+    const { classes } = this.props;
 
     return (
       <div className="Tip">

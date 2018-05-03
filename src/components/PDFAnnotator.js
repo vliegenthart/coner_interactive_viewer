@@ -33,7 +33,6 @@ import type {
   T_Highlight,
   T_Scaled,
   T_LTWH,
-  T_PDFJS,
   T_PDFJS_Viewer,
   T_PDFJS_Document,
   T_PDFJS_LinkService
@@ -121,11 +120,19 @@ class PdfAnnotator<T_HT: T_Highlight> extends Component<
     }
   }
 
-  shouldComponentUpdate() {
-    return false;
+  shouldComponentUpdate(prevProps, prevState, snapshot) {
+    return prevProps.pdfDocument !== this.props.pdfDocument;
+  }
+
+  componentDidUpdate() {
+    this.setupAndRenderPDFAnnotator()
   }
 
   componentDidMount() {
+    this.setupAndRenderPDFAnnotator()
+  }
+
+  setupAndRenderPDFAnnotator() {
     const { pdfDocument } = this.props;
 
     this.linkService = new PDFJS.PDFLinkService();

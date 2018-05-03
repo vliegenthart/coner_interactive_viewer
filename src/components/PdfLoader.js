@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import type { T_PDFJS, T_PDFJS_Document } from "../types";
+import type { T_PDFJS_Document } from "../types";
 
 import { PDFJS } from "pdfjs-dist";
 
@@ -23,63 +23,35 @@ class PdfLoader extends Component<Props, State> {
     this.loadPDF = this.loadPDF.bind(this);
 
     this.state = {
-      pdfDocument: null,
-      paperSwitched: this.props.paperSwitched
-   };
+      pdfDocument: null   
+    };
   }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(nextProps.url, this.props.url, !(nextProps.url === this.props.url))
-  //   return this.state.pdfDocument && !(nextProps.url === this.props.url);
-  // }
 
   componentDidMount() {
     this.loadPDF()
   }
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if (this.props.paperSwitched && !prevProps.paperSwitched) this.setState({paperSwitched: this.props.paperSwitched})
-
-  //   if (!this.state.paperSwitched) return
-
-  //   if (this.state.paperSwitched) {
-  //     this.loadPDF()
-  //     this.setState({ paperSwitched: false })
-  //   }
-  //   console.log(this.state.paperSwitched, this.props.paperSwitched)
-  //   // console.log(prevProps.paperSwitched, this.props.paperSwitched)
-  //   // if (prevProps.paperSwitched) this.loadPDF()
-  // }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.url !== this.props.url) {
+      this.loadPDF()
+    }
+  }
 
   loadPDF() {
     const { url } = this.props;
 
-    console.log("LOAD PDF")
-
     PDFJS.getDocument(url).then(pdfDocument => {
+      console.log(`Fetched PDF from url ${url}`)
+
       this.setState({
-        pdfDocument: pdfDocument,
-        paperSwitched: false
+        pdfDocument: pdfDocument
       });
     });
   }
 
-
-  // componentDidUpdate() {
-  //   const { url } = this.props;
-
-  //     PDFJS.getDocument(url).then(pdfDocument => {
-  //       this.setState({
-  //         pdfDocument: pdfDocument
-  //       });
-  //     });
-    
-  // }
-
   render() {
-    const { children, beforeLoad, paperSwitched } = this.props;
+    const { children, beforeLoad } = this.props;
     const { pdfDocument } = this.state;
-    // console.log(pdfDocument)
 
     if (pdfDocument) return children(pdfDocument);
 

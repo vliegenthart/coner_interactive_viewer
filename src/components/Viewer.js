@@ -3,7 +3,6 @@
 // Local development react-pdf-annotator: npm link ../../coner_v2/custom_npm_packages/react-pdf-annotator
 
 import React, { Component } from "react";
-import URLSearchParams from "url-search-params";
 import AuthUserContext from './AuthUserContext';
 
 import { auth, db } from '../firebase';
@@ -19,7 +18,6 @@ import RatingTip from "./RatingTip"
 
 import Highlight from "./Highlight"
 import Popup from "./Popup"
-import Feedback from "./Feedback"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
@@ -53,14 +51,13 @@ class PdfViewer extends Component<Props, State> {
     this.resetHighlights = this.resetHighlights.bind(this);
     this.scrollViewerTo = this.scrollViewerTo.bind(this);
     this.scrollToHighlightFromHash = this.scrollToHighlightFromHash.bind(this);
+    this.getHighlightsByPid = this.getHighlightsByPid.bind(this);
     this.getHighlightById = this.getHighlightById.bind(this);
     this.addHighlight = this.addHighlight.bind(this);
     this.updateHighlight = this.updateHighlight.bind(this);
     this.addRating = this.addRating.bind(this);
-    this.rewardUser = this.rewardUser.bind(this);
 
     this.state = {
-      user: null,
       highlights: [],
       ratings: []
     };
@@ -75,7 +72,6 @@ class PdfViewer extends Component<Props, State> {
     return url
   };
 
- 
   resetHighlights = () => {
     this.setState({
       highlights: []
@@ -92,32 +88,33 @@ class PdfViewer extends Component<Props, State> {
     }
   };
 
-  // componentWillMount() {
-    
-  // }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { pid } = this.props
+
+    if (prevProps.pid !== pid) this.getHighlightsByPid(pid)
+  }
 
   componentDidMount() {
     const { pid } = this.props
-
-    // Load highlights from firebase database
-    db.onceGetHighlights(pid)
-    .then((snapshot) => {
-      const highlights = snapshotToArray(snapshot.val())
-      if (highlights.length > 0) {
-
-        this.setState(() => ({ highlights: highlights }));
-      }
-    })
-    .catch(error => {
-      console.log('Error', error);
-    });
+    this.getHighlightsByPid(pid)
 
     window.addEventListener(
       "hashchange",
       this.scrollToHighlightFromHash,
       false
     );
+  }
 
+  // Load highlights from firebase database
+  getHighlightsByPid(pid: string) {
+    db.onceGetHighlights(pid)
+    .then((snapshot) => {
+      const highlights = snapshot.val() ? snapshotToArray(snapshot.val()) : []
+      this.setState(() => ({ highlights: highlights }));
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
   }
 
   getHighlightById(id: string) {
@@ -129,12 +126,12 @@ class PdfViewer extends Component<Props, State> {
   // Create highlight in Firebase database + reward OST user
   addHighlight(highlight: T_NewHighlight, uid: String) {
 
-    const { user, highlights, ratings } = this.state;
-    const { pid } = this.props;
+    const { highlights } = this.state;
+    const { pid, user } = this.props;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
 
-    this.rewardUser(user, uid, "RewardHighlight")
+    this.props.rewardUser(user, uid, "RewardHighlight")
 
     highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
     highlight = { ...highlight, pid: pid, uid: uid};
@@ -172,14 +169,16 @@ class PdfViewer extends Component<Props, State> {
 
   // Create rating in Firebase database + reward OST user
   addRating(highlight, rating) {
-    const { user, pid, highlights, ratings } = this.state;
+    const { pid, highlights, ratings } = this.state;
+    const { user } = this.props;
     const timestamp = Math.round((new Date()).getTime() / 1000)
     const id = getNextId()
     const uid = rating.uid
 
     rating.timestamp = timestamp
 
-    this.rewardUser(user, uid, "RewardRating")
+    this.props.rewardUser(user, uid, "RewardRating")
+
     db.doCreateRating(id, rating)
     .then(data => {
       console.log(`Added rating (id: ${id}) to Firebase database`)
@@ -192,27 +191,13 @@ class PdfViewer extends Component<Props, State> {
     });
   }
 
-  rewardUser(user, uid, type) {
-    if (user && uid === user.uid) {
-      ost.rewardUser(user, type)
-    }
-    else {
-      db.onceGetUser(uid).then(snapshot => {
-        this.setState({ user: { ...snapshot.val(), uid } })
-        
-        ost.rewardUser(snapshot.val(), type)
-        }
-      );
-    }
-  }
-
   render() {
     const { highlights } = this.state;
-    const { pid, paperSwitched } = this.props;
+    const { pid } = this.props;
     const url = this.generateURL()
 
     return (
-      <div className="Viewer" style={{ display: "flex", height: "100vh" }}>
+      <div className="Paper__viewer" id="Paper__viewer1" style={{ display: "flex", height: "100vh" }}>
         <Sidebar
           highlights={highlights}
           resetHighlights={this.resetHighlights}
@@ -225,7 +210,7 @@ class PdfViewer extends Component<Props, State> {
             position: "relative"
           }}
         >
-          <PdfLoader url={url} beforeLoad={<Spinner />} paperSwitched={paperSwitched}>
+          <PdfLoader url={url} beforeLoad={<Spinner />} >
             {pdfDocument => (
               <AuthUserContext.Consumer>
                 {authUser =>
@@ -275,7 +260,6 @@ class PdfViewer extends Component<Props, State> {
                       return (
                         <Popup
                           popupContent={
-                            // <Feedback {...highlight} />
                             <RatingTip
                               onopen={null}
                               onConfirm={metadata => {
