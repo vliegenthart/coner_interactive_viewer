@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
+import sortBy from 'lodash/sortBy'
 
 const styles = {
   root: {
@@ -108,7 +109,7 @@ class Navigation extends Component {
                             id: 'select-paper',
                           }}
                         >
-                          {papers.map(_paper => 
+                          {sortBy(papers, 'title').map(_paper => 
                             <MenuItem key={_paper['pid']} value={_paper['pid']}>{process.env.NODE_ENV === 'production' ? truncate(_paper['title'], 60) : _paper['pid']}</MenuItem>
                           )}
                         </Select>
