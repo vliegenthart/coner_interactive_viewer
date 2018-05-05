@@ -107,7 +107,6 @@ class PdfViewer extends Component<Props, State> {
 
   // Load highlights from firebase database
   getHighlightsByPid(pid: string) {
-    console.log(pid)
     db.onceGetHighlights(pid)
     .then((snapshot) => {
       const highlights = snapshot.val() ? snapshotToArray(snapshot.val()) : []
