@@ -13,7 +13,7 @@ import {
   Route,
 } from 'react-router-dom';
 
-import { auth, db } from '../firebase';
+import { auth, db, firebase } from '../firebase';
 import config from './config'
 
 import Navigation from './Navigation';
@@ -29,16 +29,23 @@ import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ost-client';
 
+import { snapshotToArray } from '../utility/convert-functions'
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.setCurrentPaper = this.setCurrentPaper.bind(this);
     this.rewardUser = this.rewardUser.bind(this);
+    this.getRatingsByPid = this.getRatingsByPid.bind(this);
+
 
     this.state = {
       pid: config.defaultPaper['pid'],
       papers: config.papersList,
-      user: null    
+      user: null,    
+      authUser: null,
+      ratings: [],
+      userRatings: []
     }
   }
 
@@ -47,6 +54,40 @@ class App extends Component {
 
     this.setState({ [pid]: paper });
     this.rewardUser(user, uid, "RewardSwitchPaper")
+  }
+
+  componentDidMount() {
+    firebase.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.setState(() => ({ authUser }));
+        db.onceGetUser(authUser.uid).then(snapshot => {
+          this.setState({ user: { ...snapshot.val(), uid: authUser.uid } })
+          }
+        );
+      }
+      else {
+        this.setState(() => ({ authUser: null, user: null }));
+      }
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { pid, user } = this.state
+    if (prevState.user !== this.state.user && this.state.user) this.getRatingsByPid(pid, user.uid)
+  }
+
+  // Load ratings from firebase database
+  getRatingsByPid = (pid: string, uid: string) => {
+
+    db.onceGetRatings(pid)
+    .then((snapshot) => {
+      const ratings = snapshot && snapshot.val() ? snapshotToArray(snapshot.val()) : []
+      console.log(ratings)
+      if (ratings.length > 0) this.setState(() => ({ ratings: ratings, userRatings: ratings.filter(rating => rating.uid === uid) }));
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
   }
 
   rewardUser = (user, uid, type) => {

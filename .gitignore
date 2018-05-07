@@ -12,6 +12,7 @@ build/
 public/pdf/
 .firebaserc
 firebase.json
+firebase/config.js
 
 # Logs
 logs

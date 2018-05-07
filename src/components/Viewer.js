@@ -21,6 +21,7 @@ import Popup from "./Popup"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
+import { snapshotToArray } from '../utility/convert-functions'
 
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 
@@ -35,8 +36,6 @@ type State = {
 };
 
 const getNextId = () => String(1000000000 + Math.floor(Math.random() * 9000000000));
-
-const snapshotToArray = snapshot => Object.entries(snapshot).map(e => Object.assign(e[1], { id: e[0] }));
 
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
 
