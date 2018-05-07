@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
+import sortBy from 'lodash/sortBy'
 
 const styles = {
   root: {
@@ -43,9 +44,13 @@ const styles = {
     textDecoration: 'none',
   },
   select: {
-
   }
 };
+
+const truncate = (str, max) => {
+  if (str.length > max) return str.substring(0,max)+'...'
+  return str
+}
 
 class Navigation extends Component {
   constructor(props) {
@@ -104,8 +109,8 @@ class Navigation extends Component {
                             id: 'select-paper',
                           }}
                         >
-                          {papers.map(_pid => 
-                            <MenuItem key={_pid} value={_pid}>{_pid}</MenuItem>
+                          {sortBy(papers, 'title').map(_paper => 
+                            <MenuItem key={_paper['pid']} value={_paper['pid']}>{process.env.NODE_ENV === 'production' ? truncate(_paper['title'], 60) : _paper['pid']}</MenuItem>
                           )}
                         </Select>
                       }

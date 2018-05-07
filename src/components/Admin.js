@@ -27,7 +27,7 @@ class AdminPage extends Component {
 
     // To reset highlights: Only remove highlights with highlight.metadata.type = "generated", to not remove custom selected highlights
     console.log("Syncing highlights...")
-    
+
     for (const highlight of termHighlights) {
       db.onceGetHighlight(highlight.pid, highlight.id).then((snapshot) => {
         const dbHighlight = snapshot.val()

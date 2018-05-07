@@ -3,9 +3,16 @@ src/**/*.css
 coner_interactive_viewer.sublime-workspace
 .DS_store
 data/
+misc/
 */**/config.js
 src/**/*.css
 src/highlights/term-highlights.js
+src/highlights/papers-list.js
+build/
+public/pdf/
+.firebaserc
+firebase.json
+firebase/config.js
 
 # Logs
 logs
