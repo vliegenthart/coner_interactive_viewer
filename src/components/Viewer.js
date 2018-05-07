@@ -21,7 +21,7 @@ import Popup from "./Popup"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
-import { snapshotToArray } from '../utility/convert-functions'
+import { snapshotToArray, getNextId } from '../utility/util-functions'
 
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 
@@ -34,8 +34,6 @@ type Props = {};
 type State = {
   highlights: Array<T_ManuscriptHighlight>
 };
-
-const getNextId = () => String(1000000000 + Math.floor(Math.random() * 9000000000));
 
 const parseIdFromHash = () => window.location.hash.slice("#highlight-".length);
 
@@ -54,7 +52,6 @@ class PdfViewer extends Component<Props, State> {
     this.getHighlightById = this.getHighlightById.bind(this);
     this.addHighlight = this.addHighlight.bind(this);
     this.updateHighlight = this.updateHighlight.bind(this);
-    this.addRating = this.addRating.bind(this);
 
     this.state = {
       highlights: [],
@@ -146,8 +143,8 @@ class PdfViewer extends Component<Props, State> {
       console.log('Error', error);
     });
 
-    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
-    this.addRating(highlight, rating)
+    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: pid, uid: uid}
+    this.props.addRating(rating)
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
@@ -166,33 +163,9 @@ class PdfViewer extends Component<Props, State> {
     });
   }
 
-  // Create rating in Firebase database + reward OST user
-  addRating(highlight, rating) {
-    const { pid, highlights, ratings } = this.state;
-    const { user } = this.props;
-    const timestamp = Math.round((new Date()).getTime() / 1000)
-    const id = getNextId()
-    const uid = rating.uid
-
-    rating.timestamp = timestamp
-
-    this.props.rewardUser(user, uid, "RewardRating")
-
-    db.doCreateRating(id, rating)
-    .then(data => {
-      console.log(`Added rating (id: ${id}) to Firebase database`)
-      this.setState({
-        ratings: [{ ...rating, id: id }, ...ratings]
-      });
-    })
-    .catch(error => {
-      console.log('Error', error);
-    });
-  }
-
   render() {
     const { highlights } = this.state;
-    const { pid } = this.props;
+    const { pid, addRating } = this.props;
     const url = this.generateURL()
 
     return (
@@ -264,11 +237,8 @@ class PdfViewer extends Component<Props, State> {
                               onConfirm={metadata => {
 
                                 // RELEVANCE IS PLACEHOLDER
-                                const id = getNextId()
-                                const rating = { type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: authUser.uid}
-
-                                this.addRating(highlight, rating);
-
+                                const rating = { type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: pid, uid: authUser.uid}
+                                addRating(rating);
                                 hideTip();
                               }}
                             />

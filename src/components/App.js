@@ -29,14 +29,15 @@ import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ost-client';
 
-import { snapshotToArray } from '../utility/convert-functions'
+import { snapshotToArray, getNextId } from '../utility/util-functions'
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.setCurrentPaper = this.setCurrentPaper.bind(this);
-    this.rewardUser = this.rewardUser.bind(this);
+    this.addRating = this.addRating.bind(this)
     this.getRatingsByPid = this.getRatingsByPid.bind(this);
+    this.rewardUser = this.rewardUser.bind(this);
 
 
     this.state = {
@@ -76,13 +77,36 @@ class App extends Component {
     if (prevState.user !== this.state.user && this.state.user) this.getRatingsByPid(pid, user.uid)
   }
 
+  // Create rating in Firebase database + reward OST user
+  addRating(rating) {
+    const { pid, user, ratings, userRatings } = this.state;
+    const timestamp = Math.round((new Date()).getTime() / 1000)
+    const id = getNextId()
+    const uid = rating.uid
+
+    rating.timestamp = timestamp
+
+    this.rewardUser(user, uid, "RewardRating")
+
+    db.doCreateRating(id, rating)
+    .then(data => {
+      console.log(`Added rating (id: ${id}) to Firebase database`)
+      this.setState({
+        ratings: [{ ...rating, id: id }, ...ratings],
+        userRatings: [{ ...rating, id: id }, ...userRatings]
+      });
+    })
+    .catch(error => {
+      console.log('Error', error);
+    });
+  }
+
   // Load ratings from firebase database
   getRatingsByPid = (pid: string, uid: string) => {
 
     db.onceGetRatings(pid)
     .then((snapshot) => {
       const ratings = snapshot && snapshot.val() ? snapshotToArray(snapshot.val()) : []
-      console.log(ratings)
       if (ratings.length > 0) this.setState(() => ({ ratings: ratings, userRatings: ratings.filter(rating => rating.uid === uid) }));
     })
     .catch(error => {
@@ -115,7 +139,7 @@ class App extends Component {
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage />} />
           <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
-          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} rewardUser={this.rewardUser}/>} />
+          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} addRating={this.addRating} rewardUser={this.rewardUser}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
           <Route exact path={routes.ADMIN} render={() => <AdminPage />} />
         </div>
