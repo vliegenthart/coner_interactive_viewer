@@ -15,6 +15,9 @@ import Close from '@material-ui/icons/Close';
 import "../style/Tip.css";
 import "../style/RatingTip.css";
 
+import isEqual from 'lodash/isEqual';
+
+
 const capitalize = word =>
   word.charAt(0).toUpperCase() + word.slice(1)
 
@@ -80,18 +83,25 @@ class RatingTip extends Component<Props, State> {
     compact: false,
     text: "",
     facet: config.facets[0],
+    ratings: []
   };
 
   state: State;
   props: Props;
 
   // for TipContainer
-  componentDidUpdate(nextProps: Props, nextState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const { onUpdate } = this.props;
 
-    if (onUpdate && this.state.compact !== nextState.compact) {
+    if (onUpdate && this.state.compact !== prevState.compact) {
       onUpdate();
     }
+
+    console.log(!isEqual(prevState.ratings, this.props.ratings), prevState.ratings, this.props.ratings)
+    if (!isEqual(prevState.ratings, this.props.ratings)) {
+      this.setState( { ratings: this.props.ratings })
+    }
+     
   }
 
   handleChange = event => {

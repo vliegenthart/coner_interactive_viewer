@@ -165,7 +165,7 @@ class PdfViewer extends Component<Props, State> {
 
   render() {
     const { highlights } = this.state;
-    const { pid, addRating } = this.props;
+    const { pid, addRating, getRatingsForHighlight } = this.props;
     const url = this.generateURL()
 
     return (
@@ -234,6 +234,7 @@ class PdfViewer extends Component<Props, State> {
                           popupContent={
                             <RatingTip
                               onopen={null}
+                              ratings={getRatingsForHighlight(pid, highlight.id, authUser.uid)}
                               onConfirm={metadata => {
 
                                 // RELEVANCE IS PLACEHOLDER

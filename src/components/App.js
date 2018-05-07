@@ -28,6 +28,7 @@ import AdminPage from './Admin';
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ost-client';
+import isEqual from 'lodash/isEqual';
 
 import { snapshotToArray, getNextId } from '../utility/util-functions'
 
@@ -37,6 +38,7 @@ class App extends Component {
     this.setCurrentPaper = this.setCurrentPaper.bind(this);
     this.addRating = this.addRating.bind(this)
     this.getRatingsByPid = this.getRatingsByPid.bind(this);
+    this.getRatingsForHighlight = this.getRatingsForHighlight.bind(this);
     this.rewardUser = this.rewardUser.bind(this);
 
 
@@ -74,7 +76,7 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { pid, user } = this.state
-    if (prevState.user !== this.state.user && this.state.user) this.getRatingsByPid(pid, user.uid)
+    if ((!prevState.user || !isEqual(prevState.user, this.state.user)) && this.state.user) this.getRatingsByPid(pid, user.uid)
   }
 
   // Create rating in Firebase database + reward OST user
@@ -114,6 +116,12 @@ class App extends Component {
     });
   }
 
+  getRatingsForHighlight = (pid, hid, uid) => {
+    const { userRatings } = this.state;
+
+    return userRatings.filter(rating => rating.pid === pid && rating.highlightId === hid && rating.uid === uid)
+  }
+
   rewardUser = (user, uid, type) => {
     if (user && uid === user.uid) {
       ost.rewardUser(user, type)
@@ -139,7 +147,7 @@ class App extends Component {
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage />} />
           <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
-          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} addRating={this.addRating} rewardUser={this.rewardUser}/>} />
+          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
           <Route exact path={routes.ADMIN} render={() => <AdminPage />} />
         </div>
