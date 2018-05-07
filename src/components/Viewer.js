@@ -143,7 +143,7 @@ class PdfViewer extends Component<Props, State> {
       console.log('Error', error);
     });
 
-    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: pid, uid: uid}
+    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
     this.props.addRating(rating)
   }
 

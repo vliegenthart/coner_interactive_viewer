@@ -86,11 +86,11 @@ class App extends Component {
 
     rating.timestamp = timestamp
 
-    this.rewardUser(user, uid, "RewardRating")
-
     db.doCreateRating(id, rating)
     .then(data => {
       console.log(`Added rating (id: ${id}) to Firebase database`)
+
+      this.rewardUser(user, uid, "RewardRating")
       this.setState({
         ratings: [{ ...rating, id: id }, ...ratings],
         userRatings: [{ ...rating, id: id }, ...userRatings]
