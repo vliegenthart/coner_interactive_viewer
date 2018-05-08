@@ -36,12 +36,6 @@ const styles = theme => ({
       backgroundColor: colors.primaryDarken,
     }
   },
-  buttonDataset: {
-    backgroundColor: colors.facetDataset
-  },
-  buttonMethod: {
-    backgroundColor: colors.facetMethod
-  },
   leftIcon: {
     marginRight: theme.spacing.unit,
   },
@@ -82,7 +76,8 @@ class RatingTip extends Component<Props, State> {
   state = {
     compact: false,
     text: "",
-    facet: config.facets[0],
+    relevant: [],
+    irrelevant: [],
     ratings: []
   };
 
@@ -100,6 +95,16 @@ class RatingTip extends Component<Props, State> {
     console.log(!isEqual(prevState.ratings, this.props.ratings), prevState.ratings, this.props.ratings)
     if (!isEqual(prevState.ratings, this.props.ratings)) {
       this.setState( { ratings: this.props.ratings })
+
+      let rel = []
+      let irr = []
+      
+      this.props.ratings.map(rating => {
+        if (rating.relevant === 'relevant') rel.push(rating.facet)
+        if (rating.relevant === 'irrelevant') irr.push(rating.facet)
+      })
+
+      this.setState(() => ({ relevant: rel, irrelevant: irr }))
     }
      
   }
@@ -110,6 +115,7 @@ class RatingTip extends Component<Props, State> {
 
   render() {
     const { classes } = this.props;
+    const { relevant, irrelevant } = this.state;
 
     return (
       <div className="Tip">
@@ -120,12 +126,12 @@ class RatingTip extends Component<Props, State> {
           {config.facets.map(_facet =>
             <div key={_facet} className="Button__Group">
               <span className={classes.label}>{capitalize(_facet)}</span>
-              <Button className={`${classes.button} Button__Facet Button__${_facet}`} variant="raised">
+              <Button className={`${classes.button} Button__Facet Button__${_facet} ${relevant.indexOf(_facet) > -1 ? 'Button__pressed' : ''}`} disabled={relevant.indexOf(_facet) > -1} variant="raised">
                 <Check className={classNames(classes.leftIcon, classes.iconSmall)} />
                 Yes
               </Button>
 
-              <Button className={`${classes.button} Button__Facet Button__${_facet}`} variant="raised">
+              <Button className={`${classes.button} Button__Facet Button__${_facet} ${irrelevant.indexOf(_facet) > -1 ? 'Button__pressed' : ''}`} disabled={irrelevant.indexOf(_facet) > -1} variant="raised">
                 <Close className={classNames(classes.leftIcon, classes.iconSmall)} />
                 No
               </Button>
