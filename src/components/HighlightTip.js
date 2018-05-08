@@ -114,7 +114,7 @@ class HighlightTip extends Component<Props, State> {
             </div>
             
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              Add keyword
+              Add keyword(s)
             </Button>
           </form>
         )}

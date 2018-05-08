@@ -1,18 +1,55 @@
 .RatingTip__card {
-  min-width: 265px;
+  min-width: 290px; 
+  
+  .title {
+  }
+
+  .close {
+    float: right;
+    cursor: pointer;
+    line-height: 20px;
+    font-size: 14px;
+  }
+
+  .Button__facet {
+    line-height: 20px;
+    svg {
+      opacity: 0;
+      margin-right: 8px;
+    }
+    &.Button__pressed {
+      svg {
+        opacity: 1;
+      }
+    }
+    .Center__text {
+      float: right;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .Button__dataset {
+    background-color: #83d5f9; 
+    &:hover {
+      background-color: #83d5f9; 
+    }
+    &.Button__pressed {
+      background-color: #3f9cc5; 
+      color: #27617b;
+    }
+  }
+
+  .Button__method {
+    background-color: #f7b0c8; 
+    &:hover {
+      background-color: #f7b0c8; 
+    }
+    &.Button__pressed {
+      background-color: #c3728d; 
+      color: #7a4758;
+    }
+  }
+
 }
 
-.RatingTip__card .Button__dataset {
-  background-color: #4fc3f7;
-} 
-
-.RatingTip__card .Button__method {
-  background-color: #f48fb1;
-} 
-.RatingTip__card .Button__dataset:hover {
-  background-color: #4fc3f7;
-} 
-
-.RatingTip__card .Button__method:hover {
-  background-color: #f48fb1;
-} 
