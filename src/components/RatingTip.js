@@ -34,7 +34,8 @@ const styles = theme => ({
     color: colors.logoText,
     '&:hover': {
       backgroundColor: colors.primaryDarken,
-    }
+    },
+    padding: '8px 12px'
   },
   leftIcon: {
     marginRight: theme.spacing.unit,
@@ -55,7 +56,7 @@ const styles = theme => ({
   },
   label: {
     marginRight: '10px',
-    color: 'rgba(0, 0, 0, 0.87)',
+    color: 'rgba(0, 0, 0, 0.54) !important',
     display: 'inline-block'
   }
 });
@@ -73,67 +74,94 @@ type Props = {
 };
 
 class RatingTip extends Component<Props, State> {
-  state = {
-    compact: false,
-    text: "",
-    relevant: [],
-    irrelevant: [],
-    ratings: []
-  };
+  constructor(props) {
+    super(props);
+    this.ratingRelevant = this.ratingRelevant.bind(this);
+    this.ratingIrrelevant = this.ratingIrrelevant.bind(this);
+    this.incrementversion = this.incrementVersion.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
 
-  state: State;
-  props: Props;
+    this.state = {
+      compact: false,
+      text: "",
+      ratings: {}
+    };
+  }
 
-  // for TipContainer
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { onUpdate } = this.props;
+    const { onUpdate, ratings } = this.props;
 
+    // for TipContainer
     if (onUpdate && this.state.compact !== prevState.compact) {
       onUpdate();
     }
 
-    console.log(!isEqual(prevState.ratings, this.props.ratings), prevState.ratings, this.props.ratings)
-    if (!isEqual(prevState.ratings, this.props.ratings)) {
-      this.setState( { ratings: this.props.ratings })
-
-      let rel = []
-      let irr = []
-      
-      this.props.ratings.map(rating => {
-        if (rating.relevant === 'relevant') rel.push(rating.facet)
-        if (rating.relevant === 'irrelevant') irr.push(rating.facet)
-      })
-
-      this.setState(() => ({ relevant: rel, irrelevant: irr }))
-    }
-     
+    // Set previous ratings in state
+    // CHANGE THISSSS
+    console.log(Object.values(prevState.ratings), ratings)
+    if (Object.keys(prevState.ratings).length === 0 && !isEqual(Object.values(prevState.ratings), ratings)) {
+      console.log(ratings.length > 0 ? Object.assign(...ratings.map(d => ({[d['facet']]: d}))) : {})
+      this.setState({ ratings: ratings.length > 0 ? Object.assign(...ratings.map(d => ({[d['facet']]: d}))) : {} });
+    }   
   }
 
-  handleChange = event => {
-    this.setState({ facet: event.target.value });
-  };
+  ratingRelevant = facet => {
+    const { ratings } = this.state;
+    return ratings[facet] && ratings[facet].relevance === 'relevant' 
+  }
+
+  ratingIrrelevant = facet => {
+    const { ratings } = this.state;
+    return ratings[facet] && ratings[facet].relevance === 'irrelevant' 
+  }
+
+  incrementVersion = facet => {
+    const { ratings } = this.state;
+    const version =  ratings[facet] ? ratings[facet].version + 1 : 1;
+    return version
+  }
+
+  handleButtonClick = event => {
+    const { addRating, highlight, authUser } = this.props;
+    const {ratings } = this.state;
+
+    const val = event.currentTarget.value;
+    const [facet, relevance] = val.split("-");
+
+    const rating = { type: 'occurrence', entityText: highlight.content.text, relevance: relevance, facet: facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: highlight.pid, uid: authUser.uid, version: this.incrementVersion(facet) }
+      
+    ratings[facet] = rating
+    this.setState(() => ({ratings: ratings }));
+
+    console.log("RATING:", rating)
+    // addRating(rating);
+  }
 
   render() {
-    const { classes } = this.props;
+    const { classes, onClose } = this.props;
     const { relevant, irrelevant } = this.state;
 
     return (
       <div className="Tip">
         <div className="Tip__card RatingTip__card">
           <div className={`${classes.header} Rating__header`}>
-            Keyword relevant for:
+            <span className="title">Keyword(s) category</span>
+            <div className="close" onClick={onClose}>CLOSE</div>
           </div>
           {config.facets.map(_facet =>
             <div key={_facet} className="Button__Group">
               <span className={classes.label}>{capitalize(_facet)}</span>
-              <Button className={`${classes.button} Button__Facet Button__${_facet} ${relevant.indexOf(_facet) > -1 ? 'Button__pressed' : ''}`} disabled={relevant.indexOf(_facet) > -1} variant="raised">
+              
+              <Button value={`${_facet}-relevant`} onClick={this.handleButtonClick} className={`${classes.button} Button__facet Button__${_facet} ${this.ratingRelevant(_facet) ? 'Button__pressed' : ''}`} disabled={this.ratingRelevant(_facet)} variant="raised">
                 <Check className={classNames(classes.leftIcon, classes.iconSmall)} />
                 Yes
+                <div className="Center__text"></div>
               </Button>
 
-              <Button className={`${classes.button} Button__Facet Button__${_facet} ${irrelevant.indexOf(_facet) > -1 ? 'Button__pressed' : ''}`} disabled={irrelevant.indexOf(_facet) > -1} variant="raised">
+              <Button value={`${_facet}-irrelevant`} onClick={this.handleButtonClick} className={`${classes.button} Button__facet Button__${_facet} ${this.ratingIrrelevant(_facet) ? 'Button__pressed' : ''}`} disabled={this.ratingIrrelevant(_facet)} variant="raised">
                 <Close className={classNames(classes.leftIcon, classes.iconSmall)} />
                 No
+                <div className="Center__text"></div>
               </Button>
             </div>
           )}

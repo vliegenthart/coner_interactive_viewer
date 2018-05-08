@@ -130,7 +130,8 @@ class PdfViewer extends Component<Props, State> {
     this.props.rewardUser(user, uid, "RewardHighlight")
 
     highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
-    highlight = { ...highlight, pid: pid, uid: uid};
+    highlight.pid = pid
+    highlight.uid = uid
 
     db.doCreateHighlight(id, highlight)
     .then(data => {
@@ -143,7 +144,7 @@ class PdfViewer extends Component<Props, State> {
       console.log('Error', error);
     });
 
-    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid}
+    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevance: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid, version: 1}
     this.props.addRating(rating)
   }
 
@@ -234,12 +235,11 @@ class PdfViewer extends Component<Props, State> {
                           popupContent={
                             <RatingTip
                               onopen={null}
+                              addRating={addRating}
+                              highlight={highlight}
+                              authUser={authUser}
                               ratings={getRatingsForHighlight(pid, highlight.id, authUser.uid)}
-                              onConfirm={metadata => {
-
-                                // RELEVANCE IS PLACEHOLDER
-                                const rating = { type: 'occurrence', entityText: highlight.content.text, relevant: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: pid, uid: authUser.uid}
-                                addRating(rating);
+                              onClose={() => {                                
                                 hideTip();
                               }}
                             />
