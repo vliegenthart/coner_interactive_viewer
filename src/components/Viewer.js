@@ -54,8 +54,7 @@ class PdfViewer extends Component<Props, State> {
     this.updateHighlight = this.updateHighlight.bind(this);
 
     this.state = {
-      highlights: [],
-      ratings: []
+      highlights: []
     };
   }
 
@@ -109,7 +108,7 @@ class PdfViewer extends Component<Props, State> {
       this.setState(() => ({ highlights: highlights }));
     })
     .catch(error => {
-      console.log('Error', error);
+      console.log('Error:', error);
     });
   }
 
@@ -141,7 +140,7 @@ class PdfViewer extends Component<Props, State> {
       });
     })
     .catch(error => {
-      console.log('Error', error);
+      console.log('Error:', error);
     });
 
     const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevance: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid, version: 1}

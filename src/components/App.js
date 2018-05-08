@@ -29,6 +29,7 @@ import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ost-client';
 import isEqual from 'lodash/isEqual';
+import groupBy from 'lodash/groupBy';
 
 import { snapshotToArray, getNextId } from '../utility/util-functions'
 
@@ -39,6 +40,7 @@ class App extends Component {
     this.addRating = this.addRating.bind(this)
     this.getRatingsByPid = this.getRatingsByPid.bind(this);
     this.getRatingsForHighlight = this.getRatingsForHighlight.bind(this);
+    this.getRatingsNewestVersion = this.getRatingsNewestVersion.bind(this);
     this.rewardUser = this.rewardUser.bind(this);
 
 
@@ -79,6 +81,23 @@ class App extends Component {
     if ((!prevState.user || !isEqual(prevState.user, this.state.user)) && this.state.user) this.getRatingsByPid(pid, user.uid)
   }
 
+  getRatingsNewestVersion(ratings) {
+
+    // Reduce by concat key by combination of pid, highlightId, uid and facet of rating, filter out all lower version numbers for objects with similar concat keys
+    const ratingsNewestVersion = [...ratings.reduce((r, o) => {
+      const key = `${o.pid}-${o.highlightId}-${o.uid}-${o.facet}`;
+      
+      let item = r.get(key) || Object.assign({}, o);
+      
+      if (o.version > item.version) item = o;
+
+      return r.set(key, item);
+
+    }, new Map).values()];
+
+    return ratingsNewestVersion;
+  }
+
   // Create rating in Firebase database + reward OST user
   addRating(rating) {
     const { pid, user, ratings, userRatings } = this.state;
@@ -91,15 +110,17 @@ class App extends Component {
     db.doCreateRating(id, rating)
     .then(data => {
       console.log(`Added rating (id: ${id}) to Firebase database`)
-
       this.rewardUser(user, uid, "RewardRating")
+      const ratings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...ratings]);
+      const userRatings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...userRatings]);
+
       this.setState({
-        ratings: [{ ...rating, id: id }, ...ratings],
-        userRatings: [{ ...rating, id: id }, ...userRatings]
+        ratings: ratings1,
+        userRatings: userRatings1
       });
     })
     .catch(error => {
-      console.log('Error', error);
+      console.log('Error:', error);
     });
   }
 
@@ -108,11 +129,12 @@ class App extends Component {
 
     db.onceGetRatings(pid)
     .then((snapshot) => {
-      const ratings = snapshot && snapshot.val() ? snapshotToArray(snapshot.val()) : []
+      let ratings = snapshot && snapshot.val() ? snapshotToArray(snapshot.val()) : []
+      ratings = this.getRatingsNewestVersion(ratings);
       if (ratings.length > 0) this.setState(() => ({ ratings: ratings, userRatings: ratings.filter(rating => rating.uid === uid) }));
     })
     .catch(error => {
-      console.log('Error', error);
+      console.log('Error:', error);
     });
   }
 

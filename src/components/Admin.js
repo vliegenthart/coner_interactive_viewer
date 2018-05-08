@@ -36,7 +36,7 @@ class AdminPage extends Component {
         if (!dbHighlight) db.doCreateHighlight(highlight.id, highlight)
       })
       .catch(error => {
-        console.log('Error', error);
+        console.log('Error:', error);
       });
     }
   }

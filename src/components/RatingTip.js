@@ -88,21 +88,22 @@ class RatingTip extends Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    const { ratings } = this.props;
+
+    if (ratings.length > 0) {
+      this.setState({ ratings: ratings.length > 0 ? Object.assign(...ratings.map(d => ({[d['facet']]: d}))) : {} });
+    }
+  }
+
+
   componentDidUpdate(prevProps: Props, prevState: State) {
-    const { onUpdate, ratings } = this.props;
+    const { onUpdate } = this.props;
 
     // for TipContainer
     if (onUpdate && this.state.compact !== prevState.compact) {
       onUpdate();
     }
-
-    // Set previous ratings in state
-    // CHANGE THISSSS
-    console.log(Object.values(prevState.ratings), ratings)
-    if (Object.keys(prevState.ratings).length === 0 && !isEqual(Object.values(prevState.ratings), ratings)) {
-      console.log(ratings.length > 0 ? Object.assign(...ratings.map(d => ({[d['facet']]: d}))) : {})
-      this.setState({ ratings: ratings.length > 0 ? Object.assign(...ratings.map(d => ({[d['facet']]: d}))) : {} });
-    }   
   }
 
   ratingRelevant = facet => {
@@ -123,7 +124,7 @@ class RatingTip extends Component<Props, State> {
 
   handleButtonClick = event => {
     const { addRating, highlight, authUser } = this.props;
-    const {ratings } = this.state;
+    const { ratings } = this.state;
 
     const val = event.currentTarget.value;
     const [facet, relevance] = val.split("-");
@@ -131,10 +132,9 @@ class RatingTip extends Component<Props, State> {
     const rating = { type: 'occurrence', entityText: highlight.content.text, relevance: relevance, facet: facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: highlight.pid, uid: authUser.uid, version: this.incrementVersion(facet) }
       
     ratings[facet] = rating
-    this.setState(() => ({ratings: ratings }));
 
-    console.log("RATING:", rating)
-    // addRating(rating);
+    this.setState(() => ({ ratings: ratings }));
+    addRating(rating);
   }
 
   render() {
