@@ -96,7 +96,6 @@ class RatingTip extends Component<Props, State> {
     }
   }
 
-
   componentDidUpdate(prevProps: Props, prevState: State) {
     const { onUpdate } = this.props;
 

@@ -237,7 +237,7 @@ class PdfViewer extends Component<Props, State> {
                               addRating={addRating}
                               highlight={highlight}
                               authUser={authUser}
-                              ratings={getRatingsForHighlight(pid, highlight.id, authUser.uid)}
+                              ratings={getRatingsForHighlight(pid, highlight, authUser.uid)}
                               onClose={() => {                                
                                 hideTip();
                               }}

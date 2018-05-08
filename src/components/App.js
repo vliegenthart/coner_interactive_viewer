@@ -85,7 +85,7 @@ class App extends Component {
 
     // Reduce by concat key by combination of pid, highlightId, uid and facet of rating, filter out all lower version numbers for objects with similar concat keys
     const ratingsNewestVersion = [...ratings.reduce((r, o) => {
-      const key = `${o.pid}-${o.highlightId}-${o.uid}-${o.facet}`;
+      const key = `${o.pid}-${o.entityText}-${o.uid}-${o.facet}`;
       
       let item = r.get(key) || Object.assign({}, o);
       
@@ -138,10 +138,10 @@ class App extends Component {
     });
   }
 
-  getRatingsForHighlight = (pid, hid, uid) => {
+  getRatingsForHighlight = (pid, highlight, uid) => {
     const { userRatings } = this.state;
 
-    return userRatings.filter(rating => rating.pid === pid && rating.highlightId === hid && rating.uid === uid)
+    return userRatings.filter(rating => rating.entityText === highlight.content.text && rating.pid === pid && rating.uid === uid)
   }
 
   rewardUser = (user, uid, type) => {
