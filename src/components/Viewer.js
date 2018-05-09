@@ -161,7 +161,7 @@ class PdfViewer extends Component<Props, State> {
 
   render() {
     const { highlights } = this.state;
-    const { pid, addRating, getRatingsForHighlight } = this.props;
+    const { pid, addRating, getRatingsForHighlight, switchPaper } = this.props;
     const url = this.generateURL()
 
     return (
@@ -169,6 +169,7 @@ class PdfViewer extends Component<Props, State> {
         <Sidebar
           highlights={highlights}
           resetHighlights={this.resetHighlights}
+          switchPaper={switchPaper}
         />
         <div
           style={{
