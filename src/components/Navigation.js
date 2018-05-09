@@ -44,6 +44,7 @@ const styles = {
     textDecoration: 'none',
   },
   select: {
+    marginRight: '15px'
   }
 };
 

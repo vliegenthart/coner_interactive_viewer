@@ -7,7 +7,6 @@ import type { T_LTWH } from "react-pdf-annotator/lib/types.js";
 
 import "../style/Highlight.css";
 
-
 type Props = {
   position: {
     boundingRect: T_LTWH,

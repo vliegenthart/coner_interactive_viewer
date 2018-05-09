@@ -6,8 +6,8 @@ export const getNextId = () => String(1000000000 + Math.floor(Math.random() * 90
 
 export const setHighlightsRated = (ratingsLen, rating) => {
   if (ratingsLen === config.facets.length) {
-    [...document.getElementsByClassName('entityText-' + rating.entityText)].map(el => {
+    [...document.getElementsByClassName('entityText-' + rating.entityText)].map(el =>
       el.classList.add('Rated__highlight')
-    })
+    )
   }
 } 
