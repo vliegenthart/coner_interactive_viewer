@@ -115,6 +115,7 @@ class Navigation extends Component {
                         </Select>
                       }
 
+                      <Button color="inherit"><Link className={classes.linkInButton} to={routes.LANDING}>Home</Link></Button> 
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.VIEWER}>Viewer</Link></Button>
 
                       <IconButton
