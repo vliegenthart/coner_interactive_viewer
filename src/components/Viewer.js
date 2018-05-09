@@ -5,17 +5,13 @@
 import React, { Component } from "react";
 import AuthUserContext from './AuthUserContext';
 
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import withAuthorization from './withAuthorization';
-import * as ost from '../ost/ost-client';
 
 import PdfLoader from "./PdfLoader";
-
 import PdfAnnotator from "./PDFAnnotator";
-
 import HighlightTip from "./HighlightTip"
 import RatingTip from "./RatingTip"
-
 import Highlight from "./Highlight"
 import Popup from "./Popup"
 
