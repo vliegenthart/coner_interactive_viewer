@@ -13,7 +13,7 @@ import {
   Route,
 } from 'react-router-dom';
 
-import { auth, db, firebase } from '../firebase';
+import { db, firebase } from '../firebase';
 import config from './config'
 
 import Navigation from './Navigation';
@@ -29,7 +29,6 @@ import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ost-client';
 import isEqual from 'lodash/isEqual';
-import groupBy from 'lodash/groupBy';
 
 import { snapshotToArray, getNextId } from '../utility/util-functions'
 
@@ -93,14 +92,14 @@ class App extends Component {
 
       return r.set(key, item);
 
-    }, new Map).values()];
+    }, new Map()).values()];
 
     return ratingsNewestVersion;
   }
 
   // Create rating in Firebase database + reward OST user
   addRating(rating) {
-    const { pid, user, ratings, userRatings } = this.state;
+    const { user, ratings, userRatings } = this.state;
     const timestamp = Math.round((new Date()).getTime() / 1000)
     const id = getNextId()
     const uid = rating.uid

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import withAuthorization from './withAuthorization';
-import { auth, db } from '../firebase';
+import { db } from '../firebase';
 import termHighlights from "../highlights/term-highlights";
 
 class AdminPage extends Component {

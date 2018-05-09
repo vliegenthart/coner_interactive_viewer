@@ -15,8 +15,6 @@ import Close from '@material-ui/icons/Close';
 import "../style/Tip.css";
 import "../style/RatingTip.css";
 
-import isEqual from 'lodash/isEqual';
-
 
 const capitalize = word =>
   word.charAt(0).toUpperCase() + word.slice(1)
@@ -138,7 +136,6 @@ class RatingTip extends Component<Props, State> {
 
   render() {
     const { classes, onClose } = this.props;
-    const { relevant, irrelevant } = this.state;
 
     return (
       <div className="Tip">
