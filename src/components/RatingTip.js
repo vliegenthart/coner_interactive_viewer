@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 
 import config from './config'
+import { setHighlightsRated } from '../utility/util-functions'
 import colors from '../style/Colors'
 
 import PropTypes from 'prop-types';
@@ -132,6 +133,7 @@ class RatingTip extends Component<Props, State> {
 
     this.setState(() => ({ ratings: ratings }));
     addRating(rating);
+    setHighlightsRated(Object.keys(ratings).length, rating);
   }
 
   render() {

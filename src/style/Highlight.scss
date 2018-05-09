@@ -13,20 +13,27 @@
   opacity: 0.4;
 }
 
+.Highlight__part.Rated__highlight {
+  background: #cacaca !important;
+}
+
 .Highlight__part {
   cursor: pointer;
   position: absolute;
-  background: rgba(255, 226, 143, 1);
+  background: #FFE28F;
   transition: background 0.3s;
+  outline: 1px solid #ffce43;
 }
 
 
 .Highlight__part.generated.dataset {
   background: #4fc3f7;
+  outline: 1px solid #0ba8ef;
 }
 
 .Highlight__part.generated.method {
   background: #f48fb1;
+  outline: 1px solid #ed4980;
 }
 
 .Highlight__popup {

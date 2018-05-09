@@ -138,6 +138,7 @@ class App extends Component {
   }
 
   getRatingsForHighlight = (pid, highlight, uid) => {
+    if (!highlight.content) return []
     const { userRatings } = this.state;
 
     return userRatings.filter(rating => rating.entityText === highlight.content.text && rating.pid === pid && rating.uid === uid)
