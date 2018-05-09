@@ -1,10 +1,12 @@
 // @flow
 
 import React, { Component } from "react";
+import config from './config'
+
+import type { T_LTWH } from "react-pdf-annotator/lib/types.js";
 
 import "../style/Highlight.css";
 
-import type { T_LTWH } from "react-pdf-annotator/lib/types.js";
 
 type Props = {
   position: {
@@ -30,6 +32,8 @@ class Highlight extends Component<Props> {
       onMouseOver,
       onMouseOut,
       metadata,
+      ratings,
+      content,
       isScrolledTo,
     } = this.props;
 
@@ -47,7 +51,7 @@ class Highlight extends Component<Props> {
               onClick={onClick}
               key={index}
               style={rect}
-              className={`Highlight__part ${metadata ? metadata.type: ''} ${ metadata ? metadata.facet: ''}`}
+              className={`Highlight__part ${metadata ? metadata.type: ''} ${ metadata ? metadata.facet : ''}  ${content ? `entityText-${content.text}` : ''} ${ratings.length === config.facets.length ? 'Rated__highlight' : ''}`}
             />
           ))}
         </div>

@@ -216,13 +216,16 @@ class PdfViewer extends Component<Props, State> {
                       screenshot,
                       isScrolledTo
                     ) => {
-  
+                      const ratingsForHighlight = getRatingsForHighlight(pid, highlight, authUser.uid) 
+                      
                       const component =
                         <Highlight
                           isScrolledTo={isScrolledTo}
                           position={highlight.position}
                           metadata={highlight.metadata}
+                          content={highlight.content}
                           type={highlight.type}
+                          ratings={ratingsForHighlight}
                         />
 
                       return (
@@ -233,7 +236,7 @@ class PdfViewer extends Component<Props, State> {
                               addRating={addRating}
                               highlight={highlight}
                               authUser={authUser}
-                              ratings={getRatingsForHighlight(pid, highlight, authUser.uid)}
+                              ratings={ratingsForHighlight}
                               onClose={() => {                                
                                 hideTip();
                               }}
