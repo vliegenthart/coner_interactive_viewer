@@ -168,8 +168,8 @@ class PdfViewer extends Component<Props, State> {
       <div className="Paper__viewer" id="Paper__viewer1" style={{ display: "flex", height: "100vh" }}>
         <Sidebar
           highlights={highlights}
-          resetHighlights={this.resetHighlights}
           switchPaper={switchPaper}
+          getRatingsForHighlight={getRatingsForHighlight}
         />
         <div
           style={{

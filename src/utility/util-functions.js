@@ -16,3 +16,13 @@ export const truncate = (str, max) => {
   if (str.length > max) return str.substring(0,max)+'...'
   return str
 }
+
+export const uniqueHighlights = (highlights) => {
+  return highlights.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj.content && obj.content && mapObj.content.text).indexOf(obj.content.text) === pos;
+  });
+}
+
+export const updateHash = highlight => {
+  window.location.hash = `highlight-${highlight.id}`;
+};
