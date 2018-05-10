@@ -11,6 +11,7 @@ import { sortBy } from 'lodash';
 
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
+import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
 
 import "../style/Sidebar.css";
@@ -44,6 +45,15 @@ class Sidebar extends Component<Props, State> {
     super(props);
 
     this.handlePaperChange = this.handlePaperChange.bind(this)
+
+    this.state = {
+      categories: [
+        { key: 0, label: 'Dataset', klass: 'dataset' },
+        { key: 1, label: 'Method', klass: 'method' },
+        { key: 2, label: 'Dataset & Method', klass: 'dataset-method' },
+        { key: 3, label: 'User added', klass: 'user' },
+      ]
+    };
   }
 
   handlePaperChange = (uid) => {
@@ -52,6 +62,7 @@ class Sidebar extends Component<Props, State> {
 
   render() {
     const { highlights, resetHighlights, classes } = this.props;
+    const { categories } = this.state;
 
     return (
 
@@ -64,11 +75,16 @@ class Sidebar extends Component<Props, State> {
             </Button>
 
               <h3>Categories</h3>
-              <ul>
-                <li>Dataset: Blue</li>
-                <li>Method: Pink</li>
-                <li>Both: Purple</li>
-              </ul>
+
+              {categories.map(cat => {
+                return (
+                  <Chip
+                    key={cat.key}
+                    label={cat.label}
+                    className={`${classes.chip} Category__chip Category__${cat.klass}`}
+                  />
+                );
+              })}
             </div>
 
            

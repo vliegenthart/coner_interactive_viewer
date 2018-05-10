@@ -1,0 +1,18 @@
+.Category__chip {
+  margin-top: 5px;
+  margin-right: 5px;
+  opacity: 0.75;
+
+  &.Category__dataset {
+    background-color: #4fc3f7;
+  }
+  &.Category__method {
+    background-color: #ed4980;
+  }
+  &.Category__dataset-method {
+    background-color: #ccb6d7;
+  }
+  &.Category__user {
+    background-color: #FFE28F;
+  }
+}
