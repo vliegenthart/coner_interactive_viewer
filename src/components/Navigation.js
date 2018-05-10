@@ -16,7 +16,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Select from 'material-ui/Select';
-import sortBy from 'lodash/sortBy'
+import sortBy from 'lodash/sortBy';
+import { truncate } from '../utility/util-functions';
 
 const styles = {
   root: {
@@ -47,11 +48,6 @@ const styles = {
     marginRight: '15px'
   }
 };
-
-const truncate = (str, max) => {
-  if (str.length > max) return str.substring(0,max)+'...'
-  return str
-}
 
 class Navigation extends Component {
   constructor(props) {

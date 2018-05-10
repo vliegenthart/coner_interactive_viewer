@@ -11,3 +11,8 @@ export const setHighlightsRated = (ratingsLen, rating) => {
     )
   }
 } 
+
+export const truncate = (str, max) => {
+  if (str.length > max) return str.substring(0,max)+'...'
+  return str
+}

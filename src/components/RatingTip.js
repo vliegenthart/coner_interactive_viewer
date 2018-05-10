@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 
 import config from './config'
-import { setHighlightsRated } from '../utility/util-functions'
+import { setHighlightsRated, truncate } from '../utility/util-functions'
 import colors from '../style/Colors'
 
 import PropTypes from 'prop-types';
@@ -137,15 +137,16 @@ class RatingTip extends Component<Props, State> {
   }
 
   render() {
-    const { classes, onClose } = this.props;
+    const { classes, onClose, highlight } = this.props;
 
     return (
       <div className="Tip">
         <div className="Tip__card RatingTip__card">
           <div className={`${classes.header} Rating__header`}>
-            <span className="title">Keyword(s) category</span>
+            <div className="Entity__text">{truncate(highlight.content.text, 50)}</div>
             <div className="close" onClick={onClose}>CLOSE</div>
           </div>
+          {/*} <span className={classes.label}>Category:</span> */}
           {config.facets.map(_facet =>
             <div key={_facet} className="Button__Group">
               <span className={classes.label}>{capitalize(_facet)}</span>
