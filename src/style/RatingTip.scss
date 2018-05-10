@@ -1,15 +1,23 @@
 .RatingTip__card {
   min-width: 290px; 
-  
-  .title {
-  }
 
-  .close {
-    float: right;
-    cursor: pointer;
-    line-height: 20px;
-    font-size: 14px;
+  .Rating__header {
+    overflow: hidden;
+    .Entity__text {
+      font-style: italic;
+      max-width: calc(275px - 35px);
+      float: left;
+    }
+
+    .close {
+      float: right;
+      cursor: pointer;
+      line-height: 20px;
+      font-size: 14px;
+    }
   }
+  
+
 
   .Button__facet {
     line-height: 20px;
