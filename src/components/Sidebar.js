@@ -7,7 +7,8 @@ import colors from '../style/Colors'
 
 import type { T_Highlight } from "react-pdf-annotator/types";
 import AuthUserContext from './AuthUserContext';
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
+import { uniqueHighlights, truncate } from '../utility/util-functions'
 
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
@@ -35,10 +36,6 @@ const styles = theme => ({
   }
 });
 
-const updateHash = highlight => {
-  window.location.hash = `highlight-${highlight.id}`;
-};
-
 class Sidebar extends Component<Props, State> {
 
   constructor(props) {
@@ -61,7 +58,7 @@ class Sidebar extends Component<Props, State> {
   }
 
   render() {
-    const { highlights, resetHighlights, classes } = this.props;
+    const { highlights, getRatingsForHighlight, classes } = this.props;
     const { categories } = this.state;
 
     return (
@@ -70,9 +67,9 @@ class Sidebar extends Component<Props, State> {
         {authUser =>
           <div className="sidebar" style={{ width: "25vw" }}>
             <div className="description" style={{ padding: "1rem" }}>
-            <Button value="randomPaper" onClick={() => this.handlePaperChange(authUser.uid)} className={classes.buttonRandomPaper} variant="raised">
-              Random Paper
-            </Button>
+              <Button value="randomPaper" onClick={() => this.handlePaperChange(authUser.uid)} className={classes.buttonRandomPaper} variant="raised">
+                Random Paper
+              </Button>
 
               <h3>Categories</h3>
 
@@ -86,37 +83,27 @@ class Sidebar extends Component<Props, State> {
                 );
               })}
             </div>
-
-           
-            <hr />
-
+            
+            <h3 className="Keywords__title">Keywords</h3>
             <ul className="sidebar__highlights">
-              {sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1']).map((highlight, index) => (
+              {uniqueHighlights(sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1'])).map((highlight, index) => (
                 <li
                   key={index}
                   className="sidebar__highlight"
-                  onClick={() => {
-                    updateHash(highlight);
-                  }}
-                >
-                  <div>
-                    <strong>{highlight.metadata.facet}</strong>
-                    {highlight.content.text ? (
-                      <blockquote style={{ marginTop: "0.5rem" }}>
-                        {`${highlight.content.text}`}
-                      </blockquote>
-                    ) : null}
-                    {highlight.content.image ? (
-                      <div
-                        className="highlight__image"
-                        style={{ marginTop: "0.5rem" }}
-                      >
-                        <img src={highlight.content.image} alt={"Screenshot"} />
-                      </div>
-                    ) : null}
+                > 
+                  
+                  <div className="Ratings__facets">
+                    {sortBy(getRatingsForHighlight(highlight.pid, highlight, authUser.uid), 'facet').map((rating, index) =>
+                      <Chip
+                        key={`highlight-${index}`}
+                        label={rating.facet}
+                        className={`${classes.chip} Category__chip Category__${rating.facet.toLowerCase()}`}
+                      />
+                    )}
                   </div>
-                  <div className="highlight__location">
-                    Page {highlight.position.pageNumber}
+
+                  <div className="Highlight__text">
+                    {truncate(highlight.content.text, 100)}
                   </div>
                 </li>
               ))}
