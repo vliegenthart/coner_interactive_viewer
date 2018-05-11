@@ -5,6 +5,10 @@ import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
 import termHighlights from "../highlights/term-highlights";
 
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+
 class AdminPage extends Component {
   constructor(props) {
     super(props);
@@ -45,31 +49,34 @@ class AdminPage extends Component {
     const { users } = this.state;
 
     return (
-      <div>
-        <h1>Admin Page</h1>
-        <p>The Home Page is accessible by every signed in user.</p>
-        { !!users && <UserList users={users} /> }
 
-        <h2>Sync Highlights</h2>
-        <button onClick={() => this.syncLocalHighlights() } >
-          Sync Local Highlights with Firebase Database
-        </button>
+      <Grid container spacing={24} alignItems="center" direction="row" justify="center">
+        <Grid item xs={8}>
+          <Paper className="Basic__paper">
+            <h1>Admin Page</h1>
+            { !!users && <UserList users={users} /> }
 
-      </div>
-
-
+            <h3>Sync Highlights</h3>
+            <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } varian="raised">
+              Sync Local Highlights with Firebase Database
+            </Button>
+          </Paper>
+        </Grid>
+      </Grid>
+        
     );
   }
 }
 
 const UserList = ({ users }) =>
   <div>
-    <h2>List of Usernames of Users</h2>
-    <p>(Saved on Sign Up in Firebase Database)</p>
+    <h3>List of Usernames of Firebase Users</h3>
 
+    <ul>
     {Object.keys(users).map(key =>
-      <div key={key}>{users[key].username}</div>
+      <li key={key}>{users[key].username}</li>
     )}
+    </ul>
   </div>
 
 const authCondition = (authUser) => !!authUser;

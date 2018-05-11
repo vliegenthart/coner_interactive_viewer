@@ -2,7 +2,6 @@ import React from 'react';
 import * as routes from '../constants/routes';
 import { Link } from 'react-router-dom';
 
-import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
