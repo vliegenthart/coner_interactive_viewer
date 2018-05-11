@@ -5,7 +5,6 @@ coner_interactive_viewer.sublime-workspace
 data/
 misc/
 */**/config.js
-src/**/*.css
 src/highlights/term-highlights.js
 src/highlights/old-highlights.js
 src/highlights/papers-list.js
