@@ -2,13 +2,13 @@
 
 import React, { Component } from "react";
 
-import config from './config'
-import colors from '../style/Colors'
+import config from './config';
+import colors from './Colors';
 
 import type { T_Highlight } from "react-pdf-annotator/types";
 import AuthUserContext from './AuthUserContext';
 import sortBy from 'lodash/sortBy';
-import { uniqueHighlights, truncate } from '../utility/util-functions'
+import { uniqueHighlights, truncate } from '../utility/util-functions';
 
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
