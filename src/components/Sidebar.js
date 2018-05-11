@@ -84,7 +84,7 @@ class Sidebar extends Component<Props, State> {
               })}
             </div>
             
-            <h3 className="Keywords__title">Keywords</h3>
+            <h3 className="Keywords__title">Keyword Ratings</h3>
             <ul className="sidebar__highlights">
               {uniqueHighlights(sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1'])).map((highlight, index) => (
                 <li
@@ -100,6 +100,14 @@ class Sidebar extends Component<Props, State> {
                         className={`${classes.chip} Category__chip Category__${rating.facet.toLowerCase()}`}
                       />
                     )}
+                    {highlight.metadata.type === 'selected' && 
+                      <Chip
+                        key={`highlight-${index}-selected`}
+                        label="User added"
+                        className={`${classes.chip} Category__chip Category__user`}
+                      />
+                    }
+
                   </div>
 
                   <div className="Highlight__text">
