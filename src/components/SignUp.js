@@ -9,11 +9,21 @@ import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 import * as ost from '../ost/ost-client';
 
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+
 const SignUpPage = ({ history }) =>
-  <div>
-    <h1>Sign Up</h1>
-    <SignUpForm history={history} />
-  </div>
+  <Grid container spacing={24} alignItems="center" direction="row" justify="center">
+    <Grid item xs={8}>
+      <Paper className="SignUp__paper Basic__paper">
+         <h1>Sign Up</h1>
+        <SignUpForm history={history} />
+      </Paper>
+    </Grid>
+  </Grid>
   
 
 const INITIAL_STATE = {
@@ -79,7 +89,7 @@ class SignUpForm extends Component {
       email,
       passwordOne,
       passwordTwo,
-      error,
+      error
     } = this.state;
 
     const isInvalid =
@@ -90,33 +100,31 @@ class SignUpForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          value={username}
-          onChange={event => this.setState(byPropKey('username', event.target.value))}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          value={email}
-          onChange={event => this.setState(byPropKey('email', event.target.value))}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          value={passwordOne}
-          onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          value={passwordTwo}
-          onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="full-name">Full Name</InputLabel>
+          <Input id="full-name" value={username} onChange={event => this.setState(byPropKey('username', event.target.value))} />
+        </FormControl>
+
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="email-address">Email Address</InputLabel>
+          <Input id="email-address" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} />
+        </FormControl>
+
+        <br />
+
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="password-one">Password</InputLabel>
+          <Input id="password-one" type="password" value={passwordOne} onChange={event => this.setState(byPropKey('passwordOne', event.target.value))} />
+        </FormControl>
+
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="password-two">Confirm Password</InputLabel>
+          <Input id="password-two" type="password" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} />
+        </FormControl>
+
+        <Button className="Submit__button" disabled={isInvalid} type="submit" variant="raised">
           Sign Up
-        </button>
+        </Button>
 
         { error && <p>{error.message}</p> }
       </form>

@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import { auth } from '../firebase';
 
+import Input, { InputLabel } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import Button from 'material-ui/Button';
+
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
 });
@@ -46,21 +50,19 @@ class PasswordChangeForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          value={passwordOne}
-          onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          value={passwordTwo}
-          onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="password-one">New Password</InputLabel>
+          <Input id="password-one" type="password" value={passwordOne} onChange={event => this.setState(byPropKey('passwordOne', event.target.value))} />
+        </FormControl>
+
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="password-two">Confirm New Password</InputLabel>
+          <Input id="password-two" type="password" value={passwordTwo} onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))} />
+        </FormControl>
+
+        <Button className="Submit__button" disabled={isInvalid} type="submit" variant="raised">
+          Change My Password
+        </Button>
 
         { error && <p>{error.message}</p> }
       </form>

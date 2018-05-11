@@ -6,12 +6,9 @@ import { PasswordForgetLink } from './PasswordForget';
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
 
-import PropTypes from 'prop-types';
 import IconButton from 'material-ui/IconButton';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/Menu/MenuItem';
+import { FormControl } from 'material-ui/Form';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from 'material-ui/Button';
@@ -87,8 +84,6 @@ class SignInForm extends Component {
       error,
       showPassword,
     } = this.state;
-
-    const { classes } = this.props;
 
     const isInvalid =
       password === '' ||
