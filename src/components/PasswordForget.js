@@ -3,11 +3,22 @@ import { Link } from 'react-router-dom';
 
 import { auth } from '../firebase';
 
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+
 const PasswordForgetPage = () =>
-  <div>
-    <h1>PasswordForget</h1>
-    <PasswordForgetForm />
-  </div>
+
+  <Grid container spacing={24} alignItems="center" direction="row" justify="center">
+    <Grid item xs={8}>
+      <Paper className="Basic__paper">
+        <h1>Reset Password</h1>
+        <PasswordForgetForm />
+      </Paper>
+    </Grid>
+  </Grid>
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
@@ -49,15 +60,14 @@ class PasswordForgetForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          value={this.state.email}
-          onChange={event => this.setState(byPropKey('email', event.target.value))}
-          type="text"
-          placeholder="Email Address"
-        />
-        <button disabled={isInvalid} type="submit">
+        <FormControl className="FormControl">
+          <InputLabel htmlFor="email-address">Email Address</InputLabel>
+          <Input id="email-address" value={email} onChange={event => this.setState(byPropKey('email', event.target.value))} />
+        </FormControl>
+
+        <Button className="Submit__button" disabled={isInvalid} type="submit" variant="raised">
           Reset My Password
-        </button>
+        </Button>
 
         { error && <p>{error.message}</p> }
       </form>
