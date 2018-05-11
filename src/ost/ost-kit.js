@@ -4,6 +4,7 @@ const axios = require('axios');
 const queryString = require('../lib/query-string');
 const crypto = require('crypto');
 
+
 /*
     API credentials are stored outside of the main class
     because ES6 does not support private properties and
@@ -16,13 +17,33 @@ function required() {
     throw new Error('Missing parameter');
 }
 
-class OstKit {
+class Ostkit {
     constructor(apiKey = required(), apiSecret = required(), apiEndpoint = 'https://playgroundapi.ost.com/') {
         _apiKey.set(this, apiKey);
         _apiSecret.set(this, apiSecret);
+        this.monitoredTransactions={};
+
         this.fetcher = axios.create({
-            baseURL: apiEndpoint
+            baseURL: apiEndpoint,
+            withCredentials: true
         }) 
+    }
+
+    _updateTransactions() {
+        const keys = Object.keys(this.monitoredTransactions);
+        if (keys.length === 0) return;
+        this.transactiontypesStatus({transaction_uuids:keys}).then(res => {
+            res.transactions.forEach(transaction => {
+                if (this.monitoredTransactions[transaction.transaction_uuid].status !== transaction.status) {
+                    this.monitoredTransactions[transaction.transaction_uuid].status = transaction.status
+                    this.monitoredTransactions[transaction.transaction_uuid].callback(transaction)
+                    if (transaction.status === "failed" || transaction.status === "complete") {
+                        this.stopMonitoringTransaction(transaction.transaction_uuid);
+                    }
+                }
+            });
+            
+        })
     }
 
     _sign(stringToSign) {
@@ -48,6 +69,7 @@ class OstKit {
 
         let result = await this.fetcher(endpoint, {method:"POST", data: queryData});
 
+        console.log("OSTKIT", result.data.err);
         if (!result.data.success) throw new Error(result.data.err);
         return result.data.data;
     }
@@ -64,13 +86,30 @@ class OstKit {
         return result.data.data;
     }
 
+    monitorTransaction(transactionUUID, callback) {
+        this.monitoredTransactions[transactionUUID] = {
+            callback:callback,
+            status:null
+        }
+        this.transactionInterval = setInterval(this._updateTransactions.bind(this), 1000);
+    }
+
+    stopMonitoringTransaction(transactionUUID) {
+        delete this.monitoredTransactions[transactionUUID]
+        const keys = Object.keys(this.monitoredTransactions);
+        if (keys.length === 0 && this.transactionInterval) {
+            clearInterval(this.transactionInterval)
+            this.transactionInterval = null;
+        }
+    }
+
     async usersCreate({name}) {
         return await this._postQuery("/users/create", {name})
     }
 
     async usersEdit({uuid, name}) {
         return await this._postQuery("/users/edit", {uuid, name})
-    }
+    }   
     
     async usersList({page_no = 1, filter = "all", order_by = "creation_time", order="desc"} = {}) {
         return await this._getQuery("/users/list", {page_no, filter, order_by, order})
@@ -100,5 +139,4 @@ class OstKit {
     }
 }
 
-export default OstKit
-
+export default Ostkit
