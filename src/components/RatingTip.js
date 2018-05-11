@@ -2,9 +2,9 @@
 
 import React, { Component } from "react";
 
-import config from './config'
-import { setHighlightsRated, truncate } from '../utility/util-functions'
-import colors from '../style/Colors'
+import config from './config';
+import { setHighlightsRated, truncate } from '../utility/util-functions';
+import colors from './Colors';
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';

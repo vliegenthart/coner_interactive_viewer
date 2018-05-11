@@ -2,8 +2,8 @@
 
 import React, { Component } from "react";
 
-import config from './config'
-import colors from '../style/Colors'
+import config from './config';
+import colors from './Colors';
 
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
