@@ -18,7 +18,7 @@ export function listTransactionTypes() {
 export function createUser(name, callback) {
   ok.usersCreate({name: name}).then(callback)
   .catch((e) => {
-    console.log("Err", e)
+    console.error("OSTError: ", e)
   });
 }
 
@@ -27,7 +27,7 @@ export function rewardUser(user, transactionKind="RewardRating") {
     console.log(`Rewarded OST user ${user.username} with transaction type "${transactionKind}"`)
     // console.log(res) 
   }).catch((e) => {
-    console.log("Err", e)
+    console.error("OSTError: ", e)
   });
 }
 
@@ -35,7 +35,7 @@ export function airdropNewUsers(amount) {
   ok.usersAirdropDrop({amount: amount, list_type: "never_airdropped"}).then((res) => {
     console.log(res)
   }).catch((e) => {
-    console.log("Err", e)
+    console.error("OSTError: ", e)
   });
 }
 
@@ -43,7 +43,7 @@ export function airdropAllUsers(amount) {
   ok.usersAirdropDrop({amount: amount, list_type: "all"}).then((res) => {
     console.log(res)
   }).catch((e) => {
-    console.log("Err", e)
+    console.error("OSTError: ", e)
   });
 }
 
