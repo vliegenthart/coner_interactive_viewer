@@ -15,12 +15,12 @@ import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 
-const SignUpPage = ({ history }) =>
+const SignUpPage = ({ history, setUser }) =>
   <Grid container spacing={24} alignItems="center" direction="row" justify="center">
     <Grid item xs={8}>
       <Paper className="SignUp__paper Basic__paper">
-         <h1>Sign Up</h1>
-        <SignUpForm history={history} />
+        <h1>Sign Up</h1>
+        <SignUpForm history={history} setUser={setUser} />
       </Paper>
     </Grid>
   </Grid>
@@ -54,6 +54,7 @@ class SignUpForm extends Component {
 
     const {
       history,
+      setUser,
     } = this.props;
 
     // Create user in Firebase Authentication
@@ -66,9 +67,12 @@ class SignUpForm extends Component {
 
           // Create user in custom Firebase accessible DB
           db.doCreateUser(authUser.uid, username, email, res['economy_users'][0]['uuid'])
-          .then(() => {
-            this.setState(() => ({ ...INITIAL_STATE }));
+          .then((res1) => {
+            const currUser = { role: 'USER', uid: authUser.uid, username: username, email: email, ostUuid: res['economy_users'][0]['uuid'] }
+            this.setState(() => ({ username, email, }));
+            setUser(currUser, authUser);
             history.push(routes.VIEWER);
+
           })
           .catch(error => {
             this.setState(byPropKey('error', error));

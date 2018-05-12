@@ -69,7 +69,6 @@ class Ostkit {
 
         let result = await this.fetcher(endpoint, {method:"POST", data: queryData});
 
-        console.log("OSTKIT", result.data.err);
         if (!result.data.success) throw new Error(result.data.err);
         return result.data.data;
     }
