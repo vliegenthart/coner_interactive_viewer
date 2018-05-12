@@ -41,7 +41,7 @@ class App extends Component {
     this.getRatingsForHighlight = this.getRatingsForHighlight.bind(this);
     this.getRatingsNewestVersion = this.getRatingsNewestVersion.bind(this);
     this.rewardUser = this.rewardUser.bind(this);
-
+    this.setUser = this.setUser.bind(this);
 
     this.state = {
       pid: config.defaultPaper['pid'],
@@ -57,7 +57,8 @@ class App extends Component {
     const { user } = this.state;
 
     this.setState({ [pid]: paper });
-    this.rewardUser(user, uid, "RewardSwitchPaper")
+    this.getRatingsByPid(paper, uid);
+    this.rewardUser(user, uid, "RewardSwitchPaper");
   }
 
   componentDidMount() {
@@ -78,6 +79,11 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { pid, user } = this.state
     if ((!prevState.user || !isEqual(prevState.user, this.state.user)) && this.state.user) this.getRatingsByPid(pid, user.uid)
+  }
+
+  setUser(user, authUser=null) {
+    if (authUser) return this.setState(() =>({user: user, authUser: authUser }))
+    this.setState(() =>({ user: user }))
   }
 
   getRatingsNewestVersion(ratings) {
@@ -150,8 +156,9 @@ class App extends Component {
     }
     else {
       db.onceGetUser(uid).then(snapshot => {
-        this.setState({ user: { ...snapshot.val(), uid } })
-        ost.rewardUser(snapshot.val(), type)
+        let fbUser = snapshot.val()
+        this.setState({ user: { ...fbUser, uid } })
+        ost.rewardUser(fbUser, type)
         }
       );
     }
@@ -166,7 +173,7 @@ class App extends Component {
           <Navigation pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
 
           <Route exact path={routes.LANDING} render={() => <LandingPage />} />
-          <Route exact path={routes.SIGN_UP} render={() => <SignUpPage />} />
+          <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />
           <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
           <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser} switchPaper={this.setCurrentPaper}/>} />
