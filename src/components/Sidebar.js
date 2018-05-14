@@ -14,6 +14,9 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import Chip from 'material-ui/Chip';
 import { withStyles } from 'material-ui/styles';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 import "../style/Sidebar.css";
 
@@ -98,6 +101,8 @@ class Sidebar extends Component<Props, State> {
                         key={`highlight-${index}`}
                         label={rating.facet}
                         className={`${classes.chip} Category__chip Category__${rating.facet.toLowerCase()}`}
+                        onDelete={event => null}
+                        deleteIcon={rating.relevance === 'relevant' ? <DoneIcon /> : <CloseIcon />}
                       />
                     )}
                     {highlight.metadata.type === 'selected' && 
