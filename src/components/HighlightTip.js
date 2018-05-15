@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { FormLabel, FormControl, FormControlLabel } from 'material-ui/Form';
+import Input, { InputLabel } from 'material-ui/Input';
 import Button from 'material-ui/Button';
 
 import "../style/Tip.css";
@@ -52,8 +53,8 @@ type Props = {
 class HighlightTip extends Component<Props, State> {
   state = {
     compact: true,
-    text: "",
     facet: config.facets[0],
+    entityText: this.props.content.text,
   };
 
   state: State;
@@ -73,8 +74,8 @@ class HighlightTip extends Component<Props, State> {
   };
 
   render() {
-    const { onConfirm, onOpen, classes } = this.props;
-    const { compact, text, facet } = this.state;    
+    const { onConfirm, onOpen, classes} = this.props;
+    const { compact, entityText, facet } = this.state;    
 
     return (
       <div className="Tip">
@@ -93,7 +94,7 @@ class HighlightTip extends Component<Props, State> {
             className="Tip__card"
             onSubmit={event => {
               event.preventDefault();
-              onConfirm({ text, facet });
+              onConfirm( entityText, { facet });
             }}
           >
             <div>
@@ -111,6 +112,12 @@ class HighlightTip extends Component<Props, State> {
                   )}
                 </RadioGroup>
               </FormControl>
+              <div className="entity-text-input">
+                <FormControl className="FormControl">
+                  <InputLabel htmlFor="entity-text">Keyword Text</InputLabel>
+                  <Input id="entity-text" value={entityText} onChange={event => this.setState({ entityText: event.target.value}) } />
+                </FormControl>
+              </div>
             </div>
             
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
