@@ -151,14 +151,16 @@ class App extends Component {
   }
 
   rewardUser = (user, uid, type) => {
+    const { pid } = this.state;
+
     if (user && uid === user.uid) {
-      ost.rewardUser(user, type)
+      ost.rewardUser(user, pid, type)
     }
     else {
       db.onceGetUser(uid).then(snapshot => {
         let fbUser = snapshot.val()
         this.setState({ user: { ...fbUser, uid } })
-        ost.rewardUser(fbUser, type)
+        ost.rewardUser(fbUser, pid, type)
         }
       );
     }

@@ -28,7 +28,7 @@ export const onceGetHighlights = (pid) =>
 export const onceGetHighlight = (pid, id) =>
   db.ref(`highlights/${pid}/${id}`).once('value');
 
-// Feedback API
+// Rating API
 export const doCreateRating = (id, rating) => {
   return db.ref(`ratings/${rating.pid}/${id}`).set({
     ...rating
@@ -40,3 +40,16 @@ export const onceGetRatings = (pid) =>
 
 export const onceGetRating = (pid, id) =>
   db.ref(`ratings/${pid}/${id}`).once('value');
+
+// OSTReward API
+export const doCreateReward = (id, reward) => {
+  return db.ref(`rewards/${reward.pid}/${id}`).set({
+    ...reward
+  });
+}
+
+export const onceGetRewards = (pid) =>
+  db.ref(`rewards/${pid}`).once('value');
+
+export const onceGetReward = (pid, id) =>
+  db.ref(`rewards/${pid}/${id}`).once('value');

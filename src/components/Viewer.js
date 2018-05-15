@@ -201,7 +201,9 @@ class PdfViewer extends Component<Props, State> {
                     ) => (
                       <HighlightTip
                         onOpen={transformSelection}
-                        onConfirm={metadata => {
+                        content={content}
+                        onConfirm={(entityText, metadata) => {
+                          content.text = entityText
                           this.addHighlight({ content, position, metadata }, authUser.uid);
 
                           hideTipAndSelection();
