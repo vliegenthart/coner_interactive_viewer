@@ -77,6 +77,9 @@ class SignUpForm extends Component {
           .catch(error => {
             this.setState(byPropKey('error', error));
           });
+
+          ost.createReward(res)
+
         });    
       })
       .catch(error => {
