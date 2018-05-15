@@ -1,5 +1,7 @@
 import OstKit from './ost-kit'
 import config from "./config"
+import { db } from '../firebase';
+import { getNextId } from '../utility/util-functions'
 
 var ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
 
@@ -22,10 +24,12 @@ export function createUser(name, callback) {
   });
 }
 
-export function rewardUser(user, transactionKind="RewardRating") {
+export function rewardUser(user, pid, transactionKind="RewardRating") {
   ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: user.ostUuid, transaction_kind: transactionKind}).then((res) => {  
     if (config.devMode) console.log(`Rewarded OST user ${user.username} with transaction type "${transactionKind}"`)
-    // console.log(res) 
+    
+    createReward(res, pid);
+    
   }).catch((e) => {
     console.error("OSTError: ", e)
   });
@@ -44,6 +48,20 @@ export function airdropAllUsers(amount) {
     console.log(res)
   }).catch((e) => {
     console.error("OSTError: ", e)
+  });
+}
+
+export function createReward(ost_trans, pid="create_user") {
+  const timestamp = Math.round((new Date()).getTime() / 1000)
+  const reward = ({ ...ost_trans, pid: pid, timestamp: timestamp }) 
+  const id = getNextId()
+
+  db.doCreateReward(id, reward)
+  .then(data => {
+    if (config.devMode) console.log(`Added reward (id: ${id}) to Firebase database`)
+  })
+  .catch(error => {
+    console.log('Error:', error);
   });
 }
 
