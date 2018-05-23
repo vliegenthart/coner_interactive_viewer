@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import { auth } from '../firebase';
 
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
-import Button from 'material-ui/Button';
+import Input, { InputLabel } from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
