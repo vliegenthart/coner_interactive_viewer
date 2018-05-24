@@ -13,10 +13,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { zipObject, map } from 'lodash';
-import { snapshotToArray, getNextId } from '../utility/util-functions';
+import { map } from 'lodash';
+import { snapshotToArray } from '../utility/util-functions';
 import * as ost from '../ost/ost-client';
 import config from "../ost/config";
+import sortBy from 'lodash/sortBy';
 
 import "../style/Admin.css";
 
@@ -62,9 +63,8 @@ class AdminPage extends Component {
 
   fetchOstTransactions() {
     let { papers } = this.props;
-    const { ostTransactions } = this.state;
 
-    papers = ['create_user', ...Array.from(papers, paper => paper.pid)];
+    papers = [...Array.from(papers, paper => paper.pid)];
     const _this = this;
 
     map(papers, function(pid){
@@ -76,10 +76,11 @@ class AdminPage extends Component {
 
             setTimeout(() => { 
               ost.transactiontypesStatus(transaction_uuids, (res) => {  
+                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).slice(0,20).reverse();
                 if (config.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }
-                _this.setState({ ostTransactions: { [pid]: res.transactions, ..._this.state.ostTransactions }});
+                _this.setState({ ostTransactions: { [pid]: res, ..._this.state.ostTransactions }});
               })
             }, 500);
           }
@@ -97,7 +98,7 @@ class AdminPage extends Component {
     return (
       <div className="Admin__container">
         <Grid container spacing={24} alignItems="center" direction="row" justify="center">
-          <Grid item xs={10}>
+          <Grid item xs={11}>
             <Paper className="Basic__paper">
               <h1>Admin Page</h1>
               { !!users && <UserList users={users} /> }
@@ -111,28 +112,34 @@ class AdminPage extends Component {
 
               {map(this.props.papers, (paper) => {
                 return (
-                  <div>
+                  <div key={paper.pid}>
                     <h5>{paper.title}</h5>
 
                     <Table>
                       <TableHead>
                         <TableRow>
                           <TableCell>Transaction Hash</TableCell>
+                          <TableCell>Transaction Type</TableCell>
                           <TableCell>Timestamp</TableCell>
                         </TableRow>
                       </TableHead>
-                      <TableBody>
-                        {map(ostTransactions[paper.pid], trans => {
-                          return (
-                            <TableRow key={trans.id}>
-                              <TableCell component="th" scope="row">
-                                {trans.transaction_hash}
-                              </TableCell>
-                              <TableCell>{trans.transaction_timestamp}</TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
+                      {ostTransactions[paper.pid] &&
+                        <TableBody>
+                          {ostTransactions[paper.pid] && map(ostTransactions[paper.pid]['transactions'], trans => {
+                            return (
+                              <TableRow key={trans.id}>
+                                <TableCell component="th" scope="row">
+                                  <a href={config.viewerBaseUrl + trans.transaction_hash}>{trans.transaction_hash}</a>
+                                </TableCell>
+                                <TableCell>
+                                {ostTransactions[paper.pid]['transaction_types'][trans.transaction_type_id]['name']}
+                                </TableCell>
+                                <TableCell>{new Date(trans.transaction_timestamp).toUTCString()}</TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      }
                     </Table>
                   </div>
                 )
