@@ -7,11 +7,13 @@ import colors from './Colors';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Radio, { RadioGroup } from '@material-ui/core/Radio';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Input, { InputLabel } from '@material-ui/core/Input';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 
 import "../style/Tip.css";
