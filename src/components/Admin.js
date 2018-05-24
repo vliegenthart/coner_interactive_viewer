@@ -101,7 +101,7 @@ class AdminPage extends Component {
           <Grid item xs={11}>
             <Paper className="Basic__paper">
               <h1>Admin Page</h1>
-              { !!users && false && <UserList users={users} /> }
+              { !!users && <UserList users={users} /> }
 
               <h3>Sync Highlights</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } varian="raised">
