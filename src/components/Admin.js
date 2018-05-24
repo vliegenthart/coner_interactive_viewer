@@ -75,11 +75,11 @@ class AdminPage extends Component {
             const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
 
             setTimeout(() => { 
-              ost.transactiontypesStatus(transaction_uuids, (res) => {  
-                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
+              ost.transactiontypesStatus(transaction_uuids, (res) => {
                 if (config.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }
+                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
                 _this.setState({ ostTransactions: { [pid]: res, ..._this.state.ostTransactions }});
               })
             }, 500);
@@ -101,7 +101,7 @@ class AdminPage extends Component {
           <Grid item xs={11}>
             <Paper className="Basic__paper">
               <h1>Admin Page</h1>
-              { !!users && <UserList users={users} /> }
+              { !!users && false && <UserList users={users} /> }
 
               <h3>Sync Highlights</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } varian="raised">
