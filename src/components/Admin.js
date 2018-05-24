@@ -76,7 +76,7 @@ class AdminPage extends Component {
 
             setTimeout(() => { 
               ost.transactiontypesStatus(transaction_uuids, (res) => {  
-                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).slice(0,20).reverse();
+                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
                 if (config.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }
