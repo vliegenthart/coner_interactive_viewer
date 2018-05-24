@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import { auth } from '../firebase';
 
-import Input, { InputLabel } from '@material-ui/core/Input';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 

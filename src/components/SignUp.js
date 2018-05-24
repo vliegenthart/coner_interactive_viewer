@@ -9,7 +9,8 @@ import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 import * as ost from '../ost/ost-client';
 
-import Input, { InputLabel } from '@material-ui/core/Input';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';

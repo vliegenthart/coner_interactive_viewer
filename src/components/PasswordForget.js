@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { auth } from '../firebase';
 
 import FormControl from '@material-ui/core/FormControl';
-import Input, { InputLabel } from '@material-ui/core/Input';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
