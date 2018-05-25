@@ -4,8 +4,8 @@ import AuthUserContext from './AuthUserContext';
 import { PasswordForgetForm } from './PasswordForget';
 import PasswordChangeForm from './PasswordChange';
 import withAuthorization from './withAuthorization';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const AccountPage = () =>
   <AuthUserContext.Consumer>

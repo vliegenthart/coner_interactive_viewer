@@ -2,8 +2,8 @@ import React from 'react';
 import * as routes from '../constants/routes';
 import { Link } from 'react-router-dom';
 
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const LandingPage = () =>
 
