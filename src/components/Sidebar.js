@@ -11,9 +11,9 @@ import sortBy from 'lodash/sortBy';
 import { uniqueHighlights, truncate } from '../utility/util-functions';
 
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import Chip from 'material-ui/Chip';
-import { withStyles } from 'material-ui/styles';
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import { withStyles } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
 

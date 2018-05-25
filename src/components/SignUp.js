@@ -9,11 +9,12 @@ import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 import * as ost from '../ost/ost-client';
 
-import Input, { InputLabel } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
-import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const SignUpPage = ({ history, setUser }) =>
   <Grid container spacing={24} alignItems="center" direction="row" justify="center">

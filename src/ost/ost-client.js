@@ -35,6 +35,12 @@ export function rewardUser(user, pid, transactionKind="RewardRating") {
   });
 }
 
+export function transactiontypesStatus(transaction_uuids=[], callback) {
+  ok.transactiontypesStatus({transaction_uuids}).then(callback).catch((e) => {
+    console.error("OSTError: ", e)
+  });
+}
+
 export function airdropNewUsers(amount) {
   ok.usersAirdropDrop({amount: amount, list_type: "never_airdropped"}).then((res) => {
     console.log(res)
@@ -58,7 +64,7 @@ export function createReward(ost_trans, pid="create_user") {
 
   db.doCreateReward(id, reward)
   .then(data => {
-    if (config.devMode) console.log(`Added reward (id: ${id}) to Firebase database`)
+    if (config.devMode) console.log(`Added reward (id: ${id}) to Firebase database`, reward)
   })
   .catch(error => {
     console.log('Error:', error);
