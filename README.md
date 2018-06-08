@@ -8,15 +8,18 @@ Coner is an online, interactive document viewer that visualises relevant technic
 Demo of the coner viewer is live at [https://coner-viewer.herokuapp.com/signup](https://coner-viewer.herokuapp.com/signup).
 
 ## CIV and Coner Collaborative NER Pipeline
-CIV is 1 of 3 components of the Coner Collaborative Named Entity Recognition Pipeline. You can read more about CIV and it's role in the Coner pipeline in the [Coner Collaborative NER paper](https://github.com/vliegenthart/coner_interactive_viewer/blob/master/public/pdf/coner.pdf).
+CIV is 1 of 3 modules of the Coner Collaborative Named Entity Recognition Pipeline. You can read more about CIV and it's role in the Coner pipeline in the [Coner Collaborative NER paper](https://github.com/vliegenthart/coner_interactive_viewer/blob/master/public/pdf/coner.pdf).
 
 ## Dependencies
-- react
+- ReactJS
 - npm pdfjs package
-- npm pdfjs react annotator package
-- Firebase realtime databases
+- [https://github.com/agentcooper/react-pdf-annotator](https://github.com/agentcooper/react-pdf-annotator)
+- Firebase Authentication & Realtime databases
 
 ## Related Repositories
+Coner Collaborative NER Pipeline modules:
+- Module 1: [https://github.com/vliegenthart/coner_document_analyser](https://github.com/vliegenthart/coner_document_analyser)
+- Module 3: [https://github.com/vliegenthart/coner_feedback_analyser](https://github.com/vliegenthart/coner_feedback_analyser)
 
 ## Development
 - how to run this stuff
