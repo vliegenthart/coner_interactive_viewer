@@ -6,7 +6,6 @@ data/
 misc/
 */**/config.js
 src/highlights/term-highlights.js
-src/highlights/old-highlights.js
 src/highlights/papers-list.js
 build/
 public/pdf/
