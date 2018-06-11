@@ -20,7 +20,7 @@ CIV is built in [React](https://github.com/facebook/react) with extensibility in
 
 [Node](https://github.com/nodejs/node) and [npm](https://github.com/npm/npm) are required to install the dependencies and run the local server.
 
-## Installation
+## Local Development
 The following steps are needed to run CIV locally in development mode:
 - Copy `src/highlights/demo-term-highlightlights.js` to `src/highlights/term-highlights.js` and `src/highlights/demo-papers-list.js` to `src/highlights/papers-list.js`. 
 - CIV uses Firebase for it's authentication system and database storage. Create a [Firebase Project](https://firebase.google.com/), copy the contents from `src/firebase/demo-config.js` to `src/firebase/config.js` and copy the configuration values from your online Firebase Console to the local config file.
