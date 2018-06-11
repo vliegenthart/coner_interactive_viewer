@@ -1,6 +1,8 @@
 # Coner Interactive Viewer (CIV)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![GitHub tag](https://img.shields.io/github/tag/expressjs/express.svg)](https://github.com/vliegenthart/coner_interactive_viewer/tags)
+[![GitHub release](https://img.shields.io/github/release/vliegenthart/coner_interactive_viewer.svg)](https://github.com/vliegenthart/coner_interactive_viewer/releases)
+
+
 
 CIV is an online, interactive document viewer that visualises relevant technical terms in scientific publications. It creates an environment that gives a concise overview of technical terms/entities/keywords of different categories, like datasets and methods, that appear in the publications. CIV's main usecase is to enable users to rate the quality of automatically classified technical terms (with regards to relevance to each category, e.g. dataset or method) and to select new technical terms by highlighting them.
 
@@ -13,16 +15,23 @@ Coner consists of 3 modules, namely the [Coner Document Analyser (CDA)](https://
 
 You can read more about CIV and the Coner pipeline in the [Coner Collaborative NER paper](https://github.com/vliegenthart/coner_interactive_viewer/blob/master/public/pdf/coner.pdf).
 
-## Installation
-- how to run this stuff
+## Dependencies
+CIV is built in [React](https://github.com/facebook/react) with extensibility in mind; if you are familiar with React you can extend, replace or add React components to customize features of Coner. It's based on the [react-pdf-annotator](https://github.com/agentcooper/react-pdf-annotator) React project, which itself is built using [PDF.js](https://github.com/mozilla/pdf.js).
 
-### Dependencies
-- ReactJS
-- npm pdfjs package
-- [https://github.com/agentcooper/react-pdf-annotator](https://github.com/agentcooper/react-pdf-annotator)
-- Firebase Authentication & Realtime databases
+[Node](https://github.com/nodejs/node) and [npm](https://github.com/npm/npm) are required to install the dependencies and run the local server.
+
+## Installation
+The following steps are needed to run CIV locally in development mode:
+- Copy `src/highlights/demo-term-highlightlights.js` to `src/highlights/term-highlights.js` and `src/highlights/demo-papers-list.js` to `src/highlights/papers-list.js`. 
+- CIV uses Firebase for it's authentication system and database storage. Create a [Firebase Project](https://firebase.google.com/), copy the contents from `src/firebase/demo-config.js` to `src/firebase/config.js` and copy the configuration values from your online Firebase Console to the local config file.
+- Run `npm install`.
+- Run `npm start`, wait for the project to build and open `http://localhost:3000`.
+- Signup for a CIV account.
+- Go to `http://localhost:3000/admin` and click the `Sync highlights with Firebase database` button.
+- Now you're all set to go and use the viewer to view, rate and select highlights!
 
 ## Contributing
+Please feel free to contribute to the project by forking or creating a custom branch with a pull request. You can contact me on with any question, suggestions or other inquiries.
 
 ## License
 Coner Interactive Viewer is [MIT LICENSED](https://github.com/vliegenthart/coner_interactive_viewer/blob/master/LICENSE).
