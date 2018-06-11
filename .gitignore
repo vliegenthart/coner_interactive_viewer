@@ -4,14 +4,15 @@ coner_interactive_viewer.sublime-workspace
 .DS_store
 data/
 misc/
-*/**/config.js
-src/highlights/term-highlights.js
-src/highlights/papers-list.js
 build/
 public/pdf/
+src/highlights/term-highlights.js
+src/highlights/papers-list.js
+
 .firebaserc
 firebase.json
-firebase/config.js
+src/firebase/config.js
+src/ost/config.js
 
 # Logs
 logs
