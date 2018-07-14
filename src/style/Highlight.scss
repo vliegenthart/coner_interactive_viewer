@@ -10,7 +10,11 @@
 }
 
 .Highlight__parts {
-  opacity: 0.4;
+  // opacity: 0.4;
+}
+
+.Highlight__part {
+   opacity: 0.4;
 }
 
 .Highlight__part.Rated__highlight {
@@ -49,4 +53,5 @@
 .Highlight--scrolledTo .Highlight__part {
   /*background: #c0392b !important;*/
   background: #00E676 !important;
+  opacity: 0.55;
 }

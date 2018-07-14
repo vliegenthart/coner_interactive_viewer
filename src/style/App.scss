@@ -13,6 +13,10 @@ body {
   color: #424242;
 }
 
+.Paper__viewer {
+  height: calc(100vh - 64px) !important;
+}
+
 .Basic__paper {
   padding: 30px;
   margin-top: 50px;
