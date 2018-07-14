@@ -1,11 +1,17 @@
-import OstKit from './ost-kit'
-import config from "./config"
+import OstKit from './ost-kit';
+import config from './config';
 import { db } from '../firebase';
-import { getNextId } from '../utility/util-functions'
+import { getNextId } from '../utility/util-functions';
+// import OSTSDK from '@ostdotcom/ost-sdk-js';
 
-var ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
+const ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
+
+// const ostObj = new OSTSDK({apiKey: config.apiKey, apiSecret: config.apiSecret, apiEndpoint: config.ostApiEndpoint});
+// const userService = ostObj.services.users;
 
 export function listUsers() {
+  // userService.list({}).then(function(res) { console.log(JSON.stringify(res)); }).catch(function(err) { console.log(JSON.stringify(err)); });
+
   ok.usersList().then((res) => {
     console.log(res)
   });

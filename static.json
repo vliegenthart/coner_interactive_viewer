@@ -5,7 +5,7 @@
   },
   "proxies": {
     "/proxy/": {
-      "origin": "https://playgroundapi.ost.com/"
+      "origin": "https://sandboxapi.ost.com/v1.1/"
     }
   }
 }

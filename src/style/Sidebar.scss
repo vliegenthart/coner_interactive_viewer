@@ -51,7 +51,7 @@
   ul.sidebar__highlights {
     margin: 0;
     li.sidebar__highlight {
-      cursor: inherit;
+      cursor: pointer;
       border-top: 1px solid #d0eaef;
       border-bottom: none;
       padding: 8px 16px;
@@ -74,7 +74,7 @@
         margin-bottom: 5px;
       }
       &:hover {
-        background: none;
+        background: #ecfbfc;
       }
     }
   }

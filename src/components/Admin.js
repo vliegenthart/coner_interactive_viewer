@@ -159,7 +159,7 @@ const UserList = ({ users }) =>
 
     <ul>
     {Object.keys(users).map(key =>
-      <li key={key}>{users[key].username}</li>
+      <li key={key}>{users[key].username} - {process.env.NODE_ENV === 'development' &&  users[key].ostUuid}</li>
     )}
     </ul>
   </div>

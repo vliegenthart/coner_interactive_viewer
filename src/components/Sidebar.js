@@ -39,6 +39,10 @@ const styles = theme => ({
   }
 });
 
+const updateHash = highlight => {
+  window.location.hash = `highlight-${highlight.id}`;
+};
+
 class Sidebar extends Component<Props, State> {
 
   constructor(props) {
@@ -93,6 +97,9 @@ class Sidebar extends Component<Props, State> {
                 <li
                   key={index}
                   className="sidebar__highlight"
+                  onClick={() => {
+                    updateHash(highlight);
+                  }}
                 > 
                   
                   <div className="Ratings__facets">
