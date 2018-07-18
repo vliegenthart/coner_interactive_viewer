@@ -75,19 +75,45 @@ class App extends Component {
       }
     });
 
-    this.callApi()
-      .then(res => console.log(res.users))
+    this.fetchOSTUsers()
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
+
+    this.createOSTUser()
+      .then(res => console.log(res.data))
       .catch(err => console.log(err));
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/users');
+  fetchOSTUsers = async () => {
+    const response = await fetch('/api/v1/ost/users');
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);
 
     return body;
   }
+
+  createOSTUser = async () => {
+    // let data = new FormData();
+    // data.append("json",));
+
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+
+    const response = await fetch('/api/v1/ost/users', {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({name: 'John Doe ' + Math.floor(Math.random()*(9999-1000+1)+100) })
+    });
+
+    const body = await response.json();
+
+    if (response.status !== 200) throw Error(body.message);
+
+    return body;
+  }
+
+
 
 
   componentDidUpdate(prevProps, prevState, snapshot) {
