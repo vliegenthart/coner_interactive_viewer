@@ -1,18 +1,19 @@
 # Custom
-src/**/*.css
+client/src/**/*.css
 coner_interactive_viewer.sublime-workspace
 .DS_store
-data/
-misc/
-build/
-public/pdf/
-src/highlights/term-highlights.js
-src/highlights/papers-list.js
+client/data/
+client/misc/
+client/build/
+client/public/pdf/
+client/src/highlights/term-highlights.js
+client/src/highlights/papers-list.js
 
-.firebaserc
-firebase.json
-src/firebase/config.js
-src/ost/config.js
+clientfirebaserc
+client/.json
+client/src/firebase/config.js
+client/src/ost/config.js
+server/ost/config.js
 
 # Logs
 logs
