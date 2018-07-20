@@ -17,7 +17,7 @@ import Popup from "./Popup"
 
 import Spinner from "./Spinner";
 import Sidebar from "./Sidebar";
-import { snapshotToArray, getNextId } from '../utility/util-functions'
+import { snapshotToArray, getNextId } from '../utility/utilFunctions'
 
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 

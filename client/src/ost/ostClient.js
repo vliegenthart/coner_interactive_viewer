@@ -1,33 +1,32 @@
 import OstKit from './ost-kit';
 import config from './config';
 import { db } from '../firebase';
-import { getNextId } from '../utility/util-functions';
-// import OSTSDK from '@ostdotcom/ost-sdk-js';
+import { getNextId } from '../utility/utilFunctions';
+import { getApi, postApi } from '../utility/apiWrapper'
 
 const ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
 
-// const ostObj = new OSTSDK({apiKey: config.apiKey, apiSecret: config.apiSecret, apiEndpoint: config.ostApiEndpoint});
-// const userService = ostObj.services.users;
-
-export function listUsers() {
-  // userService.list({}).then(function(res) { console.log(JSON.stringify(res)); }).catch(function(err) { console.log(JSON.stringify(err)); });
-
-  ok.usersList().then((res) => {
-    console.log(res)
-  });
+// USER FUNCTIONS
+export const listUsers = () => {
+  getApi('/api/v1/ost/users')
+    .then(res => {
+      const users = JSON.parse(res.body).data.users
+      return users
+    })
+    .catch(err => console.log(err));
 }
 
-export function listTransactionTypes() {
-  ok.transactiontypesList().then((res) => {
-    console.log(res)
-  });
+export const createUser = async (name) => {
+  return postApi('/api/v1/ost/users', {name: name })  
 }
 
-export function createUser(name, callback) {
-  ok.usersCreate({name: name}).then(callback)
-  .catch((e) => {
-    console.error("OSTError: ", e)
-  });
+export const getUser = (id) => {
+  return getApi('/api/v1/ost/users/' + id)
+    .then(res => {
+      const user = JSON.parse(res.body).data.user
+      return user
+    })
+    .catch(err => console.log(err));
 }
 
 export function rewardUser(user, pid, transactionKind="RewardRating") {
@@ -40,6 +39,14 @@ export function rewardUser(user, pid, transactionKind="RewardRating") {
     console.error("OSTError: ", e)
   });
 }
+
+export function listTransactionTypes() {
+  ok.transactiontypesList().then((res) => {
+    console.log(res)
+  });
+}
+
+
 
 export function transactiontypesStatus(transaction_uuids=[], callback) {
   ok.transactiontypesStatus({transaction_uuids}).then(callback).catch((e) => {

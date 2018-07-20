@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 
 import config from './config';
-import { setHighlightsRated, truncate } from '../utility/util-functions';
+import { setHighlightsRated, truncate } from '../utility/utilFunctions';
 import colors from './Colors';
 
 import PropTypes from 'prop-types';

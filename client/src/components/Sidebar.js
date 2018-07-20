@@ -8,7 +8,7 @@ import colors from './Colors';
 import type { T_Highlight } from "react-pdf-annotator/types";
 import AuthUserContext from './AuthUserContext';
 import sortBy from 'lodash/sortBy';
-import { uniqueHighlights, truncate } from '../utility/util-functions';
+import { uniqueHighlights, truncate } from '../utility/utilFunctions';
 
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';

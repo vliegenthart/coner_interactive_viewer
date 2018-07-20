@@ -18,7 +18,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import sortBy from 'lodash/sortBy';
-import { truncate } from '../utility/util-functions';
+import { truncate } from '../utility/utilFunctions';
 
 const styles = {
   root: {
@@ -76,7 +76,7 @@ class Navigation extends Component {
   }
     
   render() {
-    const { classes, papers, pid} = this.props;
+    const { classes, papers, pid, user} = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -138,7 +138,7 @@ class Navigation extends Component {
                         open={open}
                         onClose={this.handleClose}
                       >
-                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>Account</Link></MenuItem>
+                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username} - {user && user.ostAttr && user.ostAttr.token_balance}</Link></MenuItem>
                         <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
                       </Menu>
                     </div>
