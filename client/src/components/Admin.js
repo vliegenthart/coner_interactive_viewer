@@ -14,8 +14,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { map } from 'lodash';
-import { snapshotToArray } from '../utility/util-functions';
-import * as ost from '../ost/ost-client';
+import { snapshotToArray } from '../utility/utilFunctions';
+import * as ost from '../ost/ostClient';
 import config from "../ost/config";
 import sortBy from 'lodash/sortBy';
 

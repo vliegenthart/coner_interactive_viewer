@@ -27,10 +27,11 @@ import AdminPage from './Admin';
 
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
-import * as ost from '../ost/ost-client';
+import * as ost from '../ost/ostClient';
 import isEqual from 'lodash/isEqual';
 
-import { snapshotToArray, getNextId } from '../utility/util-functions'
+import { snapshotToArray, getNextId } from '../utility/utilFunctions'
+import { getApi, postApi } from '../utility/apiWrapper'
 
 class App extends Component {
   constructor(props) {
@@ -66,55 +67,19 @@ class App extends Component {
       if (authUser) {
         this.setState(() => ({ authUser }));
         db.onceGetUser(authUser.uid).then(snapshot => {
-          this.setState({ user: { ...snapshot.val(), uid: authUser.uid } })
-          }
-        );
+          const dbUser = snapshot.val()
+          const ostUser = ost.getUser(dbUser.ostUuid)
+          
+          ostUser.then(res => {
+            this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser)          
+          }); 
+        });
       }
       else {
         this.setState(() => ({ authUser: null, user: null }));
       }
-    });
-
-    this.fetchOSTUsers()
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
-
-    this.createOSTUser()
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
+    });      
   }
-
-  fetchOSTUsers = async () => {
-    const response = await fetch('/api/v1/ost/users');
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  }
-
-  createOSTUser = async () => {
-    // let data = new FormData();
-    // data.append("json",));
-
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    const response = await fetch('/api/v1/ost/users', {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify({name: 'John Doe ' + Math.floor(Math.random()*(9999-1000+1)+100) })
-    });
-
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  }
-
-
-
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { pid, user } = this.state
@@ -123,7 +88,8 @@ class App extends Component {
 
   setUser(user, authUser=null) {
     if (authUser) return this.setState(() =>({user: user, authUser: authUser }))
-    this.setState(() =>({ user: user }))
+      
+    this.setState(() =>({ user: null, authUser: null }))
   }
 
   getRatingsNewestVersion(ratings) {
@@ -212,7 +178,7 @@ class App extends Component {
     return(
       <Router>
         <div>
-          <Navigation pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
+          <Navigation user={user} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
 
           <Route exact path={routes.LANDING} render={() => <LandingPage />} />
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />

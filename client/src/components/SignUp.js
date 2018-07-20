@@ -7,7 +7,7 @@ import {
 
 import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
-import * as ost from '../ost/ost-client';
+import * as ost from '../ost/ostClient';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -63,25 +63,27 @@ class SignUpForm extends Component {
       .then(authUser => {
 
         // Create OST user
-        ost.createUser(username, (res) => {
+        ost.createUser(username).then(ost_res => {
           console.log(`Created OST user: ${username}`)
-
+          const ostUser = JSON.parse(ost_res.body).data.user
+          
           // Create user in custom Firebase accessible DB
-          db.doCreateUser(authUser.uid, username, email, res['economy_users'][0]['uuid'])
-          .then((res1) => {
-            const currUser = { role: 'USER', uid: authUser.uid, username: username, email: email, ostUuid: res['economy_users'][0]['uuid'] }
-            this.setState(() => ({ username, email, }));
+          db.doCreateUser(authUser.uid, username, email, ostUser.id)
+          .then(db_res => {
+            const currUser = { role: 'USER', uid: authUser.uid, username: username, email: email, ostAttr: ostUser }
+            this.setState(() => ({ username, email }));
             setUser(currUser, authUser);
             history.push(routes.VIEWER);
-
           })
           .catch(error => {
             this.setState(byPropKey('error', error));
           });
 
-          ost.createReward(res)
-
-        });    
+          ost.createReward(ost_res)
+        })
+        .catch((e) => {
+          console.error("OSTError: ", e)
+        });
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
