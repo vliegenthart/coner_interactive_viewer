@@ -28,6 +28,7 @@ import AdminPage from './Admin';
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
 import * as ost from '../ost/ostClient';
+import * as cmc from '../cmc/cmcClient';
 import isEqual from 'lodash/isEqual';
 
 import { snapshotToArray, getNextId } from '../utility/utilFunctions'
