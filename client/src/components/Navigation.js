@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 
 import AuthUserContext from './AuthUserContext';
 import SignOutButton from './SignOut';
@@ -19,6 +20,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import sortBy from 'lodash/sortBy';
 import { truncate } from '../utility/utilFunctions';
+import config from './config'
+import * as cmc from '../cmc/cmcClient';
 
 const styles = {
   root: {
@@ -56,23 +59,37 @@ class Navigation extends Component {
     this.handleMenu = this.handleMenu.bind(this);
     this.handleClose = this.handleClose.bind(this); 
     this.handlePaperchange = this.handlePaperChange.bind(this);
+    this.calcTokenValue = this.calcTokenValue.bind(this);
     
     this.state = {
       anchorEl: null,
-    };
+      ostPrice: 0,
+    }
   }
   
+  componentDidMount() {
+    cmc.getTicker('OST').then(res => {
+      this.setState(() => ({ostPrice: res.price_usd}))
+    });
+  }
 
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
-  };
+  }
 
   handleClose = () => {
     this.setState({ anchorEl: null });
-  };
+  }
 
   handlePaperChange = (event, uid) => {
     this.props.switchPaper(event.target.name, event.target.value, uid)
+  }
+
+  calcTokenValue = () => {
+    const { ostPrice } = this.state;
+    const { user } = this.props;
+
+    return ostPrice && user ? parseFloat(ostPrice * user.ostAttr.token_balance * config.ostMintRatio).toFixed(2) : 0.00
   }
     
   render() {
@@ -83,9 +100,9 @@ class Navigation extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div className={classes.root}>
+          <div className={classes.root} >
             <AppBar position="static" className={classes.appbar}>
-              <Toolbar>
+              <Toolbar className="coner-toolbar">
                 <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                   <MenuIcon />
                 </IconButton>
@@ -99,7 +116,7 @@ class Navigation extends Component {
                     <div>
                       {window.location.pathname === routes.VIEWER &&
                         <Select
-                          className={classes.select}
+                          className={`${classes.select} paper-select`}
                           value={pid}
                           onChange={event => this.handlePaperChange(event, authUser.uid)}
                           inputProps={{
@@ -114,16 +131,21 @@ class Navigation extends Component {
                       }
 
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.LANDING}>Home</Link></Button> 
-                      <Button color="inherit"><Link className={classes.linkInButton} to={routes.VIEWER}>Viewer</Link></Button>
+                      
+                      {window.location.pathname !== routes.VIEWER &&
+                        <Button color="inherit"><Link className={classes.linkInButton} to={routes.VIEWER}>Viewer</Link></Button>
+                      }
 
                       <IconButton
                         aria-owns={open ? 'menu-appbar' : null}
                         aria-haspopup="true"
                         onClick={this.handleMenu}
                         color="inherit"
+                        className="user-dropdown"
                       >
                         <AccountCircle />
                       </IconButton>
+
                       <Menu
                         id="menu-appbar"
                         anchorEl={anchorEl}
@@ -138,9 +160,17 @@ class Navigation extends Component {
                         open={open}
                         onClose={this.handleClose}
                       >
-                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username} - {user && user.ostAttr && user.ostAttr.token_balance}</Link></MenuItem>
+                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username}</Link></MenuItem>
                         <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
                       </Menu>
+
+                      {config.ostDevMode && 
+                        <div className="token-balance">
+                          <div>{user && user.ostAttr.token_balance} CNR</div>
+                          <div className="price-usd">{this.calcTokenValue()} $</div>
+                        </div>
+                      }
+                      
                     </div>
                   )
                   : (
@@ -169,6 +199,6 @@ Navigation.propTypes = {
 // const NavigationNonAuth = () =>
   
 
-export default withStyles(styles)(Navigation);
+export default withRouter(withStyles(styles)(Navigation));
 
 

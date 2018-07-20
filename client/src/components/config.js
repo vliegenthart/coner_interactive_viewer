@@ -13,4 +13,7 @@ config.defaultPaper = process.env.NODE_ENV === 'production'
 
 config.showDebug = process.env.NODE_ENV === 'development'
 
+config.ostMintRatio = 0.03717
+config.ostDevMode = true
+
 export default config;
