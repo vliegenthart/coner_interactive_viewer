@@ -91,7 +91,7 @@ class Sidebar extends Component<Props, State> {
               })}
             </div>
             
-            <h3 className="Keywords__title">Keyword Ratings</h3>
+            <h3 className="Keywords__title">Your entity feedback</h3>
             <ul className="sidebar__highlights">
               {uniqueHighlights(sortBy(highlights, ['position.pageNumber', 'position.boundingRect.y1', 'position.boundingRect.x1'])).map((highlight, index) => (
                 <li
