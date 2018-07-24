@@ -7,7 +7,7 @@ import {
 
 import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
-import * as ost from '../ost/ostClient';
+import OstClient from '../ost/ostClient';
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -15,6 +15,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+
+
+const ost = new OstClient()
 
 const SignUpPage = ({ history, setUser }) =>
   <Grid container spacing={24} alignItems="center" direction="row" justify="center">

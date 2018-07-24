@@ -21,7 +21,7 @@ import Select from '@material-ui/core/Select';
 import sortBy from 'lodash/sortBy';
 import { truncate } from '../utility/utilFunctions';
 import config from './config'
-import * as cmc from '../cmc/cmcClient';
+import CmcClient from '../cmc/cmcClient';
 
 const styles = {
   root: {
@@ -60,16 +60,25 @@ class Navigation extends Component {
     this.handleClose = this.handleClose.bind(this); 
     this.handlePaperchange = this.handlePaperChange.bind(this);
     this.calcTokenValue = this.calcTokenValue.bind(this);
+    this.setTicker = this.setTicker.bind(this);
     
     this.state = {
       anchorEl: null,
       ostPrice: 0,
+      tokenValue: 0,
     }
+
+    this.cmc = new CmcClient()
   }
   
   componentDidMount() {
-    cmc.getTicker('OST').then(res => {
-      this.setState(() => ({ostPrice: res.price_usd}))
+    this.setTicker()
+  }
+
+  setTicker = () => {
+    this.cmc.getTicker('OST').then(res => {
+      const tokenValue = this.calcTokenValue(res.price_usd)
+      this.setState(() => ({ ostPrice: res.price_usd }))
     });
   }
 
@@ -86,15 +95,15 @@ class Navigation extends Component {
   }
 
   calcTokenValue = () => {
-    const { ostPrice } = this.state;
-    const { user } = this.props;
+    const { user, tokenBalance } = this.props;
+    const {ostPrice } = this.state;
 
-    return ostPrice && user ? parseFloat(ostPrice * user.ostAttr.token_balance * config.ostMintRatio).toFixed(2) : 0.00
+    return ostPrice ? parseFloat(ostPrice * tokenBalance * config.ostMintRatio).toFixed(2) : 0.00
   }
     
   render() {
-    const { classes, papers, pid, user} = this.props;
-    const { anchorEl } = this.state;
+    const { classes, papers, pid, user, tokenBalance } = this.props;
+    const { anchorEl, tokenValue } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -165,9 +174,9 @@ class Navigation extends Component {
                       </Menu>
 
                       {config.ostDevMode && 
-                        <div className="token-balance">
-                          <div>{user && user.ostAttr.token_balance} CNR</div>
-                          <div className="price-usd">{this.calcTokenValue()} $</div>
+                        <div className="token-balance-container">
+                          <div className="token-balance">{tokenBalance} CNR</div>
+                          <div className="price-usd">$ {this.calcTokenValue()}</div>
                         </div>
                       }
                       

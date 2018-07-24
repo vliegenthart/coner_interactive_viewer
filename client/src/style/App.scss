@@ -47,7 +47,7 @@ body {
     top: 6px;
   }
 
-  .token-balance {
+  .token-balance-container {
     float: right;
     height: 44px;
     margin: 10px 15px;
@@ -55,9 +55,13 @@ body {
     border-right: 1px solid #f1f1f1;
     border-left: 1px solid #f1f1f1;
     line-height: 22px;
+    .token-balance {
+      margin-top: 1px;
+    }
     .price-usd {
-      font-size: 13px;
-      float: right;
+      font-size: 12px;
+      float: left;
+      margin-top: -2px;
     }
   }
   .user-dropdown {
