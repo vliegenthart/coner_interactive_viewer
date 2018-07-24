@@ -82,6 +82,15 @@ class OstClient {
   }
 
   // LEDGER FUNCTIONS
+  getUserLedger = (userId) => {
+    return getApi('/api/v1/ost/ledgers/' + userId)
+      .then(res => {
+        return JSON.parse(res.body).data
+      })
+      .catch(err => console.log(err));
+  }
+
+
 
   listTransactionTypes = () => {
     ok.transactiontypesList().then((res) => {
