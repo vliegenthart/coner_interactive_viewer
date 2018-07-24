@@ -77,7 +77,7 @@ class AdminPage extends Component {
             const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
 
             setTimeout(() => { 
-              this.ost.transactiontypesStatus(transaction_uuids, (res) => {
+              _this.ost.transactiontypesStatus(transaction_uuids, (res) => {
                 if (config.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }
