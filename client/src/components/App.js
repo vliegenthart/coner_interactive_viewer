@@ -78,7 +78,8 @@ class App extends Component {
         db.onceGetUser(authUser.uid).then(snapshot => {
           const dbUser = snapshot.val()
           const ostUser = this.ost.getUser(dbUser.ostUuid)
-          
+
+
           ostUser.then(res => {
             this.ost.getUserBalance(res.id).then(balRes => {
               this.setState(() => ({ tokenBalance: balRes.token_balance }))

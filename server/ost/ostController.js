@@ -13,7 +13,6 @@ router.use('/users', userController)
 router.use('/actions', actionController)
 router.use('/transactions', transactionController)
 router.use('/balances', balanceController)
-// router.use('/ledgers', ledgerController)
-
+router.use('/ledgers', ledgerController)
 
 module.exports = router;
