@@ -5,37 +5,36 @@ var bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-
 const ostConfig = require('./config')
 const OSTSDK = require('@ostdotcom/ost-sdk-js');
 const ostObj = new OSTSDK({apiKey: ostConfig.settings.apiKey, apiSecret: ostConfig.settings.apiSecret, apiEndpoint: ostConfig.settings.ostApiEndpoint});
-const userService = ostObj.services.users;
+const transactionService = ostObj.services.transactions;
 
-// LIST ALL OST USERS
+// LIST OST TRANSACTIONS
 router.get('/', (req, res) => {
-  userService.list({}).then(function(ost_res) { 
+  transactionService.list({page_no: 1, limit: 10}).then(function(ost_res) { 
     res.status(200).send({ body: JSON.stringify(ost_res) }); 
 
   }).catch(function(err) { 
-     return res.status(500).send("There was a problem finding the OST users.");; 
+     return res.status(500).send("There was a problem listing the OST transactions.");; 
   });
 });
 
-// GET OST USER
+// GET TRANSACTION STATUS
 router.get('/:id', (req, res) => {
-  userService.get({id: req.params.id}).then(function(ost_res) { 
+  transactionService.get({id: req.params.id}).then(function(ost_res) { 
     res.status(200).send({ body: JSON.stringify(ost_res) }); 
   }).catch(function(err) { 
-     return res.status(500).send("There was a problem finding this OST user.");; 
+     return res.status(500).send("There was a problem finding this OST transaction.");; 
   });
 });
 
-// CREATE NEW OST USER
-router.post('/', (req, res) => {
-  userService.create({name: req.body.name}).then(function(ost_res) { 
+// EXECUTE TRANSACTION
+router.post('/execute', (req, res) => {
+  transactionService.execute({from_user_id: req.body.fromUserId, to_user_id: req.body.toUserId, action_id: req.body.actionId }).then(function(ost_res) { 
     res.status(200).send({'body': JSON.stringify(ost_res)});
   }).catch(function(err) { 
-    res.status(500).send("There was a problem creating this OST user.");
+    res.status(500).send("There was a problem creating this OST transaction.");
   });
 });
 

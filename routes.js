@@ -7,5 +7,4 @@ var cmcController = require('./server/cmc/cmcController');
 router.use('/ost', ostController)
 router.use('/cmc', cmcController)
 
-
 module.exports = router;

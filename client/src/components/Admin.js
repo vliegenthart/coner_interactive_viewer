@@ -15,7 +15,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { map } from 'lodash';
 import { snapshotToArray } from '../utility/utilFunctions';
-import * as ost from '../ost/ostClient';
+import OstClient from '../ost/ostClient';
 import config from "../ost/config";
 import sortBy from 'lodash/sortBy';
 
@@ -29,6 +29,8 @@ class AdminPage extends Component {
       users: null,
       ostTransactions: {},
     };
+
+    this.ost = new OstClient()
 
     this.syncLocalHighlights = this.syncLocalHighlights.bind(this);
     this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
@@ -75,7 +77,7 @@ class AdminPage extends Component {
             const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
 
             setTimeout(() => { 
-              ost.transactiontypesStatus(transaction_uuids, (res) => {
+              this.ost.transactiontypesStatus(transaction_uuids, (res) => {
                 if (config.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }

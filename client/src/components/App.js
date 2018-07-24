@@ -27,8 +27,7 @@ import AdminPage from './Admin';
 
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
-import * as ost from '../ost/ostClient';
-import * as cmc from '../cmc/cmcClient';
+import OstClient from '../ost/ostClient';
 import isEqual from 'lodash/isEqual';
 
 import { snapshotToArray, getNextId } from '../utility/utilFunctions'
@@ -51,8 +50,17 @@ class App extends Component {
       user: null,    
       authUser: null,
       ratings: [],
-      userRatings: []
+      userRatings: [],
+      tokenBalance: 0
     }
+
+    this.ost = new OstClient()
+
+    this.actionNames = {}
+
+    this.ost.listActions().then(res => {
+      this.actionNames = res;
+    });
   }
 
   setCurrentPaper = (pid, paper, uid) => {
@@ -69,10 +77,14 @@ class App extends Component {
         this.setState(() => ({ authUser }));
         db.onceGetUser(authUser.uid).then(snapshot => {
           const dbUser = snapshot.val()
-          const ostUser = ost.getUser(dbUser.ostUuid)
+          const ostUser = this.ost.getUser(dbUser.ostUuid)
           
           ostUser.then(res => {
-            this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser)          
+            this.ost.getUserBalance(res.id).then(balRes => {
+              this.setState(() => ({ tokenBalance: balRes.token_balance }))
+            });
+            this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
+
           }); 
         });
       }
@@ -86,10 +98,20 @@ class App extends Component {
     const { pid, user } = this.state
     if ((!prevState.user || !isEqual(prevState.user, this.state.user)) && this.state.user) this.getRatingsByPid(pid, user.uid)
   }
+  
+  refreshTokenBalance = (action) => {
+    this.setState(() => ({ tokenBalance: parseInt(this.state.tokenBalance) + parseInt(this.actionNames[action].amount) }))
+  }
 
   setUser(user, authUser=null) {
-    if (authUser) return this.setState(() =>({user: user, authUser: authUser }))
-      
+    if (authUser) {
+
+      this.setState(() =>({user: user, authUser: authUser }));
+      this.ost.getUserBalance(user.ostAttr.id).then(balRes => {
+        this.setState(() => ({ tokenBalance: balRes.token_balance }))
+      });
+      return
+    }
     this.setState(() =>({ user: null, authUser: null }))
   }
 
@@ -161,25 +183,29 @@ class App extends Component {
     const { pid } = this.state;
 
     if (user && uid === user.uid) {
-      ost.rewardUser(user, pid, type)
+      this.ost.transactionCompanyToUser(user, pid, type).then(res => {
+        this.refreshTokenBalance(type)
+      })
     }
-    else {
-      db.onceGetUser(uid).then(snapshot => {
-        let fbUser = snapshot.val()
-        this.setState({ user: { ...fbUser, uid } })
-        ost.rewardUser(fbUser, pid, type)
-        }
-      );
-    }
+    // else {
+    //   db.onceGetUser(uid).then(snapshot => {
+    //     let fbUser = snapshot.val()
+    //     this.setState({ user: { ...fbUser, uid } })
+    //     this.ost.transactionCompanyToUser(fbUser, pid, type).then(res => {
+    //       this.refreshTokenBalance()
+    //     })
+    //     }
+    //   );
+    // }
   }
 
   render() {
-    const { pid, papers, user } = this.state;
+    const { pid, papers, user, tokenBalance } = this.state;
 
     return(
       <Router>
         <div>
-          <Navigation user={user} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
+          <Navigation user={user} tokenBalance={tokenBalance} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
 
           <Route exact path={routes.LANDING} render={() => <LandingPage />} />
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />
