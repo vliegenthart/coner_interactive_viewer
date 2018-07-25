@@ -64,7 +64,6 @@ class OstClient {
       console.error("OSTError: ", e)
     });
 
-
     // ok.transactiontypesExecute({from_uuid: config.companyUuid, to_uuid: user.ostUuid, transaction_kind: transactionKind}).then((res) => {  
   }
 

@@ -229,6 +229,7 @@ class PdfViewer extends Component<Props, State> {
                           content={highlight.content}
                           type={highlight.type}
                           ratings={ratingsForHighlight}
+                          id={highlight.id}
                         />
 
                       return (
@@ -245,9 +246,11 @@ class PdfViewer extends Component<Props, State> {
                               }}
                             />
                           }
-                          onClick={popupContent => 
-                            setTip(highlight, highlight => popupContent)
+                          onClick={popupContent => {
+                            setTip(highlight, highlight => popupContent) }
                           }
+                          isScrolledTo={isScrolledTo}
+                          highlight={highlight}
                           onMouseOut={hideTip}
                           key={index}
                           children={component}

@@ -8,7 +8,8 @@ type Props = {
   onClick: (content: React$Element<*>) => void,
   popupContent: React$Element<*>,
   onMouseOut: () => void,
-  children: React$Element<*>
+  children: React$Element<*>,
+  isScrolledTo: boolean
 };
 
 type State = {
@@ -21,6 +22,14 @@ class Popup extends Component<Props, State> {
   };
 
   props: Props;
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { onClick, isScrolledTo, highlight } = this.props;
+
+    if (!prevProps.isScrolledTo && isScrolledTo) {
+      document.getElementById('highlight-' + highlight.id).click()
+    }
+  }
 
   render() {
     const { onClick, popupContent } = this.props;
