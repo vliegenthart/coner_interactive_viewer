@@ -24,6 +24,7 @@ type Props = {
 };
 
 class Highlight extends Component<Props> {
+
   render() {
     const {
       position,
@@ -34,6 +35,7 @@ class Highlight extends Component<Props> {
       ratings,
       content,
       isScrolledTo,
+      id,
     } = this.props;
 
     const { rects } = position;
@@ -42,7 +44,7 @@ class Highlight extends Component<Props> {
       <div
         className={`Highlight ${isScrolledTo ? "Highlight--scrolledTo" : ""}`}
       >
-        <div className={`Highlight__parts`}>
+        <div className={`Highlight__parts`} id={`highlight-${id}`}>
           {rects.map((rect, index) => (
             <div
               onMouseOver={onMouseOver}
