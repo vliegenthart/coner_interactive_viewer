@@ -56,7 +56,7 @@ class OstClient {
   // TRANSACTION FUNCTIONS
   transactionCompanyToUser = (user, pid, action="RewardRating") => {
     return this.executeTransaction(config.companyUuid, user.ostUuid, action).then(ostRes => {
-      if (config.ostDevMode) console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`)
+      if (config.ostDevMode) { console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
@@ -126,7 +126,7 @@ class OstClient {
 
     db.doCreateReward(id, reward)
     .then(data => {
-      if (config.ostDevMode) console.log(`Added reward (id: ${id}) to Firebase database`)
+      if (config.ostDevMode) { console.log(`Added reward (id: ${id}) to Firebase database`) }
     })
     .catch(error => {
       console.log('Error:', error);

@@ -44,9 +44,13 @@ class App extends Component {
     this.rewardUser = this.rewardUser.bind(this);
     this.setUser = this.setUser.bind(this);
 
+    const finalPapersList = config.papersList.filter((paper) => {
+      return config.candidatePapers.includes(paper["pid"]) 
+    })
+    
     this.state = {
       pid: config.defaultPaper['pid'],
-      papers: config.papersList,
+      papers: finalPapersList,
       user: null,    
       authUser: null,
       ratings: [],

@@ -131,7 +131,7 @@ class RatingTip extends Component<Props, State> {
     ratings[facet] = rating
     let rating2 = null
 
-    if (Object.keys(ratings).length == 1) {
+    if (Object.keys(ratings).length == 1 && rating.relevance === 'relevant') {
       const oppFacet = rating.facet === 'dataset' ? 'method' : 'dataset'
       const oppRelevance = rating.relevance === 'relevant' ? 'irrelevant' : 'relevant'
       rating2 = { type: 'occurrence', entityText: highlight.content.text, relevance: oppRelevance, facet: oppFacet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: highlight.pid, uid: authUser.uid, version: this.incrementVersion(oppFacet) }
