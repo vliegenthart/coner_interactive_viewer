@@ -186,9 +186,10 @@ class PdfViewer extends Component<Props, State> {
         />
         <div
           style={{
-            height: "100vh",
+            height: "calc(100% - 64px)",
             width: "75vw",
-            overflowY: "scroll",
+            overflowY: "hidden",
+            top: "64px",
             position: "relative"
           }}
         >
