@@ -24,9 +24,9 @@
 .Highlight__part {
   cursor: pointer;
   position: absolute;
-  background: #FFE28F;
+  background: #ffdb76;
   transition: background 0.3s;
-  outline: 1px solid #ffce43;
+  outline: 1px solid #ffc72a;
 }
 
 .Highlight__part.generated.dataset {
@@ -40,8 +40,8 @@
 }
 
 .Highlight__part.generated.doubly {
-  background: #ccb6d7;
-  outline: 1px solid #a985bc;
+  background: #c44dff;
+  outline: 1px solid #aa00ff;
 }
 
 .Highlight__popup {
@@ -56,7 +56,7 @@
 }
 
 .Highlight--scrolledTo .Highlight__part {
-  /*background: #c0392b !important;*/
-  background: #00E676 !important;
+  /*background: #00E676 !important;*/
+  outline: 3px solid #00cd69 !important;
   opacity: 0.55;
 }

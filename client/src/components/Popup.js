@@ -23,13 +23,15 @@ class Popup extends Component<Props, State> {
 
   props: Props;
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { onClick, isScrolledTo, highlight } = this.props;
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   const { onClick, isScrolledTo, highlight } = this.props;
 
-    if (!prevProps.isScrolledTo && isScrolledTo) {
-      document.getElementById('highlight-' + highlight.id).click()
-    }
-  }
+  //   if (!prevProps.isScrolledTo && isScrolledTo) {
+  //     setTimeout(() => {
+  //       document.getElementById('highlight-' + highlight.id).click()
+  //     }, 200);
+  //   }
+  // }
 
   render() {
     const { onClick, popupContent } = this.props;

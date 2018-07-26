@@ -62,6 +62,9 @@ class AdminPage extends Component {
         console.log('Error:', error);
       });
     }
+
+    console.log("Finished syncing highlights")
+
   }
 
   deleteFirebaseHighlights() {
