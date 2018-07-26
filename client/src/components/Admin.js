@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { map } from 'lodash';
 import { snapshotToArray } from '../utility/utilFunctions';
 import OstClient from '../ost/ostClient';
-import config from "../ost/config";
+import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
 
 import "../style/Admin.css";
@@ -78,7 +78,7 @@ class AdminPage extends Component {
 
             setTimeout(() => { 
               _this.ost.transactiontypesStatus(transaction_uuids, (res) => {
-                if (config.devMode) {
+                if (ostSettings.devMode) {
                   console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
                 }
                 res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
@@ -131,7 +131,7 @@ class AdminPage extends Component {
                             return (
                               <TableRow key={trans.id}>
                                 <TableCell component="th" scope="row">
-                                  <a href={config.viewerBaseUrl + trans.transaction_hash}>{trans.transaction_hash}</a>
+                                  <a href={ostSettings.viewerBaseUrl + trans.transaction_hash}>{trans.transaction_hash}</a>
                                 </TableCell>
                                 <TableCell>
                                 {ostTransactions[paper.pid]['transaction_types'][trans.transaction_type_id]['name']}

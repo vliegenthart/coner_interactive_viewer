@@ -1,10 +1,8 @@
-import OstKit from './ost-kit';
-import config from './config';
+import config from './ostClientSettings';
 import { db } from '../firebase';
 import { getNextId } from '../utility/utilFunctions';
 import { getApi, postApi } from '../utility/apiWrapper'
 
-const ok = new OstKit(config.apiKey, config.apiSecret, config.ostApiEndpoint);
 
 let actionNames = {}
 
@@ -58,7 +56,7 @@ class OstClient {
   // TRANSACTION FUNCTIONS
   transactionCompanyToUser = (user, pid, action="RewardRating") => {
     return this.executeTransaction(config.companyUuid, user.ostUuid, action).then(ostRes => {
-      if (config.devMode) console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`)
+      if (config.ostDevMode) console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`)
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
@@ -92,33 +90,33 @@ class OstClient {
 
 
   listTransactionTypes = () => {
-    ok.transactiontypesList().then((res) => {
-      console.log(res)
-    });
+    // ok.transactiontypesList().then((res) => {
+    //   console.log(res)
+    // });
   }
 
 
 
   transactiontypesStatus = (transaction_uuids=[], callback) => {
-    ok.transactiontypesStatus({transaction_uuids}).then(callback).catch((e) => {
-      console.error("OSTError: ", e)
-    });
+    // ok.transactiontypesStatus({transaction_uuids}).then(callback).catch((e) => {
+    //   console.error("OSTError: ", e)
+    // });
   }
 
   airdropNewUsers = (amount) => {
-    ok.usersAirdropDrop({amount: amount, list_type: "never_airdropped"}).then((res) => {
-      console.log(res)
-    }).catch((e) => {
-      console.error("OSTError: ", e)
-    });
+    // ok.usersAirdropDrop({amount: amount, list_type: "never_airdropped"}).then((res) => {
+    //   console.log(res)
+    // }).catch((e) => {
+    //   console.error("OSTError: ", e)
+    // });
   }
 
   airdropAllUsers = (amount) => {
-    ok.usersAirdropDrop({amount: amount, list_type: "all"}).then((res) => {
-      console.log(res)
-    }).catch((e) => {
-      console.error("OSTError: ", e)
-    });
+    // ok.usersAirdropDrop({amount: amount, list_type: "all"}).then((res) => {
+    //   console.log(res)
+    // }).catch((e) => {
+    //   console.error("OSTError: ", e)
+    // });
   }
 
   createReward = (ost_trans, pid="create_user") => {
@@ -128,7 +126,7 @@ class OstClient {
 
     db.doCreateReward(id, reward)
     .then(data => {
-      if (config.devMode) console.log(`Added reward (id: ${id}) to Firebase database`)
+      if (config.ostDevMode) console.log(`Added reward (id: ${id}) to Firebase database`)
     })
     .catch(error => {
       console.log('Error:', error);

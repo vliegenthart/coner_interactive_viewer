@@ -20,7 +20,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import sortBy from 'lodash/sortBy';
 import { truncate } from '../utility/utilFunctions';
-import config from './config'
+import ostSettings from '../ost/ostClientSettings';
 import CmcClient from '../cmc/cmcClient';
 
 const styles = {
@@ -98,7 +98,7 @@ class Navigation extends Component {
     const { user, tokenBalance } = this.props;
     const {ostPrice } = this.state;
 
-    return ostPrice ? parseFloat(ostPrice * tokenBalance * config.ostMintRatio).toFixed(2) : 0.00
+    return ostPrice ? parseFloat(ostPrice * tokenBalance * ostSettings.ostMintRatio).toFixed(2) : 0.00
   }
     
   render() {
@@ -173,7 +173,7 @@ class Navigation extends Component {
                         <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
                       </Menu>
 
-                      {config.ostDevMode && 
+                      {ostSettings.ostDevMode && 
                         <div className="token-balance-container">
                           <div className="token-balance">{tokenBalance} CNR</div>
                           <div className="price-usd">$ {this.calcTokenValue()}</div>
