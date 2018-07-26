@@ -13,6 +13,10 @@ body {
   color: #424242;
 }
 
+p.error {
+  color: red;
+}
+
 // .Paper__viewer {
 //   height: calc(100vh - 64px) !important;
 // }
@@ -46,7 +50,7 @@ body {
 }
 .coner-toolbar {
   button {
-    margin-top: 14px;
+    margin-top: 10px;
   }
   .paper-select {
     top: 6px;
@@ -71,7 +75,7 @@ body {
   }
   .user-dropdown {
     float: right;
-    margin-top: 8px;
+    margin-top: 4px;
   }
 }
 

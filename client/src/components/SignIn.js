@@ -124,7 +124,7 @@ class SignInForm extends Component {
           Sign In
         </Button>
 
-        { error && <p>{error.message}</p> }
+        { error && <p className="error">{error.message}</p> }
       </form>
     );
   }
