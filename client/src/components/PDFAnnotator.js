@@ -130,6 +130,7 @@ class PdfAnnotator<T_HT: T_Highlight> extends Component<
 
   componentDidMount() {
     this.setupAndRenderPDFAnnotator()
+
   }
 
   setupAndRenderPDFAnnotator() {

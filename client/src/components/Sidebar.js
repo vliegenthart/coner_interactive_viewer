@@ -40,7 +40,6 @@ const styles = theme => ({
 });
 
 const updateHash = highlight => {
-  window.location.hash = ''
   window.location.hash = `highlight-${highlight.id}`;
 };
 
