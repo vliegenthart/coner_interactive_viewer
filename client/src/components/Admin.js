@@ -33,6 +33,7 @@ class AdminPage extends Component {
     this.ost = new OstClient()
 
     this.syncLocalHighlights = this.syncLocalHighlights.bind(this);
+    this.deleteFirebaseHighlights = this.deleteFirebaseHighlights.bind(this);
     this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
 
   }
@@ -61,6 +62,51 @@ class AdminPage extends Component {
         console.log('Error:', error);
       });
     }
+  }
+
+  deleteFirebaseHighlights() {
+    console.log("Deleting Firebase highlights...")
+    
+    db.onceDeleteHighlights().then(res => {
+      console.log("Finished deleting Firebase highlights")
+    }) 
+    .catch(error => {
+      console.log('Error:', error);
+    });
+  }
+
+  deleteFirebaseHighlights() {
+    console.log("Deleting Firebase highlights...")
+    
+    db.deleteHighlights().then(res => {
+      console.log("Finished deleting Firebase highlights")
+    }) 
+    .catch(error => {
+      console.log('Error:', error);
+    });
+  }
+
+
+  deleteFirebaseRatings() {
+    console.log("Deleting Firebase ratings...")
+    
+    db.deleteRatings().then(res => {
+      console.log("Finished deleting Firebase ratings")
+    }) 
+    .catch(error => {
+      console.log('Error:', error);
+    });
+  }
+
+  deleteFirebaseRewards() {
+    console.log("Deleting Firebase rewards...")
+    
+    db.deleteRewards().then(res => {
+      console.log("Finished deleting Firebase rewards")
+    }) 
+    .catch(error => {
+      console.log('Error:', error);
+    });
   }
 
   fetchOstTransactions() {
@@ -105,10 +151,22 @@ class AdminPage extends Component {
               <h1>Admin Page</h1>
               { !!users && <UserList users={users} /> }
 
-              <h3>Sync Highlights</h3>
-              <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } varian="raised">
+              <h3>Firebase Interaction</h3>
+              <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } variant="raised">
                 Sync Local Highlights with Firebase Database
-              </Button>
+              </Button> <br />
+
+              <Button className="Submit__button is-red" onClick={() => this.deleteFirebaseHighlights() } variant="raised">
+                Remove all highlights from Firebase Database
+              </Button> <br />
+              
+              <Button className="Submit__button is-red" onClick={() => this.deleteFirebaseRatings() } variant="raised">
+                Remove all ratings from Firebase Database
+              </Button> <br />
+
+              <Button className="Submit__button is-red" onClick={() => this.deleteFirebaseRewards() } variant="raised">
+                Remove all OST rewards from Firebase Database
+              </Button> <br />
 
               <h3>OST Transactions</h3>
 

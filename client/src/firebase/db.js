@@ -28,6 +28,10 @@ export const onceGetHighlights = (pid) =>
 export const onceGetHighlight = (pid, id) =>
   db.ref(`highlights/${pid}/${id}`).once('value');
 
+
+export const deleteHighlights = () =>
+  db.ref(`highlights`).remove();
+
 // Rating API
 export const doCreateRating = (id, rating) => {
   return db.ref(`ratings/${rating.pid}/${id}`).set({
@@ -41,6 +45,9 @@ export const onceGetRatings = (pid) =>
 export const onceGetRating = (pid, id) =>
   db.ref(`ratings/${pid}/${id}`).once('value');
 
+export const deleteRatings = () =>
+  db.ref(`ratings`).remove();
+
 // OSTReward API
 export const doCreateReward = (id, reward) => {
   return db.ref(`rewards/${reward.pid}/${id}`).set({
@@ -53,3 +60,8 @@ export const onceGetRewards = (pid) =>
 
 export const onceGetReward = (pid, id) =>
   db.ref(`rewards/${pid}/${id}`).once('value');
+
+export const deleteRewards = () =>
+  db.ref(`rewards`).remove();
+
+

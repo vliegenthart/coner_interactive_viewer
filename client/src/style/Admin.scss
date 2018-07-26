@@ -4,4 +4,14 @@
   h5 {
     margin: 40px 0 5px 0;
   }
+  .Submit__button {
+    margin-bottom: 15px;
+    &.is-red {
+      background: #FF8A80;
+      &:hover {
+        background: #EF5350;
+      }
+    }
+
+  }
 }
