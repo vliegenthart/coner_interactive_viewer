@@ -124,8 +124,6 @@ class RatingTip extends Component<Props, State> {
     const { addRating, highlight, authUser } = this.props;
     const { ratings } = this.state;
 
-    console.log(Object.keys(ratings).length)
-
     const val = event.currentTarget.value;
     const [facet, relevance] = val.split("-");
 
