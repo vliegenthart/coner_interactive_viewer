@@ -1,11 +1,11 @@
-{
-  "root": "build/",
-  "routes": {
-    "/**": "index.html"
-  },
-  "proxies": {
-    "/proxy/": {
-      "origin": "https://sandboxapi.ost.com/v1.1/"
-    }
-  }
-}
+// {
+//   "root": "build/",
+//   "routes": {
+//     "/**": "index.html"
+//   },
+//   "proxies": {
+//     "/proxy/": {
+//       "origin": "https://sandboxapi.ost.com/v1.1/"
+//     }
+//   }
+// }
