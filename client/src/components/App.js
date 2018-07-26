@@ -74,19 +74,22 @@ class App extends Component {
   componentDidMount() {
     firebase.auth.onAuthStateChanged(authUser => {
       if (authUser) {
-        this.setState(() => ({ authUser }));
-        db.onceGetUser(authUser.uid).then(snapshot => {
-          const dbUser = snapshot.val()
-          const ostUser = this.ost.getUser(dbUser.ostUuid)
+        setTimeout(() => {
+          this.setState(() => ({ authUser }));
+          db.onceGetUser(authUser.uid).then(snapshot => {
+            const dbUser = snapshot.val()
+            const ostUser = this.ost.getUser(dbUser.ostUuid)
 
-          ostUser.then(res => {
-            this.ost.getUserBalance(res.id).then(balRes => {
-              this.setState(() => ({ tokenBalance: balRes.available_balance }))
-            });
-            this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
+            ostUser.then(res => {
+              this.ost.getUserBalance(res.id).then(balRes => {
+                this.setState(() => ({ tokenBalance: balRes.available_balance }))
+              });
+              this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
 
-          }); 
-        });
+            }); 
+          });
+        }, 500);
+        
       }
       else {
         this.setState(() => ({ authUser: null, user: null }));
