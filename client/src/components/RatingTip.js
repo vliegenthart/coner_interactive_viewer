@@ -124,15 +124,27 @@ class RatingTip extends Component<Props, State> {
     const { addRating, highlight, authUser } = this.props;
     const { ratings } = this.state;
 
+    console.log(Object.keys(ratings).length)
+
     const val = event.currentTarget.value;
     const [facet, relevance] = val.split("-");
 
     const rating = { type: 'occurrence', entityText: highlight.content.text, relevance: relevance, facet: facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: highlight.pid, uid: authUser.uid, version: this.incrementVersion(facet) }
-      
     ratings[facet] = rating
+    let rating2 = null
 
-    this.setState(() => ({ ratings: ratings }));
-    addRating(rating);
+    if (Object.keys(ratings).length == 1) {
+      const oppFacet = rating.facet === 'dataset' ? 'method' : 'dataset'
+      const oppRelevance = rating.relevance === 'relevant' ? 'irrelevant' : 'relevant'
+      rating2 = { type: 'occurrence', entityText: highlight.content.text, relevance: oppRelevance, facet: oppFacet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: highlight.id, pid: highlight.pid, uid: authUser.uid, version: this.incrementVersion(oppFacet) }
+      ratings[oppFacet] = rating2
+    }
+
+    addRating(rating, rating2);
+
+
+    this.setState(() => (() => ({ ratings: ratings })));
+
     setHighlightsRated(Object.keys(ratings).length, rating);
   }
 

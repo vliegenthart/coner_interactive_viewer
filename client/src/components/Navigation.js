@@ -110,7 +110,7 @@ class Navigation extends Component {
       <AuthUserContext.Consumer>
         {authUser => (
           <div className={classes.root} >
-            <AppBar position="static" className={classes.appbar}>
+            <AppBar position="fixed" className={classes.appbar}>
               <Toolbar className="coner-toolbar">
                 <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
                   <MenuIcon />

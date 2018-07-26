@@ -13,9 +13,14 @@ body {
   color: #424242;
 }
 
-.Paper__viewer {
-  height: calc(100vh - 64px) !important;
+// .Paper__viewer {
+//   height: calc(100vh - 64px) !important;
+// }
+
+.PdfAnnotator {
+  top: 64px;
 }
+
 
 .Basic__paper {
   padding: 30px;

@@ -22,6 +22,7 @@ import { snapshotToArray, getNextId } from '../utility/utilFunctions'
 import type { T_Highlight, T_NewHighlight } from "react-pdf-annotator/types";
 
 import "../style/App.css";
+import config from './config';
 
 type T_ManuscriptHighlight = T_Highlight;
 
@@ -50,7 +51,8 @@ class PdfViewer extends Component<Props, State> {
     this.updateHighlight = this.updateHighlight.bind(this);
 
     this.state = {
-      highlights: []
+      highlights: [],
+      newHighlightId: null
     };
   }
 
@@ -65,7 +67,8 @@ class PdfViewer extends Component<Props, State> {
 
   resetHighlights = () => {
     this.setState({
-      highlights: []
+      highlights: [],
+      newhighlightId: null,
     });
   };
 
@@ -94,6 +97,8 @@ class PdfViewer extends Component<Props, State> {
       this.scrollToHighlightFromHash,
       false
     );
+
+    // document.getElementsByClassName("pdfViewer")[0].click()
   }
 
   // Load highlights from firebase database
@@ -101,7 +106,7 @@ class PdfViewer extends Component<Props, State> {
     db.onceGetHighlights(pid)
     .then((snapshot) => {
       const highlights = snapshot.val() ? snapshotToArray(snapshot.val()) : []
-      this.setState(() => ({ highlights: highlights }));
+      this.setState(() => ({ highlights: highlights, newHighlightId: null }));
     })
     .catch(error => {
       console.log('Error:', error);
@@ -131,16 +136,24 @@ class PdfViewer extends Component<Props, State> {
     db.doCreateHighlight(id, highlight)
     .then(data => {
       console.log(`Added highlight (id: ${id}) to Firebase database`)
-      this.setState({
-        highlights: [{ ...highlight, id: id }, ...highlights]
-      });
+      this.setState(() => ({
+        highlights: [{ ...highlight, id: id }, ...highlights],
+        newHighlightId: id
+      }));
+
+      const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevance: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid, version: 1}
+    
+      let rating2 = null
+
+      const oppFacet = rating.facet === 'dataset' ? 'method' : 'dataset'
+      const oppRelevance = rating.relevance === 'relevant' ? 'irrelevant' : 'relevant'
+      rating2 = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevance: oppRelevance, facet: oppFacet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid, version: 1}
+
+      this.props.addRating(rating, rating2)
     })
     .catch(error => {
       console.log('Error:', error);
     });
-
-    const rating = { timestamp: timestamp, type: 'occurrence', entityText: highlight.content.text, relevance: 'relevant', facet: highlight.metadata.facet, pageNumber: highlight.position.pageNumber, highlightType: highlight.metadata.type, highlightId: id, pid: pid, uid: uid, version: 1}
-    this.props.addRating(rating)
   }
 
   updateHighlight(highlightId: string, position: Object, content: Object) {
@@ -160,7 +173,7 @@ class PdfViewer extends Component<Props, State> {
   }
 
   render() {
-    const { highlights } = this.state;
+    const { highlights, newHighlightId } = this.state;
     const { pid, addRating, getRatingsForHighlight, switchPaper } = this.props;
     const url = this.generateURL()
 
@@ -230,6 +243,7 @@ class PdfViewer extends Component<Props, State> {
                           type={highlight.type}
                           ratings={ratingsForHighlight}
                           id={highlight.id}
+                          isNewHighlight={newHighlightId == highlight.id}
                         />
 
                       return (
@@ -246,8 +260,8 @@ class PdfViewer extends Component<Props, State> {
                               }}
                             />
                           }
-                          onClick={popupContent => {
-                            setTip(highlight, highlight => popupContent) }
+                          onClick={popupContent =>
+                            setTip(highlight, highlight => popupContent)
                           }
                           isScrolledTo={isScrolledTo}
                           highlight={highlight}

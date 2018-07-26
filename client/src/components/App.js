@@ -78,7 +78,7 @@ class App extends Component {
         db.onceGetUser(authUser.uid).then(snapshot => {
           const dbUser = snapshot.val()
           const ostUser = this.ost.getUser(dbUser.ostUuid)
-          
+
           ostUser.then(res => {
             this.ost.getUserBalance(res.id).then(balRes => {
               this.setState(() => ({ tokenBalance: balRes.available_balance }))
@@ -133,7 +133,7 @@ class App extends Component {
   }
 
   // Create rating in Firebase database + reward OST user
-  addRating(rating) {
+  addRating(rating, rating2=null) {
     const { user, ratings, userRatings } = this.state;
     const timestamp = Math.round((new Date()).getTime() / 1000)
     const id = getNextId()
@@ -148,10 +148,15 @@ class App extends Component {
       const ratings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...ratings]);
       const userRatings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...userRatings]);
 
-      this.setState({
+      this.setState(() => ({
         ratings: ratings1,
         userRatings: userRatings1
-      });
+      }));
+
+      // Also add rating irrelevant for other facet, as 1 entity does usually not belong to both facets
+      if (rating2) {
+        this.addRating(rating2)
+      }
     })
     .catch(error => {
       console.log('Error:', error);
