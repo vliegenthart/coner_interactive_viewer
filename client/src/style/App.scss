@@ -50,7 +50,7 @@ p.error {
 }
 .coner-toolbar {
   button {
-    margin-top: 10px;
+    margin-top: 12px;
   }
   .paper-select {
     top: 6px;
@@ -75,7 +75,7 @@ p.error {
   }
   .user-dropdown {
     float: right;
-    margin-top: 4px;
+    margin-top: 6px;
   }
 }
 
@@ -89,6 +89,8 @@ p.error {
     rgb(248, 247, 245) 35%,
     rgb(249, 248, 246)
   );
+  margin-top: 64px;
+  height: calc(100vh - 64px);
 }
 
 .sidebar__highlights {
