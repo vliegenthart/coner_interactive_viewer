@@ -61,7 +61,7 @@ class Sidebar extends Component<Props, State> {
   }
 
   handlePaperChange = (uid) => {
-    this.props.switchPaper('pid', config.papersList[Math.floor(Math.random()*config.papersList.length)]['pid'], uid)
+    this.props.switchPaper('pid', config.finalPapersList[Math.floor(Math.random()*config.finalPapersList.length)]['pid'], uid)
   }
 
   render() {
