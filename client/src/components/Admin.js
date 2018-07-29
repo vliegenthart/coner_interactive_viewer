@@ -114,7 +114,11 @@ class AdminPage extends Component {
   }
 
   airdropTokensCC(toUser) {
-    this.ost.transactionCompanyToUser(toUser, "AirdropCC", 'AirdropCC')
+    this.ost.transactionCompanyToUser(toUser, "AirdropCC", 'AirdropCC').then(ostRes => {
+      console.log(`Airdropped CNR tokens to ${toUser.username}`)
+    }).catch((e) => {
+      console.error("OSTError: ", e)
+    });
   }
 
 
