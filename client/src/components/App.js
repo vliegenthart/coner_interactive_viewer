@@ -46,6 +46,7 @@ class App extends Component {
 
     this.state = {
       pid: config.defaultPaper['pid'],
+      contentCreator: config.defaultPaper['contentCreator'],
       papers: config.finalPapersList,
       user: null,    
       authUser: null,
@@ -66,9 +67,11 @@ class App extends Component {
   setCurrentPaper = (pid, paper, uid) => {
     const { user } = this.state;
 
-    this.setState({ [pid]: paper });
+    const contentCreator = config.papersList.filter((obj) => { return obj['pid']=== paper})[0]['contentCreator']
+    this.setState({ [pid]: paper, contentCreator: contentCreator });
     this.getRatingsByPid(paper, uid);
-    this.rewardUser(user, uid, "RewardSwitchPaper");
+
+    this.rewardUser(contentCreator, user, "RewardSwitchPaper");
   }
 
   componentDidMount() {
@@ -82,7 +85,7 @@ class App extends Component {
 
             ostUser.then(res => {
               this.ost.getUserBalance(res.id).then(balRes => {
-                this.setState(() => ({ tokenBalance: balRes.available_balance }))
+                this.setState(() => ({ tokenBalance: balRes.token_balance }))
               });
               this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
 
@@ -111,7 +114,7 @@ class App extends Component {
 
       this.setState(() =>({user: user, authUser: authUser }));
       this.ost.getUserBalance(user.ostAttr.id).then(balRes => {
-        this.setState(() => ({ tokenBalance: balRes.available_balance }))
+        this.setState(() => ({ tokenBalance: balRes.token_balance }))
       });
       return
     }
@@ -137,7 +140,7 @@ class App extends Component {
 
   // Create rating in Firebase database + reward OST user
   addRating(rating, rating2=null) {
-    const { user, ratings, userRatings } = this.state;
+    const { user, ratings, userRatings, contentCreator } = this.state;
     const timestamp = Math.round((new Date()).getTime() / 1000)
     const id = getNextId()
     const uid = rating.uid
@@ -147,7 +150,7 @@ class App extends Component {
     db.doCreateRating(id, rating)
     .then(data => {
       console.log(`Added rating (id: ${id}) to Firebase database`)
-      this.rewardUser(user, uid, "RewardRating")
+      this.rewardUser(contentCreator, user, "RewardRating")
       const ratings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...ratings]);
       const userRatings1 = this.getRatingsNewestVersion([{ ...rating, id: id }, ...userRatings]);
 
@@ -187,14 +190,15 @@ class App extends Component {
     return userRatings.filter(rating => rating.entityText === highlight.content.text && rating.pid === pid && rating.uid === uid)
   }
 
-  rewardUser = (user, uid, type) => {
+  rewardUser = (fromUser, toUser, type) => {
     const { pid } = this.state;
 
-    if (user && uid === user.uid) {
-      this.ost.transactionCompanyToUser(user, pid, type).then(res => {
+    if (fromUser && toUser && type) {
+      this.ost.transactionUserToUser(fromUser, toUser, pid, type).then(res => {
         this.refreshTokenBalance(type)
       })
     }
+
     // else {
     //   db.onceGetUser(uid).then(snapshot => {
     //     let fbUser = snapshot.val()
@@ -208,7 +212,7 @@ class App extends Component {
   }
 
   render() {
-    const { pid, papers, user, tokenBalance } = this.state;
+    const { pid, papers, user, tokenBalance, contentCreator } = this.state;
 
     return(
       <Router>
@@ -219,7 +223,7 @@ class App extends Component {
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />
           <Route exact path={routes.SIGN_IN} render={() => <SignInPage />} />
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
-          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser} switchPaper={this.setCurrentPaper}/>} />
+          <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} contentCreator={contentCreator} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser} switchPaper={this.setCurrentPaper}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
           <Route exact path={routes.ADMIN} render={() => <AdminPage papers={papers} />} />
         </div>

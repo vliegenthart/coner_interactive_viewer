@@ -175,7 +175,7 @@ class Navigation extends Component {
 
                       {ostSettings.ostDevMode && 
                         <div className="token-balance-container">
-                          <div className="token-balance">{tokenBalance} CNR</div>
+                          <div className="token-balance">{parseFloat(tokenBalance).toFixed()} CNR</div>
                           <div className="price-usd">$ {this.calcTokenValue()}</div>
                         </div>
                       }

@@ -35,6 +35,7 @@ class AdminPage extends Component {
     this.syncLocalHighlights = this.syncLocalHighlights.bind(this);
     this.deleteFirebaseHighlights = this.deleteFirebaseHighlights.bind(this);
     this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
+    this.airdropTokensCC = this.airdropTokensCC.bind(this);
 
   }
 
@@ -112,6 +113,11 @@ class AdminPage extends Component {
     });
   }
 
+  airdropTokensCC(toUser) {
+    this.ost.transactionCompanyToUser(toUser, "AirdropCC", 'AirdropCC')
+  }
+
+
   fetchOstTransactions() {
     let { papers } = this.props;
 
@@ -152,7 +158,7 @@ class AdminPage extends Component {
           <Grid item xs={11}>
             <Paper className="Basic__paper">
               <h1>Admin Page</h1>
-              { !!users && <UserList users={users} /> }
+              { !!users && <UserList users={users} onClick={this.airdropTokensCC} /> }
 
               <h3>Firebase Interaction</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } variant="raised">
@@ -216,13 +222,17 @@ class AdminPage extends Component {
   }
 }
 
-const UserList = ({ users }) =>
+const UserList = ({ users, onClick }) =>
   <div>
     <h3>List of Usernames of Firebase Users</h3>
 
     <ul>
     {Object.keys(users).map(key =>
-      <li key={key}>{users[key].username} - {process.env.NODE_ENV === 'development' &&  users[key].ostUuid}</li>
+      <li key={key}>{users[key].username}{ostSettings.ostDevMode && users[key].ostUuid && ostSettings.contentCreators.includes(users[key].ostUuid) && (
+        <Button className="Submit__button" onClick={() => onClick(users[key]) } variant="raised">
+          Airdrop Tokens to Content Creator
+        </Button> 
+      )}</li>
     )}
     </ul>
   </div>

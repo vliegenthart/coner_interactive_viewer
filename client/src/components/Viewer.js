@@ -123,11 +123,10 @@ class PdfViewer extends Component<Props, State> {
   addHighlight(highlight: T_NewHighlight, uid: String) {
 
     const { highlights } = this.state;
-    const { pid, user } = this.props;
+    const { pid, user, contentCreator, rewardUser } = this.props;
     const id = getNextId()
     const timestamp = Math.round((new Date()).getTime() / 1000)
-
-    this.props.rewardUser(user, uid, "RewardHighlight")
+    rewardUser(contentCreator, user, "RewardHighlight")
 
     highlight.metadata = { ...highlight.metadata, timestamp: timestamp, type: 'selected' };
     highlight.pid = pid
