@@ -228,7 +228,7 @@ const UserList = ({ users, onClick }) =>
 
     <ul>
     {Object.keys(users).map(key =>
-      <li key={key}>{users[key].username}{ostSettings.ostDevMode && users[key].ostUuid && ostSettings.contentCreators.includes(users[key].ostUuid) && (
+      <li key={key}>{users[key].username}{users[key].ostUuid && ostSettings.contentCreators.includes(users[key].ostUuid) && (
         <Button className="Submit__button" onClick={() => onClick(users[key]) } variant="raised">
           Airdrop Tokens to Content Creator
         </Button> 
