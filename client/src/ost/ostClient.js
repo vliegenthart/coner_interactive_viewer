@@ -1,4 +1,4 @@
-import config from './ostClientSettings';
+import ostSettings from './ostClientSettings';
 import { db } from '../firebase';
 import { getNextId } from '../utility/utilFunctions';
 import { getApi, postApi } from '../utility/apiWrapper'
@@ -55,8 +55,8 @@ class OstClient {
 
   // TRANSACTION FUNCTIONS
   transactionCompanyToUser = (user, pid, action="CompanyRR") => {
-    return this.executeTransaction(config.companyUuid, user.ostUui, action).then(ostRes => {
-      if (config.ostDevMode) { console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`) }
+    return this.executeTransaction(ostSettings.companyUuid, user.ostUuid, action).then(ostRes => {
+      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${user.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
@@ -72,7 +72,7 @@ class OstClient {
     }
 
     return this.executeTransaction(fromUserId, toUser.ostUuid, action).then(ostRes => {
-      if (config.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
+      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
@@ -138,7 +138,7 @@ class OstClient {
 
     db.doCreateReward(id, reward)
     .then(data => {
-      if (config.ostDevMode) { console.log(`Added reward (id: ${id}) to Firebase database`) }
+      if (ostSettings.ostDevMode) { console.log(`Added reward (id: ${id}) to Firebase database`) }
     })
     .catch(error => {
       console.log('Error:', error);
