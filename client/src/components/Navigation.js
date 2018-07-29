@@ -138,7 +138,7 @@ class Navigation extends Component {
                           )}
                         </Select>
                       }
-
+                      
                       <Button color="inherit"><Link className={classes.linkInButton} to={routes.LANDING}>Home</Link></Button> 
                       
                       {window.location.pathname !== routes.VIEWER &&
