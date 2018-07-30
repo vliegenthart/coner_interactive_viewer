@@ -194,9 +194,15 @@ class App extends Component {
     const { pid } = this.state;
 
     if (fromUser && toUser && type) {
-      this.ost.transactionUserToUser(fromUser, toUser, pid, type).then(res => {
-        this.refreshTokenBalance(type)
-      })
+      try {
+        this.ost.transactionUserToUser(fromUser, toUser, pid, type).then(res => {
+          this.refreshTokenBalance(type)
+        }).catch(err => console.error(err.message))
+      }
+      catch (e) {
+        console.error(e.message)
+      }
+      
     }
 
     // else {

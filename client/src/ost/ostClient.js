@@ -63,6 +63,7 @@ class OstClient {
     });
   }
   transactionUserToUser = (fromUser, toUser, pid, action="RewardRating") => {
+
     let fromUserId = ''
 
     if (typeof fromUser === 'object') {
@@ -70,6 +71,8 @@ class OstClient {
     } else {
       fromUserId = fromUser
     }
+
+    
 
     return this.executeTransaction(fromUserId, toUser.ostUuid, action).then(ostRes => {
       if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
@@ -80,6 +83,7 @@ class OstClient {
   }
 
   executeTransaction = (fromUserId, toUserId, action) => {
+    if (fromUserId === toUserId) throw new Error('toUser and fromUser cannot be the same!')
     return postApi('/api/v1/ost/transactions/execute', {fromUserId: fromUserId, toUserId: toUserId, actionId: this.actionNames[action].id })  
   }
 
