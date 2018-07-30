@@ -24,6 +24,8 @@ import PasswordForgetPage from './PasswordForget';
 import PdfViewer from './Viewer';
 import AccountPage from './Account';
 import AdminPage from './Admin';
+import OstSnackbar from './OstSnackbar';
+import ostSettings from "../ost/ostClientSettings";
 
 import * as routes from '../constants/routes';
 import withAuthentication from './withAuthentication';
@@ -32,6 +34,7 @@ import isEqual from 'lodash/isEqual';
 
 import { snapshotToArray, getNextId } from '../utility/utilFunctions'
 import { getApi, postApi } from '../utility/apiWrapper'
+
 
 class App extends Component {
   constructor(props) {
@@ -52,7 +55,9 @@ class App extends Component {
       authUser: null,
       ratings: [],
       userRatings: [],
-      tokenBalance: 0
+      tokenBalance: 0,
+      snackbarMessage: '',
+      snackbarOpen: false
     }
 
     this.ost = new OstClient()
@@ -61,7 +66,16 @@ class App extends Component {
 
     this.ost.listActions().then(res => {
       this.actionNames = res;
+
+      for (let action in this.actionNames) {
+        if (Object.keys(ostSettings.actionPrettify).includes(action)) {
+          this.actionNames[action]['message'] = ostSettings.actionPrettify[action]
+        }
+      }
+
+      console.log(this.actionNames)
     });
+
   }
 
   setCurrentPaper = (pid, paper, uid) => {
@@ -103,6 +117,10 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { pid, user } = this.state
     if ((!prevState.user || !isEqual(prevState.user, this.state.user)) && this.state.user) this.getRatingsByPid(pid, user.uid)
+  }
+
+  handleSnackbarClose = () => {
+    this.setState(() => ({ snackbarOpen: false }))
   }
   
   refreshTokenBalance = (action) => {
@@ -195,6 +213,10 @@ class App extends Component {
 
     if (fromUser && toUser && type) {
       try {
+        if (!this.state.snackbarOpen) {
+          this.setState(() => ({ snackbarOpen: true, snackbarMessage: `Rewarded ${this.actionNames[type].amount} CNR for ${this.actionNames[type].message}`}))
+        }
+
         this.ost.transactionUserToUser(fromUser, toUser, pid, type).then(res => {
           this.refreshTokenBalance(type)
         }).catch(err => console.error(err.message))
@@ -218,7 +240,7 @@ class App extends Component {
   }
 
   render() {
-    const { pid, papers, user, tokenBalance, contentCreator } = this.state;
+    const { pid, papers, user, tokenBalance, contentCreator, snackbarMessage, snackbarOpen } = this.state;
 
     return(
       <Router>
@@ -232,6 +254,8 @@ class App extends Component {
           <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} contentCreator={contentCreator} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser} switchPaper={this.setCurrentPaper}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
           <Route exact path={routes.ADMIN} render={() => <AdminPage papers={papers} />} />
+        
+          <OstSnackbar message={snackbarMessage} open={snackbarOpen} handleClose={this.handleSnackbarClose}/>
         </div>
       </Router>
     )
