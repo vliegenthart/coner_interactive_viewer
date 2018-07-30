@@ -72,8 +72,6 @@ class OstClient {
       fromUserId = fromUser
     }
 
-    
-
     return this.executeTransaction(fromUserId, toUser.ostUuid, action).then(ostRes => {
       if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);

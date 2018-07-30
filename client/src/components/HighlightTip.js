@@ -91,7 +91,7 @@ class HighlightTip extends Component<Props, State> {
               this.setState({ compact: false });
             }}
           >
-            Add keyword
+            Add entity
           </div>
         ) : (
           <form
@@ -125,7 +125,7 @@ class HighlightTip extends Component<Props, State> {
             </div>
             
             <Button type="submit" variant="raised" color="primary" className={classes.button}>
-              Add keyword(s)
+              Add entity
             </Button>
           </form>
         )}

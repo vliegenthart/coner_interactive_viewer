@@ -21,7 +21,9 @@ import Select from '@material-ui/core/Select';
 import sortBy from 'lodash/sortBy';
 import { truncate } from '../utility/utilFunctions';
 import ostSettings from '../ost/ostClientSettings';
+import OstClient from '../ost/ostClient';
 import CmcClient from '../cmc/cmcClient';
+import isEqual from 'lodash/isEqual';
 
 const styles = {
   root: {
@@ -61,19 +63,40 @@ class Navigation extends Component {
     this.handlePaperchange = this.handlePaperChange.bind(this);
     this.calcTokenValue = this.calcTokenValue.bind(this);
     this.setTicker = this.setTicker.bind(this);
+    this.fetchUserLedger = this.fetchUserLedger.bind(this);
     
     this.state = {
       anchorEl: null,
       ostPrice: 0,
       tokenValue: 0,
+      ledger: {}
     }
 
+    this.ost = new OstClient()
     this.cmc = new CmcClient()
+
   }
   
   componentDidMount() {
-    this.setTicker()
+    this.setTicker();
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { user } = this.props;
+    if ((!isEqual(prevProps.user, this.props.user)) && this.props.user && this.props.user.ostUuid) {
+      this.fetchUserLedger()
+    }
+
+  }
+
+  fetchUserLedger = () => {
+    const { user } = this.props;
+
+    this.ost.getUserLedger(user.ostUuid).then(res => {
+      this.setState(() => ({ ledger: res }))
+    });
+  }
+
 
   setTicker = () => {
     this.cmc.getTicker('OST').then(res => {
@@ -103,7 +126,7 @@ class Navigation extends Component {
     
   render() {
     const { classes, papers, pid, user, tokenBalance } = this.props;
-    const { anchorEl, tokenValue } = this.state;
+    const { anchorEl, tokenValue, ledger } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -155,31 +178,37 @@ class Navigation extends Component {
                         <AccountCircle />
                       </IconButton>
 
-                      <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'right',
-                        }}
-                        open={open}
-                        onClose={this.handleClose}
-                      >
-                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username}</Link></MenuItem>
-                        <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
-                      </Menu>
+                    
 
-                      {ostSettings.ostDevMode && 
+                      {ostSettings.ostDevMode ? (
                         <div className="token-balance-container">
                           <div className="token-balance">{parseFloat(tokenBalance).toFixed()} CNR</div>
                           <div className="price-usd">$ {this.calcTokenValue()}</div>
                         </div>
+
+
+                      ) 
+                      : (
+                          <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: 'top',
+                              horizontal: 'right',
+                            }}
+                            transformOrigin={{
+                              vertical: 'top',
+                              horizontal: 'right',
+                            }}
+                            open={open}
+                            onClose={this.handleClose}
+                          > 
+
+                            <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username}</Link></MenuItem>
+                            <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
+                          </Menu>
+                        )
                       }
-                      
                     </div>
                   )
                   : (
