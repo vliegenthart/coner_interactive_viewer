@@ -36,6 +36,7 @@ class AdminPage extends Component {
     this.deleteFirebaseHighlights = this.deleteFirebaseHighlights.bind(this);
     this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
     this.airdropTokensCC = this.airdropTokensCC.bind(this);
+    this.checkCCBalances = this.checkCCBalances.bind(this);
 
   }
 
@@ -45,6 +46,29 @@ class AdminPage extends Component {
     );
 
     this.fetchOstTransactions()
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.users === null && this.state.users) {
+      this.checkCCBalances()
+    }
+  }
+
+  // Ensure content creators have minimum of CNR tokens available to receive feedback
+  checkCCBalances = () => {
+    const { users } = this.state;
+
+    Object.keys(users).map(key => {
+      const user = users[key]
+
+      if (ostSettings.contentCreators.includes(user.ostUuid)) {
+        this.ost.getUserBalance(user.ostUuid).then(res => {
+          if (parseInt(res.available_balance) < ostSettings.minCCTokens) {
+            this.airdropTokensCC(user)
+          }
+        });
+      }
+    });
   }
 
   syncLocalHighlights() {
