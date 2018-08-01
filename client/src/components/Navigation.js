@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -63,13 +64,11 @@ class Navigation extends Component {
     this.handlePaperchange = this.handlePaperChange.bind(this);
     this.calcTokenValue = this.calcTokenValue.bind(this);
     this.setTicker = this.setTicker.bind(this);
-    this.fetchUserLedger = this.fetchUserLedger.bind(this);
     
     this.state = {
       anchorEl: null,
       ostPrice: 0,
-      tokenValue: 0,
-      ledger: {}
+      tokenValue: 0
     }
 
     this.ost = new OstClient()
@@ -80,23 +79,6 @@ class Navigation extends Component {
   componentDidMount() {
     this.setTicker();
   }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    const { user } = this.props;
-    if ((!isEqual(prevProps.user, this.props.user)) && this.props.user && this.props.user.ostUuid) {
-      this.fetchUserLedger()
-    }
-
-  }
-
-  fetchUserLedger = () => {
-    const { user } = this.props;
-
-    this.ost.getUserLedger(user.ostUuid).then(res => {
-      this.setState(() => ({ ledger: res }))
-    });
-  }
-
 
   setTicker = () => {
     this.cmc.getTicker('OST').then(res => {
@@ -126,7 +108,7 @@ class Navigation extends Component {
     
   render() {
     const { classes, papers, pid, user, tokenBalance } = this.props;
-    const { anchorEl, tokenValue, ledger } = this.state;
+    const { anchorEl, tokenValue } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -178,36 +160,62 @@ class Navigation extends Component {
                         <AccountCircle />
                       </IconButton>
 
-                    
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'right',
+                        }}
+                        open={open}
+                        onClose={this.handleClose}
+                      > 
 
-                      {ostSettings.ostDevMode ? (
+                        <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username}</Link></MenuItem>
+                        <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
+                      </Menu>
+
+                      {ostSettings.ostDevMode && (
+                        <React.Fragment>
+
+                        <IconButton
+                          aria-owns={open ? 'menu-appbar-2' : null}
+                          aria-haspopup="true"
+                          onClick={this.handleMenu}
+                          color="inherit"
+                          className="wallet-dropdown"
+                        >
+                          <AccessAlarmIcon />
+                        </IconButton>
+                        <Menu
+                          id="menu-appbar-2"
+                          anchorEl={anchorEl}
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          open={open}
+                          onClose={this.handleClose}
+                        > 
+
+                          <MenuItem onClick={this.handleClose}>WALLET</MenuItem>
+                        </Menu>
+
                         <div className="token-balance-container">
                           <div className="token-balance">{parseFloat(tokenBalance).toFixed()} CNR</div>
                           <div className="price-usd">$ {this.calcTokenValue()}</div>
                         </div>
+                        </React.Fragment>
 
-
-                      ) 
-                      : (
-                          <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                              vertical: 'top',
-                              horizontal: 'right',
-                            }}
-                            transformOrigin={{
-                              vertical: 'top',
-                              horizontal: 'right',
-                            }}
-                            open={open}
-                            onClose={this.handleClose}
-                          > 
-
-                            <MenuItem onClick={this.handleClose}><Link className={classes.linkInButton} to={routes.ACCOUNT}>{user && user.username}</Link></MenuItem>
-                            <MenuItem onClick={this.handleClose}><SignOutButton /></MenuItem>
-                          </Menu>
-                        )
+                      )
                       }
                     </div>
                   )
