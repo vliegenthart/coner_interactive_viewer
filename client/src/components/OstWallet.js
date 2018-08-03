@@ -19,15 +19,22 @@ class OstWallet extends Component {
     this.fetchUserLedger = this.fetchUserLedger.bind(this);
 
     this.state = {
-      ledger: []
+      ledger: null
     };
 
     this.ost = new OstClient()
+
+    this.actionNames = {}
+
+    this.ost.listActions().then(res => {
+      this.actionNames = res;
+      console.log(res)
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { user } = this.props;
-    if ((!isEqual(prevProps.user, this.props.user)) && this.props.user && this.props.user.ostUuid) {
+    if (this.props.user && this.props.user.ostUuid && !this.state.ledger) {
       this.fetchUserLedger()
     }
   }
@@ -40,29 +47,33 @@ class OstWallet extends Component {
     const { user } = this.props;
 
     this.ost.getUserLedger(user.ostUuid).then(res => {
+      console.log(res)
       this.setState(() => ({ ledger: res }))
     });
   }
 
   render() {
     const { ledger } = this.state;
+    const { actionNames } = this.props;
+    console.log(actionNames)
 
     return (
       <div className="Ost__wallet">
-        <TransactionList transactions={ledger.transactions}></TransactionList>
+        <TransactionList ledger={ledger}></TransactionList>
+      
       </div>
         
     );
   }
 }
 
-const TransactionList = ({ transactions, onClick }) =>
+const TransactionList = ({ ledger, onClick }) =>
   <div>
     <h3>List of Transactions</h3>
 
     <ul>
-    {transactions && transactions.map(trans =>
-      <li key={trans.id}>YOO</li>
+    {ledger && ledger.transactions.map(trans =>
+      <li key={trans.id}>{trans.action_id} - {new Date(trans.timestamp).toLocaleTimeString()}</li>
     )}
     </ul>
   </div>

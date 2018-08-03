@@ -115,7 +115,7 @@ class Navigation extends Component {
   }
     
   render() {
-    const { classes, papers, pid, user, tokenBalance } = this.props;
+    const { classes, papers, pid, user, tokenBalance, actionNames } = this.props;
     const { userAnchorEl, walletAnchorEl, tokenValue } = this.state;
     const userOpen = Boolean(userAnchorEl);
     const walletOpen = Boolean(walletAnchorEl);
@@ -218,7 +218,7 @@ class Navigation extends Component {
                             onClose={this.handleCloseWallet}
                           > 
 
-                            <OstWallet user={user} />
+                            <OstWallet user={user} actionNames={actionNames} />
                           </Menu>
 
                           <div className="token-balance-container">

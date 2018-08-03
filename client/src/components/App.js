@@ -72,8 +72,6 @@ class App extends Component {
           this.actionNames[action]['message'] = ostSettings.actionPrettify[action]
         }
       }
-
-      console.log(this.actionNames)
     });
 
   }
@@ -245,7 +243,7 @@ class App extends Component {
     return(
       <Router>
         <div>
-          <Navigation user={user} tokenBalance={tokenBalance} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} />
+          <Navigation user={user} tokenBalance={tokenBalance} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} actionNames={this.actionNames}/>
 
           <Route exact path={routes.LANDING} render={() => <LandingPage />} />
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />
