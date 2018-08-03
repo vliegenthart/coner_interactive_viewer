@@ -5,11 +5,11 @@ import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
 
 import Button from '@material-ui/core/Button';
-import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import { map } from 'lodash';
 import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
+import isEqual from 'lodash/isEqual';
 
 class OstWallet extends Component {
   constructor(props) {
@@ -61,8 +61,8 @@ const TransactionList = ({ transactions, onClick }) =>
     <h3>List of Transactions</h3>
 
     <ul>
-    {transactions.map(trans =>
-      <li>YOO</li>
+    {transactions && transactions.map(trans =>
+      <li key={trans.id}>YOO</li>
     )}
     </ul>
   </div>
