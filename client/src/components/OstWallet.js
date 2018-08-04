@@ -10,6 +10,9 @@ import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
 import isEqual from 'lodash/isEqual';
+import { arrayToObject } from '../utility/utilFunctions'
+
+import '../style/OstWallet.css'
 
 class OstWallet extends Component {
   constructor(props) {
@@ -19,17 +22,19 @@ class OstWallet extends Component {
     this.fetchUserLedger = this.fetchUserLedger.bind(this);
 
     this.state = {
-      ledger: null
+      ledger: null,
+      users: null
     };
 
     this.ost = new OstClient()
 
-    this.actionNames = {}
+  }
 
-    this.ost.listActions().then(res => {
-      this.actionNames = res;
-      console.log(res)
-    });
+  componentDidMount() {
+    this.ost.listUsers().then(res => {
+      this.setState(() => ({ users: arrayToObject(res) }))
+    }
+    );
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -47,19 +52,17 @@ class OstWallet extends Component {
     const { user } = this.props;
 
     this.ost.getUserLedger(user.ostUuid).then(res => {
-      console.log(res)
       this.setState(() => ({ ledger: res }))
     });
   }
 
   render() {
-    const { ledger } = this.state;
-    const { actionNames } = this.props;
-    console.log(actionNames)
+    const { ledger, users } = this.state;
+    const { actionIds } = this.props;
 
     return (
       <div className="Ost__wallet">
-        <TransactionList ledger={ledger}></TransactionList>
+        <TransactionList ledger={ledger} actionIds={actionIds} users={users}></TransactionList>
       
       </div>
         
@@ -67,13 +70,18 @@ class OstWallet extends Component {
   }
 }
 
-const TransactionList = ({ ledger, onClick }) =>
-  <div>
+const TransactionList = ({ ledger, actionIds, users, onClick }) =>
+  <div className="Transaction__list">
     <h3>List of Transactions</h3>
-
     <ul>
-    {ledger && ledger.transactions.map(trans =>
-      <li key={trans.id}>{trans.action_id} - {new Date(trans.timestamp).toLocaleTimeString()}</li>
+    {users && ledger && ledger.transactions.filter(trans => actionIds[trans['action_id']].walletMessage).map(trans =>
+      <li key={trans.id}>
+        <div>{actionIds[trans['action_id']].walletMessage && actionIds[trans['action_id']].walletMessage.verb} {parseFloat(trans.amount).toFixed()} CNR {actionIds[trans['action_id']].walletMessage.actionText && `(${actionIds[trans['action_id']].walletMessage.actionText})`}</div>
+        
+
+
+        <div>From {actionIds[trans['action_id']].kind === 'company_to_user' ? 'Coner Company' : (users[trans['from_user_id']] && users[trans['from_user_id']].name)} - {new Date(trans.timestamp).toLocaleTimeString()}</div>
+      </li>
     )}
     </ul>
   </div>
@@ -81,3 +89,4 @@ const TransactionList = ({ ledger, onClick }) =>
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(OstWallet);
+

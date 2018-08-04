@@ -63,6 +63,7 @@ class App extends Component {
     this.ost = new OstClient()
 
     this.actionNames = {}
+    this.actionIds = {}
 
     this.ost.listActions().then(res => {
       this.actionNames = res;
@@ -71,6 +72,15 @@ class App extends Component {
         if (Object.keys(ostSettings.actionPrettify).includes(action)) {
           this.actionNames[action]['message'] = ostSettings.actionPrettify[action]
         }
+      }
+      for (let action in this.actionNames) {
+        const actionObj = this.actionNames[action]
+
+        if (Object.keys(ostSettings.walletPrettify).includes(action)) {
+          actionObj['walletMessage'] = ostSettings.walletPrettify[action]
+        }
+
+        this.actionIds[actionObj['id']] = actionObj
       }
     });
 
@@ -243,7 +253,7 @@ class App extends Component {
     return(
       <Router>
         <div>
-          <Navigation user={user} tokenBalance={tokenBalance} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} actionNames={this.actionNames}/>
+          <Navigation user={user} tokenBalance={tokenBalance} pid={pid} papers={papers} switchPaper={this.setCurrentPaper} actionNames={this.actionNames} actionIds={this.actionIds}/>
 
           <Route exact path={routes.LANDING} render={() => <LandingPage />} />
           <Route exact path={routes.SIGN_UP} render={() => <SignUpPage setUser={this.setUser}/>} />

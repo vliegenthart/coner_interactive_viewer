@@ -13,7 +13,7 @@ const userService = ostObj.services.users;
 
 // LIST ALL OST USERS
 router.get('/', (req, res) => {
-  userService.list({}).then(function(ost_res) { 
+  userService.list({ limit: 100 }).then(function(ost_res) { 
     res.status(200).send({ body: JSON.stringify(ost_res) }); 
 
   }).catch(function(err) { 

@@ -19,7 +19,7 @@ class OstClient {
 
   // USER FUNCTIONS
   listUsers = () => {
-    getApi('/api/v1/ost/users')
+    return getApi('/api/v1/ost/users')
       .then(res => {
         const users = JSON.parse(res.body).data.users
         return users

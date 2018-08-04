@@ -1,0 +1,19 @@
+.Ost__wallet {
+  width: 500px;
+  padding: 20px;
+  background: #f6fbfc;
+  .Transaction__list {
+    ul {
+      padding: 0;
+      margin: 0;
+      li {
+        background: white;
+        margin-bottom: 20px;
+        border-radius: 3px;
+        list-style: none;
+        padding: 15px;
+      }
+    }
+  }
+
+}

@@ -26,3 +26,9 @@ export const uniqueHighlights = (highlights) => {
 export const updateHash = highlight => {
   window.location.hash = `highlight-${highlight.id}`;
 };
+
+export const arrayToObject = (array) =>
+   array.reduce((obj, item) => {
+     obj[item.id] = item
+     return obj
+   }, {})
