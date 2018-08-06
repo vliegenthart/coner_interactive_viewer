@@ -192,9 +192,7 @@ class GiftPaper extends Component {
     const { usersArr, dropdownUser, amount } = this.state;
     const { users, user, pid } = this.props;
 
-    console.log(dropdownUser, amount, user, users[dropdownUser])
     event.preventDefault();
-
     this.ost.transactionUserToUser(user, users[dropdownUser], pid, 'SendGift', amount)
     this.setState(() => ({dropdownUser: usersArr[0].id, amount: 100}))
   }

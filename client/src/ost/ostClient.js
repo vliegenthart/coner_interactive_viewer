@@ -14,8 +14,6 @@ class OstClient {
     
     this.listActions().then(res => {
       this.actionNames = res;
-      console.log(this.actionNames)
-
     });
 
   }
@@ -67,15 +65,11 @@ class OstClient {
   }
   transactionUserToUser = (fromUser, toUser, pid, action="RewardRating", amount=null) => {
 
-    let fromUserId = ''
+    let fromUserId = typeof fromUser === 'object' ? fromUser.ostUuid : fromUser
 
-    if (typeof fromUser === 'object') {
-      fromUserId = fromUser.ostUuid
-    } else {
-      fromUserId = fromUser
-    }
+    let toUserId = Object.keys(toUser).includes('ostUuid') ? toUser.ostUuid : toUser.id
 
-    return this.executeTransaction(fromUserId, toUser.ostUuid, action, amount).then(ostRes => {
+    return this.executeTransaction(fromUserId, toUserId, action, amount).then(ostRes => {
       if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
