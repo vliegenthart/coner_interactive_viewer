@@ -32,3 +32,8 @@ export const arrayToObject = (array) =>
      obj[item.id] = item
      return obj
    }, {})
+
+export const removeDuplicates = (myArr, prop) =>
+  myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+  });

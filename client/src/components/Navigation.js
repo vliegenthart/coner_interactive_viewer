@@ -120,8 +120,6 @@ class Navigation extends Component {
     const userOpen = Boolean(userAnchorEl);
     const walletOpen = Boolean(walletAnchorEl);
 
-    console.log(actionIds)
-
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -191,7 +189,7 @@ class Navigation extends Component {
                         <MenuItem onClick={this.handleCloseUser}><SignOutButton /></MenuItem>
                       </Menu>
 
-                      {ostSettings.ostDevMode && (
+                      {ostSettings.ostDevMode &&
                         <React.Fragment>
 
                           <IconButton
@@ -221,7 +219,7 @@ class Navigation extends Component {
                             className={"Wallet__menu"}
                           > 
 
-                            <OstWallet user={user} actionIds={actionIds} />
+                            <OstWallet user={user} actionIds={actionIds} pid={pid} />
                           </Menu>
 
                           <div className="token-balance-container">
@@ -229,8 +227,6 @@ class Navigation extends Component {
                             <div className="price-usd">$ {this.calcTokenValue()}</div>
                           </div>
                         </React.Fragment>
-
-                      )
                       }
                     </div>
                   )

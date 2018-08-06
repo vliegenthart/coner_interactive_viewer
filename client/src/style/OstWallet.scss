@@ -4,6 +4,27 @@
   padding: 20px;
   background: #f6fbfc;
   overflow: scroll;
+  .Gift__paper {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 15px;
+
+    .Gift__title {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  
+    form {
+      .Input__cnr-amount {
+        margin-left: 20px;
+        margin-bottom: 20px;
+      }
+      .user-select {
+        width: 170px;
+      }
+    }
+
+  }
   .Transaction__list {
     .Progress__wrapper {
       text-align: center;
@@ -11,7 +32,7 @@
     }
     .Ledger__date {
       font-size: 13px;
-      margin: 30px 0 10px;;
+      margin: 20px 0 10px;;
     }
     ul {
       padding: 0;
@@ -23,7 +44,6 @@
         margin: 0;
 
         .Transaction_wrapper {
-          background: white;
           margin-bottom: 10px;
           border-radius: 5px;
           padding: 15px;
@@ -60,9 +80,4 @@
       }
     }
   }
-
 }
-
-// <div className="Transaction__message">{actionIds[trans['action_id']].walletMessage && actionIds[trans['action_id']].walletMessage.verb} {parseFloat(trans.amount).toFixed()} CNR {actionIds[trans['action_id']].walletMessage.actionText && `(${actionIds[trans['action_id']].walletMessage.actionText})`}</div>
-        
-//         <div className="Transaction__info">From {actionIds[trans['action_id']].kind === 'company_to_user' ? 'Coner Company' : (users[trans['from_user_id']] && users[trans['from_user_id']].name)} - {new Date(trans.timestamp).toLocaleTimeString()}</div>

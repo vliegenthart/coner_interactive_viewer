@@ -14,7 +14,10 @@ class OstClient {
     
     this.listActions().then(res => {
       this.actionNames = res;
+      console.log(this.actionNames)
+
     });
+
   }
 
   // USER FUNCTIONS
@@ -62,7 +65,7 @@ class OstClient {
       console.error("OSTError: ", e)
     });
   }
-  transactionUserToUser = (fromUser, toUser, pid, action="RewardRating") => {
+  transactionUserToUser = (fromUser, toUser, pid, action="RewardRating", amount=null) => {
 
     let fromUserId = ''
 
@@ -72,7 +75,7 @@ class OstClient {
       fromUserId = fromUser
     }
 
-    return this.executeTransaction(fromUserId, toUser.ostUuid, action).then(ostRes => {
+    return this.executeTransaction(fromUserId, toUser.ostUuid, action, amount).then(ostRes => {
       if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
@@ -80,9 +83,9 @@ class OstClient {
     });
   }
 
-  executeTransaction = (fromUserId, toUserId, action) => {
+  executeTransaction = (fromUserId, toUserId, action, amount) => {
     if (fromUserId === toUserId) throw new Error('toUser and fromUser cannot be the same!')
-    return postApi('/api/v1/ost/transactions/execute', {fromUserId: fromUserId, toUserId: toUserId, actionId: this.actionNames[action].id })  
+    return postApi('/api/v1/ost/transactions/execute', {fromUserId: fromUserId, toUserId: toUserId, actionId: this.actionNames[action].id, amount: amount })  
   }
 
   // BALANCE FUNCTIONS

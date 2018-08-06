@@ -32,6 +32,7 @@ router.get('/:id', (req, res) => {
 // EXECUTE TRANSACTION
 router.post('/execute', (req, res) => {
   transactionService.execute({from_user_id: req.body.fromUserId, to_user_id: req.body.toUserId, action_id: req.body.actionId }).then(function(ost_res) { 
+    console.log(ost_res)
     res.status(200).send({'body': JSON.stringify(ost_res)});
   }).catch(function(err) { 
     res.status(500).send("There was a problem creating this OST transaction.");
