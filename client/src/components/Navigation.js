@@ -218,6 +218,7 @@ class Navigation extends Component {
                             }}
                             open={walletOpen}
                             onClose={this.handleCloseWallet}
+                            className={"Wallet__menu"}
                           > 
 
                             <OstWallet user={user} actionIds={actionIds} />

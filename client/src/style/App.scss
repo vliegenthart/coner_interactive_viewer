@@ -56,6 +56,7 @@ p.error {
     top: 6px;
   }
 
+
   .token-balance-container {
     float: right;
     height: 44px;
@@ -77,6 +78,14 @@ p.error {
     float: right;
     margin-top: 6px;
     margin-left: 5px;
+  }
+  
+}
+
+.Wallet__menu {
+  padding:0;
+  ul {
+    padding: 0;
   }
 }
 
