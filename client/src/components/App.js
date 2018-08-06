@@ -75,13 +75,19 @@ class App extends Component {
       }
       for (let action in this.actionNames) {
         const actionObj = this.actionNames[action]
+        actionObj['walletMessage'] = {}
 
-        if (Object.keys(ostSettings.walletPrettify).includes(action)) {
-          actionObj['walletMessage'] = ostSettings.walletPrettify[action]
+        if (Object.keys(ostSettings['walletPrettify'].received).includes(action)) {
+          actionObj['walletMessage']['received'] = ostSettings['walletPrettify']['received'][action]
+        }
+        if (Object.keys(ostSettings['walletPrettify'].sent).includes(action)) {
+          actionObj['walletMessage']['sent'] = ostSettings['walletPrettify']['sent'][action]
         }
 
         this.actionIds[actionObj['id']] = actionObj
+
       }
+      console.log(this.actionIds)
     });
 
   }

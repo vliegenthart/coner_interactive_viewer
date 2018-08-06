@@ -12,7 +12,7 @@ const ledgerService = ostObj.services.ledger;
 
 // GET LEDGER
 router.get('/:id', (req, res) => {
-  ledgerService.get({id: req.params.id}).then(function(ost_res) { 
+  ledgerService.get({id: req.params.id, limit: 20 }).then(function(ost_res) { 
     res.status(200).send({ body: JSON.stringify(ost_res) }); 
   }).catch(function(err) { 
      return res.status(500).send("There was a problem finding this OSt user's ledger.");; 
