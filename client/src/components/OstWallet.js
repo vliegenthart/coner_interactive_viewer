@@ -32,10 +32,12 @@ class OstWallet extends Component {
 
     this.fetchUserBalance = this.fetchUserBalance.bind(this);
     this.fetchUserLedger = this.fetchUserLedger.bind(this);
+    this.setCachedGiftAmount = this.setCachedGiftAmount.bind(this);
 
     this.state = {
       ledger: null,
-      users: null
+      users: null,
+      cachedGiftAmount: 20,
     }
 
     this.ost = new OstClient()
@@ -55,6 +57,9 @@ class OstWallet extends Component {
       this.fetchUserLedger()
     }
   }
+  setCachedGiftAmount = (amount) => {
+    this.setState(() => ({ cachedGiftAmount: amount}))
+  }
 
   fetchUserBalance = () => {
     const { user } = this.props;
@@ -71,14 +76,14 @@ class OstWallet extends Component {
   }
 
   render() {
-    const { ledger, users } = this.state;
+    const { ledger, users, cachedGiftAmount } = this.state;
     const { actionIds, user, pid } = this.props;
 
     return (
       <div className="Ost__wallet">
-        {users && <GiftPaper users={users} user={user} pid={pid}/>}
+        {users && <GiftPaper users={users} user={user} pid={pid} fetchUserLedger={this.fetchUserLedger} setAmount={this.setCachedGiftAmount} />}
 
-        <TransactionList ledger={ledger} user={user} actionIds={actionIds} users={users}></TransactionList>
+        <TransactionList ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
       </div>
         
     );
@@ -89,12 +94,11 @@ class TransactionList extends Component {
   constructor(props) {
     super(props);
 
-
     this.renderTransaction = this.renderTransaction.bind(this);
   }
 
   renderTransaction = trans => {
-    const { users, actionIds, user } = this.props;
+    const { users, actionIds, user, cachedGiftAmount } = this.props;
 
     const action = actionIds[trans['action_id']]
     let ele = '';
@@ -121,18 +125,20 @@ class TransactionList extends Component {
 
     return(
       <li key={trans.id}>
-        <Paper className="Transaction_wrapper" elevation={1}>
-          <div className={`Icon__wrapper ${type}`}>
-            {icon}
-          </div>
-          
-          <Typography className="Transaction__message" variant="headline" component="p">
-            {walletMessage.verb} {parseFloat(trans.amount).toFixed()} CNR {walletMessage.actionText && `(${walletMessage.actionText})`}
-          </Typography>
-          <Typography className="Transaction__info" component="p">
-            {transInfo}
-          </Typography>
-        </Paper>     
+        <a href={ostSettings.viewerBaseUrl + trans.transaction_hash} target="_blank">
+          <Paper className="Transaction_wrapper" elevation={1}>
+            <div className={`Icon__wrapper ${type}`}>
+              {icon}
+            </div>
+            
+            <Typography className="Transaction__message" variant="headline" component="p">
+              {walletMessage.verb} {trans.amount ? parseFloat(trans.amount).toFixed() : parseFloat(cachedGiftAmount).toFixed() } CNR {walletMessage.actionText && `(${walletMessage.actionText})`}
+            </Typography>
+            <Typography className="Transaction__info" component="p">
+              {transInfo}
+            </Typography>
+          </Paper>  
+        </a>   
       </li>
     )
   }
@@ -169,7 +175,7 @@ class GiftPaper extends Component {
     this.state = {
       dropdownUser: null,
       usersArr: null,
-      amount: 100
+      amount: 20
     }
 
     this.ost = new OstClient()
@@ -190,11 +196,18 @@ class GiftPaper extends Component {
 
   onSubmit = (event) => {
     const { usersArr, dropdownUser, amount } = this.state;
-    const { users, user, pid } = this.props;
+    const { users, user, pid, fetchUserLedger, setAmount } = this.props;
 
     event.preventDefault();
-    this.ost.transactionUserToUser(user, users[dropdownUser], pid, 'SendGift', amount)
-    this.setState(() => ({dropdownUser: usersArr[0].id, amount: 100}))
+    this.setState(() => ({dropdownUser: usersArr[0].id, amount: 20}))
+    setAmount(amount)
+
+    this.ost.transactionUserToUser(user, users[dropdownUser], pid, 'SendGift', amount).then(res => {
+      
+      setTimeout(() => { 
+        fetchUserLedger()
+      }, 500);
+    })
   }
 
   render() {
@@ -242,10 +255,6 @@ class GiftPaper extends Component {
     )
   }
 }
-
-    
-
-
 
 const authCondition = (authUser) => !!authUser;
 
