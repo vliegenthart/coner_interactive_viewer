@@ -267,7 +267,7 @@ class App extends Component {
           <Route exact path={routes.PASSWORD_FORGET} render={() => <PasswordForgetPage />} />
           <Route exact path={routes.VIEWER} render={(props) => <PdfViewer pid={pid} user={user} contentCreator={contentCreator} addRating={this.addRating} getRatingsForHighlight={this.getRatingsForHighlight} rewardUser={this.rewardUser} switchPaper={this.setCurrentPaper}/>} />
           <Route exact path={routes.ACCOUNT} render={() => <AccountPage />} />
-          <Route exact path={routes.ADMIN} render={() => <AdminPage papers={papers} />} />
+          <Route exact path={routes.ADMIN} render={() => <AdminPage papers={papers} actionIds={this.actionIds} />} />
         
           <OstSnackbar message={snackbarMessage} open={snackbarOpen} handleClose={this.handleSnackbarClose}/>
         </div>

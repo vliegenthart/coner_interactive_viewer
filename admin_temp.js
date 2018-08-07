@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
-import OstWallet from './OstWallet';
 import termHighlights from "../highlights/term-highlights";
 
 import Button from '@material-ui/core/Button';
@@ -15,7 +14,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { map } from 'lodash';
-import { snapshotToArray, arrayToObject, removeDuplicates } from '../utility/utilFunctions';
+import { snapshotToArray } from '../utility/utilFunctions';
 import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
@@ -28,7 +27,6 @@ class AdminPage extends Component {
 
     this.state = {
       users: null,
-      usersArr: null,
       ostTransactions: {},
     };
 
@@ -36,17 +34,18 @@ class AdminPage extends Component {
 
     this.syncLocalHighlights = this.syncLocalHighlights.bind(this);
     this.deleteFirebaseHighlights = this.deleteFirebaseHighlights.bind(this);
-    // this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
+    this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
     this.airdropTokensCC = this.airdropTokensCC.bind(this);
     this.checkCCBalances = this.checkCCBalances.bind(this);
+
   }
 
   componentDidMount() {
-    this.ost.listUsers().then(res => {
-      const tempUsers = removeDuplicates(sortBy(res, 'name'), 'name').filter(obj => obj['name'].length > 0)
-      this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
-    });
+    db.onceGetUsers().then(snapshot =>
+      this.setState(() => ({ users: snapshot.val() }))
+    );
 
+    this.fetchOstTransactions()
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -147,62 +146,48 @@ class AdminPage extends Component {
   }
 
 
-  // fetchOstTransactions() {
-  //   let { papers } = this.props;
+  fetchOstTransactions() {
+    let { papers } = this.props;
 
-  //   papers = [...Array.from(papers, paper => paper.pid)];
-  //   const _this = this;
+    papers = [...Array.from(papers, paper => paper.pid)];
+    const _this = this;
 
-  //   map(papers, function(pid){
-  //     db.onceGetRewards(pid)
-  //       .then((snapshot) => {
-  //         const rewards = snapshot.val() ? snapshotToArray(snapshot.val()) : []
-  //         if (rewards.length > 0) {
-  //           const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
+    map(papers, function(pid){
+      db.onceGetRewards(pid)
+        .then((snapshot) => {
+          const rewards = snapshot.val() ? snapshotToArray(snapshot.val()) : []
+          if (rewards.length > 0) {
+            const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
 
-  //           setTimeout(() => { 
-  //             _this.ost.transactiontypesStatus(transaction_uuids, (res) => {
-  //               if (ostSettings.devMode) {
-  //                 console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
-  //               }
-  //               res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
-  //               _this.setState({ ostTransactions: { [pid]: res, ..._this.state.ostTransactions }});
-  //             })
-  //           }, 500);
-  //         }
-  //       })
-  //       .catch(error => {
-  //         console.log('Error:', error);
-  //       });
-  //   });
-  // }
+            setTimeout(() => { 
+              _this.ost.transactiontypesStatus(transaction_uuids, (res) => {
+                if (ostSettings.devMode) {
+                  console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
+                }
+                res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
+                _this.setState({ ostTransactions: { [pid]: res, ..._this.state.ostTransactions }});
+              })
+            }, 500);
+          }
+        })
+        .catch(error => {
+          console.log('Error:', error);
+        });
+    });
+
+  }
 
   render() {
-    const { users, usersArr, ostTransactions } = this.state;
-    const { actionIds } = this.props;
+    const { users, ostTransactions } = this.state;
 
     return (
       <div className="Admin__container">
         <Grid container spacing={24} alignItems="center" direction="row" justify="center">
-          <Grid item xs={10}>
-              <div className="Admin__title">
+          <Grid item xs={11}>
+            <Paper className="Basic__paper">
               <h1>Admin Page</h1>
-              </div>
-          </Grid>
-          <Grid item xs={5}>
-            <Paper className="Admin__gridPaper">
-              <h3>User Ost Wallets</h3>
-               { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds}/> }
-            </Paper>
-          </Grid>
-          <Grid item xs={5}>
-            <Paper className="Admin__gridPaper">
-              <h3>Content Creators</h3>
-               { !!users && <ContentCreators users={users} /> }
-            </Paper>
-          </Grid>
-          <Grid item xs={10}>
-            <Paper className="Admin__gridPaper">
+              { !!users && <UserList users={users} onClick={this.airdropTokensCC} /> }
+
               <h3>Firebase Interaction</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } variant="raised">
                 Sync Local Highlights with Firebase Database
@@ -219,35 +204,58 @@ class AdminPage extends Component {
               <Button className="Submit__button is-red" onClick={() => this.deleteFirebaseRewards() } variant="raised">
                 Remove all OST rewards from Firebase Database
               </Button> <br />
+
+              <h3>OST Transactions</h3>
+
+              {map(this.props.papers, (paper) => {
+                return (
+                  <div key={paper.pid}>
+                    <h5>{paper.title}</h5>
+
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Transaction Hash</TableCell>
+                          <TableCell>Transaction Type</TableCell>
+                          <TableCell>Timestamp</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      {ostTransactions[paper.pid] &&
+                        <TableBody>
+                          {ostTransactions[paper.pid] && map(ostTransactions[paper.pid]['transactions'], trans => {
+                            return (
+                              <TableRow key={trans.id}>
+                                <TableCell component="th" scope="row">
+                                  <a href={ostSettings.viewerBaseUrl + trans.transaction_hash}>{trans.transaction_hash}</a>
+                                </TableCell>
+                                <TableCell>
+                                {ostTransactions[paper.pid]['transaction_types'][trans.transaction_type_id]['name']}
+                                </TableCell>
+                                <TableCell>{new Date(trans.transaction_timestamp).toUTCString()}</TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      }
+                    </Table>
+                  </div>
+                )
+              })}
             </Paper>
           </Grid>
         </Grid>
-        
       </div>
         
     );
   }
 }
 
-const UserWallets = ({ usersArr, actionIds, onClick }) => {
-  console.log(actionIds)
-  return (
-    <ul>
-    {usersArr.slice(0,10).map(user =>
-      <li key={user.id}><OstWallet user={user} actionIds={actionIds} pid={"admin_page"} />
-      </li>
-    )}
-    </ul>
-  )
-}
-    
-
-const ContentCreators = ({ users, onClick }) =>
+const UserList = ({ users, onClick }) =>
   <div>
     <h3>List of Usernames of Firebase Users</h3>
 
     <ul>
-    {Object.keys(users).slice(0,10).map(key =>
+    {Object.keys(users).map(key =>
       <li key={key}>{users[key].username}{users[key].ostUuid && ostSettings.contentCreators.includes(users[key].ostUuid) && (
         <Button className="Submit__button" onClick={() => onClick(users[key]) } variant="raised">
           Airdrop Tokens to Content Creator

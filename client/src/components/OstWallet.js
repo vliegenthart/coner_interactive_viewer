@@ -47,13 +47,12 @@ class OstWallet extends Component {
   componentDidMount() {
     this.ost.listUsers().then(res => {
       this.setState(() => ({ users: arrayToObject(res) }))
-    }
-    );
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { user } = this.props;
-    if (this.props.user && this.props.user.ostUuid && !this.state.ledger) {
+    if (this.props.user && (this.props.user.ostUuid || this.props.user.id) && !this.state.ledger) {
       this.fetchUserLedger()
     }
   }
@@ -68,9 +67,12 @@ class OstWallet extends Component {
   fetchUserLedger = () => {
     const { user, actionIds } = this.props;
 
-    this.ost.getUserLedger(user.ostUuid).then(res => {
+    let userId = Object.keys(user).includes('ostUuid') ? user.ostUuid : user.id
+
+    this.ost.getUserLedger(userId).then(res => {
       const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
       const grouped = groupBy(res.transactions.filter(trans => Object.keys(actionIds[trans['action_id']].walletMessage).length > 0), x => new Date(x.timestamp).toLocaleDateString('en-US', options))
+      console.log(grouped)
       this.setState(() => ({ ledger: grouped }))
     });
   }

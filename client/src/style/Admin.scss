@@ -1,6 +1,9 @@
 .Admin__container {
   height: 100vh;
   overflow: auto;
+  .Admin__title {
+    margin-top: 114px;
+  }
   h5 {
     margin: 40px 0 5px 0;
   }
@@ -12,6 +15,8 @@
         background: #EF5350;
       }
     }
-
+  }
+  .Admin__gridPaper {
+    padding: 30px;
   }
 }
