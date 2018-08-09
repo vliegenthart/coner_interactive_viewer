@@ -37,6 +37,7 @@ class OstWallet extends Component {
     this.state = {
       ledger: null,
       users: null,
+      usersArr: null,
       cachedGiftAmount: 20,
     }
 
@@ -46,7 +47,9 @@ class OstWallet extends Component {
 
   componentDidMount() {
     this.ost.listUsers().then(res => {
-      this.setState(() => ({ users: arrayToObject(res) }))
+      let tempUsers = res.slice(0,15)
+      tempUsers = removeDuplicates(sortBy(tempUsers, 'name'), 'name').filter(obj => obj['name'].length > 0)
+      this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
     });
   }
 
@@ -71,19 +74,21 @@ class OstWallet extends Component {
 
     this.ost.getUserLedger(userId).then(res => {
       const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
-      const grouped = groupBy(res.transactions.filter(trans => Object.keys(actionIds[trans['action_id']].walletMessage).length > 0), x => new Date(x.timestamp).toLocaleDateString('en-US', options))
-      console.log(grouped)
+
+      if (res.length === 0) return
+
+      const grouped = groupBy(res.transactions.filter(trans => Object.keys(actionIds[trans['action_id']].walletMessage).length > 0 && trans.from_user_id !== trans.to_user_id), x => new Date(x.timestamp).toLocaleDateString('en-US', options))
       this.setState(() => ({ ledger: grouped }))
     });
   }
 
   render() {
-    const { ledger, users, cachedGiftAmount } = this.state;
-    const { actionIds, user, pid } = this.props;
+    const { ledger, users, usersArr, cachedGiftAmount } = this.state;
+    const { actionIds, user, pid, showGift } = this.props;
 
     return (
       <div className="Ost__wallet">
-        {users && <GiftPaper users={users} user={user} pid={pid} fetchUserLedger={this.fetchUserLedger} setAmount={this.setCachedGiftAmount} />}
+        {users && showGift && <GiftPaper users={users} usersArr={usersArr} user={user} pid={pid} fetchUserLedger={this.fetchUserLedger} setAmount={this.setCachedGiftAmount} />}
 
         <TransactionList ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
       </div>
@@ -109,11 +114,13 @@ class TransactionList extends Component {
     let transInfo = ''
     let type ='received'
 
+    let fromUserId = Object.keys(user).includes('ostUuid') ? user.ostUuid : user.id
+
     if (action.kind === 'company_to_user') {
       icon = <BeachAccessIcon />
       transInfo = `From Coner Company - ${new Date(trans.timestamp).toLocaleTimeString()}`
     } else {
-      if(trans.from_user_id === user.ostUuid) {
+      if(trans.from_user_id === fromUserId) {
         icon = <ArrowUpwardIcon />
         type = 'sent'
         walletMessage = action['walletMessage'].sent
@@ -185,8 +192,7 @@ class GiftPaper extends Component {
   }
 
   componentDidMount() {
-    const { users } = this.props;
-    const usersArr = removeDuplicates(sortBy(Object.values(users), 'name'), 'name').filter(obj => obj['name'].length > 0)
+    const { users, usersArr } = this.props;
 
     this.setState(() => ({usersArr: usersArr, dropdownUser: usersArr[0].id}))
   }

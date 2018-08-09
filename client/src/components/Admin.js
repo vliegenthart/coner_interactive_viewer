@@ -5,6 +5,7 @@ import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
 import OstWallet from './OstWallet';
 import termHighlights from "../highlights/term-highlights";
+import config from './config'
 
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
@@ -14,11 +15,17 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { map } from 'lodash';
 import { snapshotToArray, arrayToObject, removeDuplicates } from '../utility/utilFunctions';
 import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
+import Chip from '@material-ui/core/Chip';
 
 import "../style/Admin.css";
 
@@ -43,28 +50,30 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.ost.listUsers().then(res => {
-      const tempUsers = removeDuplicates(sortBy(res, 'name'), 'name').filter(obj => obj['name'].length > 0)
+      let tempUsers = res.slice(0,15)
+      tempUsers = removeDuplicates(sortBy(tempUsers, 'name'), 'name').filter(obj => obj['name'].length > 0)
       this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
     });
 
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.users === null && this.state.users) {
+    if (prevState.usersArr === null && this.state.usersArr) {
       this.checkCCBalances()
     }
   }
 
   // Ensure content creators have minimum of CNR tokens available to receive feedback
   checkCCBalances = () => {
-    const { users } = this.state;
+    const { users, usersArr } = this.state;
 
-    Object.keys(users).map(key => {
-      const user = users[key]
+    usersArr.map(user => {
+      let userId = Object.keys(user).includes('ostUuid') ? user.ostUuid : user.id
 
-      if (ostSettings.contentCreators.includes(user.ostUuid)) {
-        this.ost.getUserBalance(user.ostUuid).then(res => {
+      if (ostSettings.contentCreators.includes(userId)) {
+        this.ost.getUserBalance(userId).then(res => {
           if (parseInt(res.available_balance) < ostSettings.minCCTokens) {
+            console.log(user)
             this.airdropTokensCC(user)
           }
         });
@@ -140,7 +149,7 @@ class AdminPage extends Component {
 
   airdropTokensCC(toUser) {
     this.ost.transactionCompanyToUser(toUser, "AirdropCC", 'AirdropCC').then(ostRes => {
-      console.log(`Airdropped CNR tokens to ${toUser.username}`)
+      console.log(`Airdropped CNR tokens to ${toUser.name}`)
     }).catch((e) => {
       console.error("OSTError: ", e)
     });
@@ -189,16 +198,15 @@ class AdminPage extends Component {
               <h1>Admin Page</h1>
               </div>
           </Grid>
-          <Grid item xs={5}>
-            <Paper className="Admin__gridPaper">
+          <Grid item xs={5} className="sideBySide__gridItem">
               <h3>User Ost Wallets</h3>
-               { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds}/> }
-            </Paper>
+              { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds} /> }
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={5} className="sideBySide__gridItem">
+          
+            <h3>Content Creator Budget Pools</h3>
             <Paper className="Admin__gridPaper">
-              <h3>Content Creators</h3>
-               { !!users && <ContentCreators users={users} /> }
+               { !!users && <ContentCreators onclick={this.airdropTokensCC} usersArr={usersArr} actionIds={actionIds} /> }
             </Paper>
           </Grid>
           <Grid item xs={10}>
@@ -229,33 +237,72 @@ class AdminPage extends Component {
   }
 }
 
-const UserWallets = ({ usersArr, actionIds, onClick }) => {
-  console.log(actionIds)
-  return (
-    <ul>
-    {usersArr.slice(0,10).map(user =>
-      <li key={user.id}><OstWallet user={user} actionIds={actionIds} pid={"admin_page"} />
-      </li>
-    )}
-    </ul>
-  )
+class UserWallets extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChangeExpanded = this.handleChangeExpanded.bind(this);
+
+    this.state = {
+      expanded: null
+    };
+  }
+
+  handleChangeExpanded = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
+
+  render() {
+    const { usersArr, actionIds } = this.props;
+    const { expanded } = this.state;
+
+    return (
+      usersArr.map(user =>
+        <ExpansionPanel key={user.id} expanded={expanded === `expanded-${user.id}`} onChange={this.handleChangeExpanded(`expanded-${user.id}`)}>
+          <ExpansionPanelSummary className="Wallet__header" expandIcon={<ExpandMoreIcon />}>
+            <Typography>{user.name}</Typography> {ostSettings.contentCreators.includes(user.id) && <Chip className="ContentCreator__chip" label="Content Creator" color="secondary" />}
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <OstWallet user={user} actionIds={actionIds} pid={"admin_page"} showGift={false}/>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      )
+    )
+  }
 }
-    
 
-const ContentCreators = ({ users, onClick }) =>
-  <div>
-    <h3>List of Usernames of Firebase Users</h3>
+class ContentCreators extends Component {
+  constructor (props) {
+    super(props);
+  }
 
-    <ul>
-    {Object.keys(users).slice(0,10).map(key =>
-      <li key={key}>{users[key].username}{users[key].ostUuid && ostSettings.contentCreators.includes(users[key].ostUuid) && (
-        <Button className="Submit__button" onClick={() => onClick(users[key]) } variant="raised">
-          Airdrop Tokens to Content Creator
-        </Button> 
-      )}</li>
-    )}
-    </ul>
-  </div>
+  render () {
+    const { users, usersArr, onClick } = this.props;
+    return (
+      <div>
+
+        <ul>
+        {usersArr.filter(user => ostSettings.contentCreators.includes(user.id)).map(user =>
+            <li key={user.id}>{user.name} {parseFloat(user.token_balance).toFixed()} CNR
+
+              <Button className="Submit__button" onClick={() => onClick(user) } variant="raised">
+                Airdrop CNR
+              </Button> 
+              <h5>Papers</h5>
+              <ul>
+                {config.finalPapersList.filter(paper => paper.contentCreator === user.id).map(paper =>
+                  <li>{paper.title}</li>
+                )}
+              </ul>
+            </li>
+        )}
+        </ul>
+      </div>
+    )
+  }
+}
+ 
 
 const authCondition = (authUser) => !!authUser;
 

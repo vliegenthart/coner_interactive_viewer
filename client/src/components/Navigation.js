@@ -219,7 +219,7 @@ class Navigation extends Component {
                             className={"Wallet__menu"}
                           > 
 
-                            <OstWallet user={user} actionIds={actionIds} pid={pid} />
+                            <OstWallet user={user} actionIds={actionIds} pid={pid} showGift={true}/>
                           </Menu>
 
                           <div className="token-balance-container">

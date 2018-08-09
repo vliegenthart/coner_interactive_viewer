@@ -17,6 +17,15 @@ p.error {
   color: red;
 }
 
+.ContentCreator__chip {
+  color: white !important;
+  background-color: rgb(225, 0, 80) !important;
+  position: absolute;
+  right: 55px;
+  font-size: 11px !important;
+  height: 28px !important;
+  top: 13px !important;
+}
 // .Paper__viewer {
 //   height: calc(100vh - 64px) !important;
 // }
