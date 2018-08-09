@@ -17,14 +17,36 @@ p.error {
   color: red;
 }
 
-.ContentCreator__chip {
+.User__chip {
   color: white !important;
-  background-color: rgb(225, 0, 80) !important;
   position: absolute;
   right: 55px;
   font-size: 11px !important;
   height: 28px !important;
   top: 13px !important;
+  > div {
+    height: 28px;
+    width: 28px;
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+  }
+  &.ContentCreator__chip {
+    background-color: rgb(225, 0, 80) !important;
+    > div {
+      background-color: rgb(157, 0, 56) !important;
+      color: white;
+
+    }
+  }
+  &.DocumentEvaluator__chip {
+    background-color: #2196f3 !important;
+    > div {
+      background-color: #1976d2 !important;
+      color: white;
+    }
+  }
 }
 // .Paper__viewer {
 //   height: calc(100vh - 64px) !important;

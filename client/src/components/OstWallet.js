@@ -90,7 +90,7 @@ class OstWallet extends Component {
       <div className="Ost__wallet">
         {users && showGift && <GiftPaper users={users} usersArr={usersArr} user={user} pid={pid} fetchUserLedger={this.fetchUserLedger} setAmount={this.setCachedGiftAmount} />}
 
-        <TransactionList ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
+        <TransactionList showGift={showGift} ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
       </div>
         
     );
@@ -153,11 +153,13 @@ class TransactionList extends Component {
   }
 
   render() {
-    const { ledger, actionIds, users, onClick } = this.props;
+    const { ledger, actionIds, users, onClick, showGift, user } = this.props;
 
     return (
       <div className="Transaction__list">
         <h3>CNR Transactions</h3>
+
+        {!showGift && <div className="tokenBalance">{parseFloat(user.token_balance).toFixed()} CNR</div>}
         
         { (users && ledger) ? (Object.keys(ledger).map(group =>
           <div className="Date__wrapper" key={group}>

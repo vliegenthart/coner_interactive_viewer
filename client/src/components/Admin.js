@@ -26,6 +26,9 @@ import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
 import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import Avatar from '@material-ui/core/Avatar';
+
 
 import "../style/Admin.css";
 
@@ -261,7 +264,17 @@ class UserWallets extends Component {
       usersArr.map(user =>
         <ExpansionPanel key={user.id} expanded={expanded === `expanded-${user.id}`} onChange={this.handleChangeExpanded(`expanded-${user.id}`)}>
           <ExpansionPanelSummary className="Wallet__header" expandIcon={<ExpandMoreIcon />}>
-            <Typography>{user.name}</Typography> {ostSettings.contentCreators.includes(user.id) && <Chip className="ContentCreator__chip" label="Content Creator" color="secondary" />}
+            <Typography>{user.name}</Typography> 
+            {ostSettings.contentCreators.includes(user.id) && <Chip className="User__chip ContentCreator__chip" label="Content Creator" avatar={
+          <Avatar>
+            <FaceIcon />
+          </Avatar>
+        }/>}
+            {!ostSettings.contentCreators.includes(user.id) && user.token_balance > 0 && <Chip className="User__chip DocumentEvaluator__chip" label="Document Evaluator" avatar={
+          <Avatar>
+            <FaceIcon />
+          </Avatar>
+        }/>}
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <OstWallet user={user} actionIds={actionIds} pid={"admin_page"} showGift={false}/>

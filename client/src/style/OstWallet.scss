@@ -26,9 +26,21 @@
 
   }
   .Transaction__list {
+    > h3 {
+      float: left;
+    }
+    .tokenBalance {
+      float: right;
+      margin-top: 22px;
+      margin-right: 4px;
+      font-weight: bold;
+    }
     .Progress__wrapper {
       text-align: center;
       margin-top: 250px;
+    }
+    .Date__wrapper {
+      clear: both;
     }
     .Ledger__date {
       font-size: 13px;
