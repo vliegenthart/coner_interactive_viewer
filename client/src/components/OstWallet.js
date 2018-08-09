@@ -23,6 +23,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { groupBy } from 'lodash';
+import Chip from '@material-ui/core/Chip';
+import PaymentIcon from '@material-ui/icons/Payment';
+import Avatar from '@material-ui/core/Avatar';
 
 import '../style/OstWallet.css'
 
@@ -39,6 +42,7 @@ class OstWallet extends Component {
       users: null,
       usersArr: null,
       cachedGiftAmount: 20,
+      tokenBalance: 0
     }
 
     this.ost = new OstClient()
@@ -51,6 +55,8 @@ class OstWallet extends Component {
       tempUsers = removeDuplicates(sortBy(tempUsers, 'name'), 'name').filter(obj => obj['name'].length > 0)
       this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
     });
+    this.fetchUserBalance(this.props.user)
+
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -60,11 +66,14 @@ class OstWallet extends Component {
     }
   }
   setCachedGiftAmount = (amount) => {
-    this.setState(() => ({ cachedGiftAmount: amount}))
+    this.setState(() => ({ cachedGiftAmount: amount, tokenBalance: parseFloat(this.state.tokenBalance) - amount }))
   }
 
-  fetchUserBalance = () => {
-    const { user } = this.props;
+  fetchUserBalance = (user) => {
+    let userId = Object.keys(user).includes('ostUuid') ? user.ostUuid : user.id
+    this.ost.getUserBalance(userId).then(res => {
+      this.setState(() => ({ tokenBalance: res.token_balance }))
+    })
   }
 
   fetchUserLedger = () => {
@@ -74,7 +83,6 @@ class OstWallet extends Component {
 
     this.ost.getUserLedger(userId).then(res => {
       const options = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
-
       if (res.length === 0) return
 
       const grouped = groupBy(res.transactions.filter(trans => Object.keys(actionIds[trans['action_id']].walletMessage).length > 0 && trans.from_user_id !== trans.to_user_id), x => new Date(x.timestamp).toLocaleDateString('en-US', options))
@@ -83,14 +91,14 @@ class OstWallet extends Component {
   }
 
   render() {
-    const { ledger, users, usersArr, cachedGiftAmount } = this.state;
+    const { ledger, users, usersArr, cachedGiftAmount, tokenBalance } = this.state;
     const { actionIds, user, pid, showGift } = this.props;
 
     return (
       <div className="Ost__wallet">
         {users && showGift && <GiftPaper users={users} usersArr={usersArr} user={user} pid={pid} fetchUserLedger={this.fetchUserLedger} setAmount={this.setCachedGiftAmount} />}
 
-        <TransactionList showGift={showGift} ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
+        <TransactionList tokenBalance={tokenBalance} showGift={showGift} ledger={ledger} user={user} actionIds={actionIds} users={users} cachedGiftAmount={cachedGiftAmount} ></TransactionList>
       </div>
         
     );
@@ -102,6 +110,7 @@ class TransactionList extends Component {
     super(props);
 
     this.renderTransaction = this.renderTransaction.bind(this);
+
   }
 
   renderTransaction = trans => {
@@ -153,13 +162,17 @@ class TransactionList extends Component {
   }
 
   render() {
-    const { ledger, actionIds, users, onClick, showGift, user } = this.props;
+    const { ledger, actionIds, users, onClick, showGift, user, tokenBalance } = this.props;
 
     return (
       <div className="Transaction__list">
         <h3>CNR Transactions</h3>
 
-        {!showGift && <div className="tokenBalance">{parseFloat(user.token_balance).toFixed()} CNR</div>}
+        <Chip className="tokenBalance Balance__chip" label={parseFloat(tokenBalance).toFixed() + " CNR"} avatar={
+              <Avatar>
+                <PaymentIcon />
+              </Avatar>
+            }/>
         
         { (users && ledger) ? (Object.keys(ledger).map(group =>
           <div className="Date__wrapper" key={group}>

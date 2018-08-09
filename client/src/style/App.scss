@@ -48,6 +48,14 @@ p.error {
     }
   }
 }
+
+.Balance__chip {
+  background-color: #A9DFE2 !important;
+  > div {
+    background-color: #70cacf !important;
+    color: white;
+  }
+}
 // .Paper__viewer {
 //   height: calc(100vh - 64px) !important;
 // }

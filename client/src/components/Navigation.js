@@ -148,7 +148,7 @@ class Navigation extends Component {
                           }}
                         >
                           {sortBy(papers, 'title').map(_paper => 
-                            <MenuItem key={_paper['pid']} value={_paper['pid']}>{process.env.NODE_ENV === 'production' ? truncate(_paper['title'], 80) : _paper['pid']}</MenuItem>
+                            <MenuItem key={_paper['pid']} value={_paper['pid']}>{process.env.NODE_ENV === 'production' || true ? truncate(_paper['title'], 80) : _paper['pid']}</MenuItem>
                           )}
                         </Select>
                       }

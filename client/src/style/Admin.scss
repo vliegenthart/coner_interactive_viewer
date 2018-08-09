@@ -28,4 +28,46 @@
       // margin-top: 5px;
     }
   }
+  .Admin__panelDetails {
+    background-color: #f6fbfc;
+    border-top: 1px solid #ddd;
+  }
+  .Submit__button {
+    background-color: #96d8dc;
+  }
+  .ContentCreator__card {
+    margin-top: 15px;
+    h3 {
+      float: left;
+    }
+    .tokenBalance {
+      float: right;
+    }
+    .paperListTitle {
+      clear: both;
+      margin: 60px 0 -10px 0;
+    }
+    ol {
+      padding-left: 30px;
+      margin-bottom: 0;
+      li {
+        font-size: 14px;
+        color: #777;
+      }
+    }
+    .Media__wrapper {
+      padding: 0 0;
+    }
+    .Association__logo {
+      height: 200px;
+      // background-size: contain;
+    }
+  }
+  .Airdrop__button {
+    color: #2196f3 !important;
+  }
+  .Admin__firebaseButtons {
+    display: none;
+  }
 }
+ 

@@ -10,25 +10,23 @@ import config from './config'
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { map } from 'lodash';
-import { snapshotToArray, arrayToObject, removeDuplicates } from '../utility/utilFunctions';
+import { arrayToObject, removeDuplicates } from '../utility/utilFunctions';
 import OstClient from '../ost/ostClient';
 import ostSettings from "../ost/ostClientSettings";
 import sortBy from 'lodash/sortBy';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
+import PaymentIcon from '@material-ui/icons/Payment';
 import Avatar from '@material-ui/core/Avatar';
-
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 
 import "../style/Admin.css";
 
@@ -46,7 +44,6 @@ class AdminPage extends Component {
 
     this.syncLocalHighlights = this.syncLocalHighlights.bind(this);
     this.deleteFirebaseHighlights = this.deleteFirebaseHighlights.bind(this);
-    // this.fetchOstTransactions = this.fetchOstTransactions.bind(this);
     this.airdropTokensCC = this.airdropTokensCC.bind(this);
     this.checkCCBalances = this.checkCCBalances.bind(this);
   }
@@ -158,37 +155,6 @@ class AdminPage extends Component {
     });
   }
 
-
-  // fetchOstTransactions() {
-  //   let { papers } = this.props;
-
-  //   papers = [...Array.from(papers, paper => paper.pid)];
-  //   const _this = this;
-
-  //   map(papers, function(pid){
-  //     db.onceGetRewards(pid)
-  //       .then((snapshot) => {
-  //         const rewards = snapshot.val() ? snapshotToArray(snapshot.val()) : []
-  //         if (rewards.length > 0) {
-  //           const transaction_uuids = map(rewards, function(reward) { return reward.transaction_uuid})
-
-  //           setTimeout(() => { 
-  //             _this.ost.transactiontypesStatus(transaction_uuids, (res) => {
-  //               if (ostSettings.devMode) {
-  //                 console.log(`Fetched statuses for ${transaction_uuids.length} transactions`, res)
-  //               }
-  //               res.transactions = sortBy(res.transactions, 'transaction_timestamp', ).reverse().slice(0,20);
-  //               _this.setState({ ostTransactions: { [pid]: res, ..._this.state.ostTransactions }});
-  //             })
-  //           }, 500);
-  //         }
-  //       })
-  //       .catch(error => {
-  //         console.log('Error:', error);
-  //       });
-  //   });
-  // }
-
   render() {
     const { users, usersArr, ostTransactions } = this.state;
     const { actionIds } = this.props;
@@ -208,12 +174,10 @@ class AdminPage extends Component {
           <Grid item xs={5} className="sideBySide__gridItem">
           
             <h3>Content Creator Budget Pools</h3>
-            <Paper className="Admin__gridPaper">
-               { !!users && <ContentCreators onclick={this.airdropTokensCC} usersArr={usersArr} actionIds={actionIds} /> }
-            </Paper>
+              { !!users && <ContentCreators onClick={this.airdropTokensCC} usersArr={usersArr} actionIds={actionIds} /> }
           </Grid>
           <Grid item xs={10}>
-            <Paper className="Admin__gridPaper">
+            <Paper className="Admin__gridPaper Admin__firebaseButtons">
               <h3>Firebase Interaction</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } variant="raised">
                 Sync Local Highlights with Firebase Database
@@ -276,7 +240,7 @@ class UserWallets extends Component {
           </Avatar>
         }/>}
           </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails className="Admin__panelDetails">
             <OstWallet user={user} actionIds={actionIds} pid={"admin_page"} showGift={false}/>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -292,26 +256,46 @@ class ContentCreators extends Component {
 
   render () {
     const { users, usersArr, onClick } = this.props;
+
+    const images = ["https://evasys.tudelft.nl/evasys/data/images/logos/login/login.jpg", "https://www.nii.ac.jp/_img/ogp.jpg", "https://www.umaryland.edu/media/umb/style-assets/images/og-image-01.png"]
+
     return (
-      <div>
+      usersArr.filter(user => ostSettings.contentCreators.includes(user.id)).map((user,ind) =>
+        <Card key={user.id} className="ContentCreator__card">
+          <div className="Media__wrapper">
+          <CardMedia
+            className="Association__logo"
+            image={images[ind]}
+            title="CC Association"
+          />
+          </div>
+          <CardContent>
+            <Typography gutterBottom variant="headline" component="h3">
+              {user.name}
+            </Typography>
 
-        <ul>
-        {usersArr.filter(user => ostSettings.contentCreators.includes(user.id)).map(user =>
-            <li key={user.id}>{user.name} {parseFloat(user.token_balance).toFixed()} CNR
-
-              <Button className="Submit__button" onClick={() => onClick(user) } variant="raised">
+            <Chip className="tokenBalance Balance__chip" label={parseFloat(user.token_balance).toFixed() + " CNR"} avatar={
+              <Avatar>
+                <PaymentIcon />
+              </Avatar>
+            }/>
+              
+            <div className="paperListTitle">
+              Uploaded papers:
+            </div>
+            <ol>
+              {config.finalPapersList.filter(paper => paper.contentCreator === user.id).map(paper =>
+                <li key={paper.pid}>{paper.title}</li>
+              )}
+            </ol>
+          </CardContent>
+          <CardActions>
+             <Button className="Airdrop__button" size="small" onClick={() => onClick(user) } color="primary">
                 Airdrop CNR
               </Button> 
-              <h5>Papers</h5>
-              <ul>
-                {config.finalPapersList.filter(paper => paper.contentCreator === user.id).map(paper =>
-                  <li>{paper.title}</li>
-                )}
-              </ul>
-            </li>
-        )}
-        </ul>
-      </div>
+          </CardActions>
+        </Card>    
+      )
     )
   }
 }

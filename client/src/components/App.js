@@ -87,7 +87,6 @@ class App extends Component {
         this.actionIds[actionObj['id']] = actionObj
 
       }
-      console.log(this.actionIds)
     });
 
   }
@@ -238,7 +237,6 @@ class App extends Component {
       catch (e) {
         console.error(e.message)
       }
-      
     }
 
     // else {

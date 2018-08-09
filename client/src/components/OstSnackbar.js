@@ -40,7 +40,7 @@ class OstSnackbar extends Component {
             horizontal: 'right',
           }}
           open={open}
-          autoHideDuration={3000}
+          autoHideDuration={2500}
           onClose={handleClose}
           ContentProps={{
             'aria-describedby': 'message-id',
