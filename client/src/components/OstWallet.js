@@ -51,7 +51,7 @@ class OstWallet extends Component {
 
   componentDidMount() {
     this.ost.listUsers().then(res => {
-      let tempUsers = res.slice(0,15)
+      let tempUsers = res.slice(0,17)
       tempUsers = removeDuplicates(sortBy(tempUsers, 'name'), 'name').filter(obj => obj['name'].length > 0)
       this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
     });

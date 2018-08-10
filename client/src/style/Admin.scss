@@ -1,6 +1,9 @@
 .Admin__container {
   height: 100vh;
   overflow: auto;
+  h1 {
+    margin-bottom: 0;
+  }
   .Admin__title {
     margin-top: 114px;
   }

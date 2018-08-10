@@ -30,14 +30,13 @@ router.get('/:id', (req, res) => {
 });
 
 // EXECUTE TRANSACTION
-router.post('/execute', (req, res) => {
-  console.log(req.body)
-  
-  let transBody = {from_user_id: req.body.fromUserId, to_user_id: req.body.toUserId, action_id: req.body.actionId }
+router.post('/execute', (req, res) => {  
+  let transBody = { from_user_id: req.body.fromUserId, to_user_id: req.body.toUserId, action_id: req.body.actionId }
   if (req.body.amount) transBody['amount'] = req.body.amount
 
+  // console.log(req)
   transactionService.execute(transBody).then(function(ost_res) { 
-    console.log(ost_res)
+    console.log(JSON.stringify(ost_res))
     res.status(200).send({'body': JSON.stringify(ost_res)});
   }).catch(function(err) { 
     console.log(JSON.stringify(err))

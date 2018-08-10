@@ -50,7 +50,7 @@ class AdminPage extends Component {
 
   componentDidMount() {
     this.ost.listUsers().then(res => {
-      let tempUsers = res.slice(0,15)
+      let tempUsers = res.slice(0,17)
       tempUsers = removeDuplicates(sortBy(tempUsers, 'name'), 'name').filter(obj => obj['name'].length > 0)
       this.setState(() => ({ users: arrayToObject(tempUsers), usersArr: tempUsers }))
     });
@@ -168,7 +168,7 @@ class AdminPage extends Component {
               </div>
           </Grid>
           <Grid item xs={5} className="sideBySide__gridItem">
-              <h3>User Ost Wallets</h3>
+              <h3>User Coner Wallets</h3>
               { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds} /> }
           </Grid>
           <Grid item xs={5} className="sideBySide__gridItem">
