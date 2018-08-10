@@ -62,7 +62,7 @@ class OstClient {
 
 
     return this.executeTransaction(ostSettings.companyUuid, toUserId, action).then(ostRes => {
-      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${user.name} with transaction type "${action}"`) }
+      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${user.name || user.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
@@ -74,7 +74,7 @@ class OstClient {
 
     let toUserId = Object.keys(toUser).includes('ostUuid') ? toUser.ostUuid : toUser.id
     return this.executeTransaction(fromUserId, toUserId, action, amount).then(ostRes => {
-      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.name} with transaction type "${action}"`) }
+      if (ostSettings.ostDevMode) { console.log(`Rewarded OST user ${toUser.name || toUser.username} with transaction type "${action}"`) }
       this.createReward(ostRes, pid);
     }).catch((e) => {
       console.error("OSTError: ", e)
