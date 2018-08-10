@@ -1,0 +1,81 @@
+.sidebar {
+  background: #f6fbfc !important;
+  // background: #f7f7f7;
+  color: #424242 !important;
+  overflow: hidden;
+
+  -ms-overflow-style: none;  // IE 10+
+  overflow: -moz-scrollbars-none;  // Firefox
+  border-right: 1px solid #e3f3f6;
+
+  &::-webkit-scrollbar { 
+    display: none;  // Safari and Chrome
+  }
+
+  h3 {
+    margin-bottom: 10px;
+    margin-top: 25px;
+    color: #424242;
+  }
+
+  .Category__chip {
+    margin-top: 5px;
+    margin-right: 5px;
+    opacity: 0.8;
+    background-color: #aaa;
+
+    &.Category__dataset {
+      background-color: #83d5f9;
+    }
+    &.Category__method {
+      background-color: #f7b0c8;
+    }
+    &.Category__dataset-method {
+      background-color: #ccb6d7;
+    }
+    &.Category__user {
+      background-color: #FFE28F;
+    }
+    svg {
+      color: #424242;
+      width: 0.7em;
+      margin-right: 7px;
+      cursor: inherit;
+    }
+  }
+
+ h3.Keywords__title {
+    margin-top: 10px;
+    padding: 0 16px;
+  }
+  ul.sidebar__highlights {
+    margin: 0;
+    li.sidebar__highlight {
+      cursor: pointer;
+      border-top: 1px solid #d0eaef;
+      border-bottom: none;
+      padding: 8px 16px;
+      &:first-child {
+        border-top: none;
+      }
+      .Highlight__text {
+        font-style: italic;
+        clear: both;
+        padding: 16px 0 8px;
+      }
+      .Ratings__facets {
+        float: right;
+        margin-right: -8px;
+      }
+      .Category__chip {
+        margin-top: 0;
+        font-size: 11px;
+        height: 28px;
+        margin-bottom: 5px;
+      }
+      &:hover {
+        background: #ecfbfc;
+      }
+    }
+  }
+}

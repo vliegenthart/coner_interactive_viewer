@@ -1,0 +1,62 @@
+.Highlight {
+  position: absolute;
+}
+
+.Highlight__emoji {
+  position: absolute;
+  color: black;
+  opacity: 1;
+  font-size: 28px;
+}
+
+.Highlight__parts {
+  // opacity: 0.4;
+}
+
+.Highlight__part {
+   opacity: 0.4;
+}
+
+.Highlight__part.Rated__highlight {
+  background: #cacaca !important;
+}
+
+.Highlight__part {
+  cursor: pointer;
+  position: absolute;
+  background: #FFE28F;
+  transition: background 0.3s;
+  outline: 1px solid #ffce43;
+}
+
+.Highlight__part.generated.dataset {
+  background: #4fc3f7;
+  outline: 1px solid #0ba8ef;
+}
+
+.Highlight__part.generated.method {
+  background: #f48fb1;
+  outline: 1px solid #ed4980;
+}
+
+.Highlight__part.generated.doubly {
+  background: #ccb6d7;
+  outline: 1px solid #a985bc;
+}
+
+.Highlight__popup {
+  background-color: #3d464d;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  max-width: 300px;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+.Highlight--scrolledTo .Highlight__part {
+  /*background: #c0392b !important;*/
+  background: #00E676 !important;
+  opacity: 0.55;
+}
