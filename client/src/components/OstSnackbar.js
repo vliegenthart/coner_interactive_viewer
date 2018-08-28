@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ostSettings from "../ost/ostClientSettings";
+
 
 const styles = theme => ({
   close: {
@@ -33,7 +35,10 @@ class OstSnackbar extends Component {
   render() {
     const { classes, message, handleClose, open } = this.props;
     return (
+      
+
       <div>
+        {ostSettings.ostDevMode && 
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
@@ -57,7 +62,7 @@ class OstSnackbar extends Component {
               <CloseIcon />
             </IconButton>,
           ]}
-        />
+        />}
       </div>
     );
   }
