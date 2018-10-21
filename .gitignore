@@ -6,7 +6,7 @@ client/data/
 client/misc/
 client/build/
 client/node_modules/
-# client/public/pdf/
+client/public/pdf/
 
 client/src/highlights/term-highlights.js
 client/src/highlights/papers-list.js
@@ -15,7 +15,7 @@ client/src/components/config.js
 
 client/.firebaserc
 client/src/firebase/config.js
-client/src/ost/ostClientSettings.js
+# client/src/ost/ostClientSettings.js
 server/ost/config.js
 
 # Logs
