@@ -48,7 +48,7 @@ class App extends Component {
     this.setUser = this.setUser.bind(this);
 
     this.state = {
-      pid: "conf_vldb_ChakrabartiRS02",
+      pid: config.finalPapersList[0]['pid'],
       contentCreator: config.defaultPaper['contentCreator'],
       papers: config.finalPapersList,
       user: null,    

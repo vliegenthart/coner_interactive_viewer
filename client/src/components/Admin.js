@@ -260,7 +260,7 @@ class ContentCreators extends Component {
     const images = ["https://evasys.tudelft.nl/evasys/data/images/logos/login/login.jpg", "https://www.nii.ac.jp/_img/ogp.jpg", "https://www.umaryland.edu/media/umb/style-assets/images/og-image-01.png"]
 
     return (
-      usersArr.filter(user => ostSettings.contentCreators.includes(user.id)).map(user =>
+      usersArr.filter(user => ostSettings.contentCreators.includes(user.id)).map((user, ind) =>
         <Card key={user.id} className="ContentCreator__card">
           <div className="Media__wrapper">
           <CardMedia
