@@ -167,16 +167,8 @@ class AdminPage extends Component {
               <h1>Admin Page</h1>
               </div>
           </Grid>
-          <Grid item xs={5} className="sideBySide__gridItem">
-              <h3>User Coner Wallets</h3>
-              { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds} /> }
-          </Grid>
-          <Grid item xs={5} className="sideBySide__gridItem">
-          
-            <h3>Content Creator Budget Pools</h3>
-              { !!users && <ContentCreators onClick={this.airdropTokensCC} usersArr={usersArr} actionIds={actionIds} /> }
-          </Grid>
-          <Grid item xs={10}>
+
+           <Grid item xs={10}>
             <Paper className="Admin__gridPaper Admin__firebaseButtons">
               <h3>Firebase Interaction</h3>
               <Button className="Submit__button" onClick={() => this.syncLocalHighlights() } variant="raised">
@@ -196,6 +188,20 @@ class AdminPage extends Component {
               </Button> <br />
             </Paper>
           </Grid>
+
+
+          <Grid item xs={5} className="sideBySide__gridItem">
+              <h3>User Coner Wallets</h3>
+              { !!users && <UserWallets usersArr={usersArr} actionIds={actionIds} /> }
+          </Grid>
+          <Grid item xs={5} className="sideBySide__gridItem">
+          
+            <h3>Content Creator Budget Pools</h3>
+              { !!users && <ContentCreators onClick={this.airdropTokensCC} usersArr={usersArr} actionIds={actionIds} /> }
+          </Grid>
+
+
+         
         </Grid>
         
       </div>

@@ -8,6 +8,7 @@ import {
 import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 import OstClient from '../ost/ostClient';
+import ostSettings from "../ost/ostClientSettings";
 
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -67,8 +68,8 @@ class SignUpForm extends Component {
 
         // Create OST user
         ost.createUser(username).then(ost_res => {
-          console.log(`Created OST user: ${username}`)
-          const ostUser = JSON.parse(ost_res.body).data.user
+          if (ostSettings.ostDevMode) console.log(`Created OST user: ${username}`)
+          const ostUser = (ost_res.body) ? JSON.parse(ost_res.body).data.user : { id: "" }
           
           // Create user in custom Firebase accessible DB
           db.doCreateUser(authUser.uid, username, email, ostUser.id)
@@ -81,8 +82,7 @@ class SignUpForm extends Component {
           .catch(error => {
             this.setState(byPropKey('error', error));
           });
-
-          ost.createReward(ost_res)
+          if (ost_res) ost.createReward(ost_res)
         })
         .catch((e) => {
           console.error("OSTError: ", e)

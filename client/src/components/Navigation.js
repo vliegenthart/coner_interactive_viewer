@@ -85,6 +85,7 @@ class Navigation extends Component {
 
   setTicker = () => {
     this.cmc.getTicker('OST').then(res => {
+      if (!res) return
       const tokenValue = this.calcTokenValue(res.price_usd)
       this.setState(() => ({ ostPrice: res.price_usd }))
     });

@@ -106,17 +106,25 @@ class App extends Component {
       if (authUser) {
         setTimeout(() => {
           this.setState(() => ({ authUser }));
+
           db.onceGetUser(authUser.uid).then(snapshot => {
             const dbUser = snapshot.val()
-            const ostUser = this.ost.getUser(dbUser.ostUuid)
 
-            ostUser.then(res => {
-              this.ost.getUserBalance(res.id).then(balRes => {
-                this.setState(() => ({ tokenBalance: balRes.token_balance }))
-              });
-              this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
+            if (ostSettings.ostDevMode) {
+              const ostUser = this.ost.getUser(dbUser.ostUuid)
 
-            }); 
+              ostUser.then(res => {
+                if (!res) return
+                this.ost.getUserBalance(res.id).then(balRes => {
+                  this.setState(() => ({ tokenBalance: balRes.token_balance }))
+                });
+                this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: res }, authUser) 
+
+              }); 
+            } else {
+               this.setUser({ ...dbUser, uid: authUser.uid, ostAttr: {} }, authUser) 
+            }
+           
           });
         }, 500);
         
@@ -144,9 +152,12 @@ class App extends Component {
     if (authUser) {
 
       this.setState(() =>({user: user, authUser: authUser }));
-      this.ost.getUserBalance(user.ostAttr.id).then(balRes => {
-        this.setState(() => ({ tokenBalance: balRes.token_balance }))
-      });
+
+      if (ostSettings.ostDevMode) {
+        this.ost.getUserBalance(user.ostAttr.id).then(balRes => {
+          this.setState(() => ({ tokenBalance: balRes.token_balance }))
+        });
+      }
       return
     }
     this.setState(() =>({ user: null, authUser: null }))
@@ -224,7 +235,7 @@ class App extends Component {
   rewardUser = (fromUser, toUser, type) => {
     const { pid } = this.state;
 
-    if (fromUser && toUser && type) {
+    if (fromUser && toUser && type && ostSettings.ostDevMode) {
       try {
         if (!this.state.snackbarOpen) {
           this.setState(() => ({ snackbarOpen: true, snackbarMessage: `Rewarded ${this.actionNames[type].amount} CNR for ${this.actionNames[type].message}`}))

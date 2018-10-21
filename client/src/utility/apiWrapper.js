@@ -1,4 +1,8 @@
+import ostSettings from '../ost/ostClientSettings';
+
 export const getApi = async (url) => {
+  if (!ostSettings.ostDevMode) return { 'body': {}}
+
   const response = await fetch(url);
   const body = await response.json();
 
@@ -8,18 +12,20 @@ export const getApi = async (url) => {
 }
 
 export const postApi = async (url, data) => {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
+  if (!ostSettings.ostDevMode) return {}
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify(data)
-    });
+  var myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
 
-    const body = await response.json();
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: myHeaders,
+    body: JSON.stringify(data)
+  });
 
-    if (response.status !== 200) throw Error(body.message);
+  const body = await response.json();
 
-    return body;
+  if (response.status !== 200) throw Error(body.message);
+
+  return body;
 }

@@ -19,9 +19,11 @@ class OstClient {
   }
 
   // USER FUNCTIONS
-  listUsers = () => {
+  listUsers = () => {    
     return getApi('/api/v1/ost/users')
       .then(res => {
+        if (!ostSettings.ostDevMode) return []
+
         const users = JSON.parse(res.body).data.users
         return users
       })
@@ -45,7 +47,7 @@ class OstClient {
   listActions = async () => {
     return getApi('/api/v1/ost/actions')
       .then(res => {
-        return this.convertActionsToObject(JSON.parse(res.body).data.actions)
+        if (ostSettings.ostDevMode) return this.convertActionsToObject(JSON.parse(res.body).data.actions)
       })
       .catch(err => console.log(err));
   }
@@ -68,6 +70,7 @@ class OstClient {
       console.error("OSTError: ", e)
     });
   }
+  
   transactionUserToUser = (fromUser, toUser, pid, action="RewardRating", amount=null) => {
 
     let fromUserId = typeof fromUser === 'object' ? fromUser.ostUuid : fromUser
